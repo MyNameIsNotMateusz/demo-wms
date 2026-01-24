@@ -24,7 +24,7 @@ export const login = async (loginPayload) => {
   }
 };
 
-export const logout = async (setAccessToken, clearUser, dispatch) => {
+export const logout = async (setAccessToken, clearAuthData, dispatch) => {
   setAccessToken(null);
-  dispatch(clearUser());
+  dispatch(clearAuthData());
 };

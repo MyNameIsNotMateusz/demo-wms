@@ -13,8 +13,12 @@ import { Toaster } from "sonner";
 import { handleError } from "../utils/alerts";
 import { useAuth } from "./AuthProvider";
 import { login } from "../api/authApi";
+import { setAuthData } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 export const Login = () => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +39,7 @@ export const Login = () => {
       const loginData = await login({ email, password });
       if (!loginData.token) return;
       setAccessToken(loginData.token);
+      dispatch(setAuthData(loginData));
     } catch (error) {
       handleError("Login failed");
     } finally {
