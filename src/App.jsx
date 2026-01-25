@@ -2,18 +2,12 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Login } from "./auth/Login";
 import { AppLayout } from "./components/layout/AppLayout";
+import { useAuth } from "./auth/AuthProvider";
 
 export const App = () => {
-  const tabsAccess = useSelector((state) => state.auth.tabsAccess);
-  const warehouseAccess = tabsAccess?.find((tab) => tab.code === "warehouse");
+  const { accessToken } = useAuth();
 
-  const hasWarehouseAccess = warehouseAccess
-    ? Object.values(warehouseAccess.subtabs).some(Boolean)
-    : false;
-
-  const token = useSelector((state) => state.auth.token);
-
-  if (!token) {
+  if (!accessToken) {
     return (
       <HashRouter>
         <Routes>
@@ -29,18 +23,15 @@ export const App = () => {
       <Routes>
         <Route
           path="/login"
-          element={
-            token ? (
-              <Navigate
-                to={hasWarehouseAccess ? "/logisticsStock" : "/settings"}
-              />
-            ) : (
-              <Login />
-            )
-          }
+          element={accessToken ? <Navigate to="/logisticsStock" /> : <Login />}
         />
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Navigate to="/logisticsStock" />} />
+
+          <Route
+            path="/logisticsStock"
+            element={<h1>hej tutaj logistics stock</h1>}
+          />
         </Route>
       </Routes>
     </HashRouter>

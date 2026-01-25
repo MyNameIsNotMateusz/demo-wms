@@ -50,11 +50,11 @@ export const Label = styled.label`
   font-weight: 600;
 
   @media (max-width: 1600px) {
-    font-size: 15px;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   @media (max-width: 480px) {
-    font-size: 12.8px;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
   }
 `;
 
@@ -69,7 +69,9 @@ export const InputWrapper = styled.div`
   background-color: #2b2b2b;
 
   &:focus-within {
-    border: 1.5px solid #0159c3;
+    border-width: 1.5px;
+    border-style: solid;
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 
   @media (max-width: 1200px) {
@@ -115,20 +117,20 @@ export const Input = styled.input`
   }
 
   @media (max-width: 1600px) {
-    font-size: 13px;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   @media (max-width: 480px) {
-    font-size: 11.8px;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
   }
 `;
 
 export const SignInButton = styled.button`
   margin: 20px 0 10px 0;
-  background-color: #0159c3;
+  background-color: ${({ theme }) => theme.colors.primary};
   border: none;
   color: white;
-  font-size: 15px;
+  font-size: ${({ theme }) => theme.fontSizes.base};
   font-weight: 500;
   border-radius: 10px;
   height: 50px;
@@ -137,50 +139,34 @@ export const SignInButton = styled.button`
 
   @media (max-width: 1600px) {
     height: 48px;
-    font-size: 14px;
-  }
-
-  @media (max-width: 992px) {
-    font-size: 13px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 13px;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   @media (max-width: 480px) {
     margin: 14px 0 7px 0;
     height: 41px;
-    font-size: 11.8px;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
   }
 `;
 
 export const InfoText = styled.p`
   text-align: center;
   color: #f1f1f1;
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   margin: 5px;
 
-  @media (max-width: 1600px) {
-    font-size: 13px;
-  }
-
   @media (max-width: 480px) {
-    font-size: 11.8px;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
   }
 `;
 
 export const HighlightText = styled.span`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   margin-left: 5px;
-  color: #0159c3;
+  color: ${({ theme }) => theme.colors.primary};
   font-weight: 500;
 
-  @media (max-width: 1600px) {
-    font-size: 13px;
-  }
-
   @media (max-width: 480px) {
-    font-size: 11.8px;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
   }
 `;

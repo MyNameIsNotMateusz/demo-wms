@@ -7,6 +7,7 @@ import {
 } from "./AppLayout.styles";
 import { Toaster } from "sonner";
 import { useState } from "react";
+import { Navbar } from "./Navbar";
 
 export const AppLayout = () => {
   const [isTableDarkened, setIsTableDarkened] = useState(false);
@@ -34,7 +35,13 @@ export const AppLayout = () => {
     <MainContainer>
       <Toaster richColors position="top-center" />
       <DarkOverlay $isVisible={isTableDarkened} />
-      <NavigationWrapper></NavigationWrapper>
+      <NavigationWrapper>
+        <Navbar
+          handleOpenForm={handleOpenForm}
+          activeFormName={activeFormName}
+          resetState={resetState}
+        />
+      </NavigationWrapper>
       <ContentWrapper>
         <Outlet
           context={{
