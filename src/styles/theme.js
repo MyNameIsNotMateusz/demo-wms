@@ -15,10 +15,8 @@ export const theme = {
     "5xl": "48px",
     "6xl": "56px",
     "7xl": "72px",
-
     responsive: css`
       font-size: 14px;
-
       @media (max-width: 1600px) {
         font-size: 13px;
       }
@@ -44,5 +42,34 @@ export const theme = {
     secondary: "#012b5d",
     surface: "#f1f2f4",
     text: "#333333",
+  },
+  table: {
+    cellMaxWidth: css`
+      max-width: 400px;
+      @media (max-width: 1600px) {
+        max-width: 350px;
+      }
+      @media (max-width: 1200px) {
+        max-width: 300px;
+      }
+      @media (max-width: 992px) {
+        max-width: 250px;
+      }
+      @media (max-width: 768px) {
+        max-width: 200px;
+      }
+      @media (max-width: 576px) {
+        max-width: 130px;
+      }
+      @media (max-width: 480px) {
+        max-width: 90px;
+      }
+    `,
+    activeRowStyle: css`
+      background-color: #e7f1fd !important;
+    `,
+    activeTdStyle: css`
+      background-color: #d8dbde;
+    `,
   },
 };

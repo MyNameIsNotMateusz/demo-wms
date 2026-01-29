@@ -18,7 +18,7 @@ import {
   NavDetailItem,
   IconWrapper,
   TextWrapper,
-  NavSectionTitle
+  NavSectionTitle,
 } from "./Navbar.styles";
 import { useAuth } from "../../auth/AuthProvider";
 import { clearAuthData } from "../../features/auth/authSlice";
@@ -38,41 +38,7 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
   );
 
   const userName = useSelector((state) => state.auth.user.name || "");
-  // const tabsAccess = useSelector((state) => state.auth.tabsAccess);
-  const tabsAccess = [
-    {
-      code: "warehouse",
-      subtabs: {
-        pallet_creator: true,
-        repack_pallet: false,
-        inventory_change: false,
-        component_creation: false,
-        print_label: false,
-        coil_manager: false,
-        coil_label_printer: false,
-        outbound: false,
-        inbound: false,
-        planned_delivery: false,
-        outbound_delivery_note: false,
-        sheet_logistic_stock: false,
-        sheet_production_stock: false,
-        sheet_coil_stock: false,
-        sheet_service_stock: false,
-        sheet_coil_transaction: false,
-      },
-    },
-    {
-      code: "settings",
-      subtabs: {
-        user_management: true,
-        contractor_management: false,
-        change_password: false,
-        material_management: false,
-        project_management: false,
-        recipes_manager: false,
-      },
-    },
-  ];
+  const tabsAccess = useSelector((state) => state.auth.tabsAccess);
 
   const filteredNavBarData = {
     tabs: navItems.tabs
@@ -134,7 +100,9 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
         <UserPanel>
           <UserName>Welcome, {userName}</UserName>
           <NavItem
-            onClick={() => logout(setAccessToken, clearAuthData, dispatch, navigate)}
+            onClick={() =>
+              logout(setAccessToken, clearAuthData, dispatch, navigate)
+            }
           >
             <NavTabItemLogout>Log out</NavTabItemLogout>
           </NavItem>
