@@ -50,6 +50,8 @@ export const TableHeaderCell = styled.th`
 
   &:first-child {
     min-width: 70px;
+    max-width: 70px;
+    width: 70px;
 
     @media (max-width: 1600px) {
       min-width: 60px;

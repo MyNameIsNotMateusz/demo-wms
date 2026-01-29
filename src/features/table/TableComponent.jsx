@@ -30,13 +30,14 @@ export const TableComponent = ({
   const [activeRow, setActiveRow] = useState(null);
   const [savedColumnWidths, setSavedColumnWidths] = useState({});
   const [activeResizerIndex, setActiveResizerIndex] = useState(null);
+  const [hasResized, setHasResized] = useState(false);
 
   return (
     <TableWrapper className="table-container" onScroll={applyTableHeaderShadow}>
       <Table
         data-table-origin={tableOrigin}
         style={{
-          width: Object.keys(savedColumnWidths).length === 0 ? "100%" : "auto",
+          width: hasResized ? "auto" : "100%",
         }}
       >
         <TableHeader className="table-header">
@@ -66,15 +67,16 @@ export const TableComponent = ({
                   />
                 </ColumnFilterContainer>
                 <ColumnResizer
-                  onMouseDown={(e) =>
+                  onMouseDown={(e) => {
+                    setHasResized(true);
                     startColumnResize(
                       e,
                       idx,
                       adjustColumnWidths,
                       tableOrigin,
                       setSavedColumnWidths,
-                    )
-                  }
+                    );
+                  }}
                   onMouseEnter={() => setActiveResizerIndex(idx)}
                   onMouseLeave={() => setActiveResizerIndex(null)}
                   $active={activeResizerIndex === idx}
