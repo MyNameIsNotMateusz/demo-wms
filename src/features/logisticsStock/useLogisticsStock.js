@@ -7,12 +7,12 @@ export const useLogisticsStock = () => {
   const { columns, filters, sortConfig } = useSelector(
     (state) => state.logisticsStock,
   );
-  const logisticsStock = useSelector(selectLogisticsStock);
+  const data = useSelector(selectLogisticsStock);
 
   return {
     tableOrigin: "logisticsStock",
     columns,
-    logisticsStock,
+    data,
     sortConfig,
     filters,
     setSortConfig: (payload) => dispatch(setSortConfig(payload)),

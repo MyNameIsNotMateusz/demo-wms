@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const TableWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  row-gap: 20px;
   padding: 0 10px;
   position: relative;
   flex: 1;

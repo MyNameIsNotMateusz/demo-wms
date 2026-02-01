@@ -55,26 +55,38 @@ export const TableHeaderCell = styled.th`
 
     @media (max-width: 1600px) {
       min-width: 60px;
+      max-width: 60px;
+      width: 60px;
     }
 
     @media (max-width: 1200px) {
       min-width: 53px;
+      max-width: 53px;
+      width: 53px;
     }
 
     @media (max-width: 992px) {
       min-width: 51px;
+      max-width: 51px;
+      width: 51px;
     }
 
     @media (max-width: 768px) {
       min-width: 49px;
+      max-width: 49px;
+      width: 49px;
     }
 
     @media (max-width: 576px) {
       min-width: 40px;
+      max-width: 40px;
+      width: 40px;
     }
 
     @media (max-width: 480px) {
       min-width: 30px;
+      max-width: 30px;
+      width: 30px;
     }
   }
 
