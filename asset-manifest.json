@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/demo-wms/static/js/main.750047ea.js",
+    "static/media/palletCreatorIcon.png": "/demo-wms/static/media/palletCreatorIcon.aa5f84379f59590461aa.png",
+    "index.html": "/demo-wms/index.html",
+    "main.750047ea.js.map": "/demo-wms/static/js/main.750047ea.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.750047ea.js"
+  ]
+}
