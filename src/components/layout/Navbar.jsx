@@ -1,13 +1,10 @@
 import { navItems } from "../../data/navigation";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { logout } from "../../api/authApi";
-import { useSelector } from "react-redux";
 import {
   NavContainer,
   NavTabs,
-  NavItem,
   NavTabItem,
   UserPanel,
   UserName,
@@ -26,9 +23,6 @@ import React from "react";
 
 export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
   const { setAccessToken } = useAuth();
-
-  const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -36,7 +30,6 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
   const userRole = useSelector(
     (state) => state.auth.user.role?.toLowerCase() || "",
   );
-
   const userName = useSelector((state) => state.auth.user.name || "");
   const tabsAccess = useSelector((state) => state.auth.tabsAccess);
 
@@ -51,7 +44,7 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
             const filteredItems = section.items.filter(
               (item) => accessTab.subtabs[item.code],
             );
-            if (filteredItems.length === 0) return null;
+            if (!filteredItems.length) return null;
             return { ...section, items: filteredItems };
           })
           .filter(Boolean);
@@ -62,56 +55,39 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
   };
 
   useEffect(() => {
-    const { pathname } = location;
-
-    const foundIndex = filteredNavBarData.tabs.findIndex((tab) => {
-      if (pathname.startsWith("/settings")) return tab.code === "settings";
-      if (
-        pathname.startsWith("/logisticsStock") ||
-        pathname.startsWith("/productionStock") ||
-        pathname.startsWith("/coilStock") ||
-        pathname.startsWith("/outgoings")
-      ) {
-        return tab.code === "warehouse";
-      }
-      return false;
-    });
-
-    setActiveTabIndex(foundIndex !== -1 ? foundIndex : 0);
-  }, [location.pathname]);
-
-  useEffect(() => {
     resetState();
   }, [activeTabIndex]);
 
   const hasContent =
-    filteredNavBarData.tabs[activeTabIndex].sections.length > 0;
+    filteredNavBarData.tabs[activeTabIndex]?.sections?.length > 0;
 
   return (
     <NavContainer>
       <NavTabs>
         {filteredNavBarData.tabs.map((tab, index) => (
-          <NavItem to={tab.to} onClick={resetState} key={index}>
-            <NavTabItem className={activeTabIndex === index ? "active" : ""}>
-              {tab.label}
-            </NavTabItem>
-          </NavItem>
+          <NavTabItem
+            key={index}
+            className={activeTabIndex === index ? "active" : ""}
+            onClick={() => setActiveTabIndex(index)}
+          >
+            {tab.label}
+          </NavTabItem>
         ))}
+
         <UserPanel>
           <UserName>Welcome, {userName}</UserName>
-          <NavItem
-            onClick={() =>
-              logout(setAccessToken, clearAuthData, dispatch, navigate)
-            }
+          <NavTabItemLogout
+            onClick={() => logout(setAccessToken, clearAuthData, dispatch)}
           >
-            <NavTabItemLogout>Log out</NavTabItemLogout>
-          </NavItem>
+            Log out
+          </NavTabItemLogout>
         </UserPanel>
       </NavTabs>
+
       <NavDetails $hasContent={hasContent}>
-        {filteredNavBarData.tabs[activeTabIndex].sections.map(
-          (section, index) => (
-            <NavSection key={index}>
+        {filteredNavBarData.tabs[activeTabIndex]?.sections?.map(
+          (section, sectionIndex) => (
+            <NavSection key={sectionIndex}>
               <NavItemsWrapper>
                 {section.items
                   .filter((item) => {
@@ -120,14 +96,13 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
                       ["User Management", "Manual Inventory Change"].includes(
                         item.text,
                       )
-                    ) {
+                    )
                       return false;
-                    }
                     return true;
                   })
-                  .map((item, index) => (
+                  .map((item, itemIndex) => (
                     <NavDetailItem
-                      key={index}
+                      key={itemIndex}
                       onClick={() => handleOpenForm(item.text)}
                       $isActive={item.text === activeFormName}
                     >
@@ -135,9 +110,9 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
                         <img src={item.icon} alt={item.text} />
                       </IconWrapper>
                       <TextWrapper>
-                        {item.text.split(" ").map((word, index, arr) => (
-                          <React.Fragment key={index}>
-                            {word} {index < arr.length - 1 && <br />}
+                        {item.text.split(" ").map((word, idx, arr) => (
+                          <React.Fragment key={idx}>
+                            {word} {idx < arr.length - 1 && <br />}
                           </React.Fragment>
                         ))}
                       </TextWrapper>
