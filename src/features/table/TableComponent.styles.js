@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const TableWrapper = styled.div`
   overflow: auto;
   flex: 1;
+  margin: 0 10px;
 
   &::-webkit-scrollbar {
     width: 12px;

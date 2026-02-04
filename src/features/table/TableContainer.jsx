@@ -1,6 +1,7 @@
 import { TableWrapper } from "./TableContainer.styles";
 import { TableComponent } from "./TableComponent";
 import { TablePagination } from "./TablePagination";
+import { Tabs } from "./Tabs";
 import { useEffect, useState } from "react";
 import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
 
@@ -14,7 +15,7 @@ export const TableContainer = ({
   setFilters,
 }) => {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(50);
 
   useEffect(() => {
     setPage(1);
@@ -53,8 +54,11 @@ export const TableContainer = ({
         total={total}
         page={page}
         totalPages={totalPages}
+        pageSize={pageSize}
         setPageSize={setPageSize}
       />
+
+      <Tabs />
     </TableWrapper>
   );
 };
