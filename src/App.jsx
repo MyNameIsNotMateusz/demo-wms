@@ -1,23 +1,16 @@
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Login } from "./auth/Login";
 import { AppLayout } from "./components/layout/AppLayout";
 import { useAuth } from "./auth/AuthProvider";
 import { TableContainer } from "./features/table/TableContainer";
 import { useLogisticsStock } from "./features/logisticsStock/useLogisticsStock";
-import { fetchLogisticsStock } from "./features/logisticsStock/logisticsStockSlice";
-import { useEffect } from "react";
+import { useInitialWarehouseData } from "./hooks/useInitialTableData";
 
 export const App = () => {
   const { accessToken } = useAuth();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (accessToken) {
-      dispatch(fetchLogisticsStock(accessToken));
-    }
-  }, [dispatch, accessToken]);
+  useInitialWarehouseData(accessToken);
 
   const tabsAccess = useSelector((state) => state.auth.tabsAccess);
   const warehouseAccess = tabsAccess?.find((tab) => tab.code === "warehouse");

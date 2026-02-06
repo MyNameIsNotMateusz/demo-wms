@@ -20,10 +20,12 @@ import {
 import { useAuth } from "../../auth/AuthProvider";
 import { clearAuthData } from "../../features/auth/authSlice";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
   const { setAccessToken } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -77,7 +79,10 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
         <UserPanel>
           <UserName>Welcome, {userName}</UserName>
           <NavTabItemLogout
-            onClick={() => logout(setAccessToken, clearAuthData, dispatch)}
+            onClick={() => {
+              logout(setAccessToken, clearAuthData, dispatch);
+              navigate("/login");
+            }}
           >
             Log out
           </NavTabItemLogout>
