@@ -2,6 +2,7 @@ import { TableWrapper } from "./TableContainer.styles";
 import { TableComponent } from "./TableComponent";
 import { TablePagination } from "./TablePagination";
 import { Tabs } from "./Tabs";
+import { TableActions } from "./TableActions";
 import { useEffect, useState } from "react";
 import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
 
@@ -57,7 +58,7 @@ export const TableContainer = ({
         pageSize={pageSize}
         setPageSize={setPageSize}
       />
-
+      <TableActions />
       <Tabs />
     </TableWrapper>
   );
