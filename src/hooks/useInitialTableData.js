@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLogisticsStock } from "../features/logisticsStock/logisticsStockSlice";
+import { thunks } from "../store/thunks";
+
+const { fetchLogisticsStock } = thunks;
 
 export const useInitialWarehouseData = (accessToken) => {
   const dispatch = useDispatch();
@@ -19,6 +21,6 @@ export const useInitialWarehouseData = (accessToken) => {
       dispatch(fetchLogisticsStock(accessToken));
     }
 
-     hasFetched.current = true;
+    hasFetched.current = true;
   }, [dispatch, accessToken, tabsAccess]);
 };
