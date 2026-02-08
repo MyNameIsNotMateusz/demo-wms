@@ -1,10 +1,13 @@
 import { TableWrapper } from "./TableContainer.styles";
 import { TableComponent } from "./TableComponent";
+import { Loader } from "../../components/ui/Loader";
 import { TablePagination } from "./TablePagination";
 import { Tabs } from "./Tabs";
 import { TableActions } from "./TableActions";
 import { useEffect, useState } from "react";
 import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
+import { selectIsWarehouseDataLoaded } from "../../store/selectors/tableLoadSelectors";
+import { useSelector } from "react-redux";
 
 export const TableContainer = ({
   tableOrigin,
@@ -15,6 +18,8 @@ export const TableContainer = ({
   sortConfig,
   setFilters,
 }) => {
+  const isLoaded = useSelector(selectIsWarehouseDataLoaded);
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
 
@@ -39,16 +44,21 @@ export const TableContainer = ({
 
   return (
     <TableWrapper>
-      <TableComponent
-        tableOrigin={tableOrigin}
-        columns={columns}
-        setSortConfig={setSortConfig}
-        filters={filters}
-        setFilters={setFilters}
-        sortConfig={sortConfig}
-        currentData={currentData}
-        rowStartIndex={start}
-      />
+      {!isLoaded ? (
+        <Loader />
+      ) : (
+        <TableComponent
+          tableOrigin={tableOrigin}
+          columns={columns}
+          setSortConfig={setSortConfig}
+          filters={filters}
+          setFilters={setFilters}
+          sortConfig={sortConfig}
+          currentData={currentData}
+          rowStartIndex={start}
+        />
+      )}
+
       <TablePagination
         changePage={changePage}
         safeStart={safeStart}
