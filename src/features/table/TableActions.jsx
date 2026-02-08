@@ -5,12 +5,13 @@ import { useAuth } from "../../auth/AuthProvider";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunks } from "../../store/thunks";
-
-import { selectLogisticsStock } from "../logisticsStock/logisticsStockSelector";
+import { selectors } from "../../store/selectors";
 
 export const TableActions = () => {
   const { accessToken } = useAuth();
+
   const { fetchLogisticsStock } = thunks;
+  const { selectLogisticsStock } = selectors;
 
   const dispatch = useDispatch();
 
