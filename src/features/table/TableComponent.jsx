@@ -26,6 +26,7 @@ export const TableComponent = ({
   setFilters,
   sortConfig,
   currentData,
+  rowStartIndex,
 }) => {
   const [activeRow, setActiveRow] = useState(null);
   const [savedColumnWidths, setSavedColumnWidths] = useState({});
@@ -105,7 +106,7 @@ export const TableComponent = ({
                   setActiveRow(rowIndex === activeRow ? null : rowIndex)
                 }
               >
-                {rowIndex + 1}
+                {rowIndex + rowStartIndex + 1}
               </TableBodyCell>
               {Object.values(row).map((cellValue, cellIndex) => {
                 let displayValue = cellValue;

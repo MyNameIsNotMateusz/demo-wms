@@ -47,6 +47,7 @@ export const TableContainer = ({
         setFilters={setFilters}
         sortConfig={sortConfig}
         currentData={currentData}
+        rowStartIndex={start}
       />
       <TablePagination
         changePage={changePage}
