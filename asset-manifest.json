@@ -1,11 +1,10 @@
 {
   "files": {
-    "main.js": "/demo-wms/static/js/main.750047ea.js",
-    "static/media/palletCreatorIcon.png": "/demo-wms/static/media/palletCreatorIcon.aa5f84379f59590461aa.png",
+    "main.js": "/demo-wms/static/js/main.47bc43e5.js",
     "index.html": "/demo-wms/index.html",
-    "main.750047ea.js.map": "/demo-wms/static/js/main.750047ea.js.map"
+    "main.47bc43e5.js.map": "/demo-wms/static/js/main.47bc43e5.js.map"
   },
   "entrypoints": [
-    "static/js/main.750047ea.js"
+    "static/js/main.47bc43e5.js"
   ]
 }
