@@ -4,13 +4,13 @@ import { refreshTableData } from "../../utils/table/refreshTableData";
 import { useAuth } from "../../auth/AuthProvider";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { thunks } from "../../store/thunks";
+import { tableThunks } from "../../store/thunks/tableThunks";
 import { selectors } from "../../store/selectors";
 
 export const TableActions = () => {
   const { accessToken } = useAuth();
 
-  const { fetchLogisticsStock } = thunks;
+  const { fetchLogisticsStock } = tableThunks;
   const { selectLogisticsStock } = selectors;
 
   const dispatch = useDispatch();

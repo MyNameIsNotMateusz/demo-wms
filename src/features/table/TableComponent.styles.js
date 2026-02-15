@@ -123,47 +123,42 @@ export const ColumnFilterContainer = styled.div`
   }
 `;
 
+export const ColumnHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+`;
+
 export const ColumnTitle = styled.span`
-  padding-top: 10px;
-  align-self: flex-start;
-  text-align: start;
   font-weight: 600;
   color: #656c75;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
-  width: 100%;
-  border-radius: 2px;
 
-  @media (max-width: 1600px) {
-    padding-top: 9px;
-    row-gap: 9px;
-  }
-
-  @media (max-width: 1200px) {
-    padding-top: 8px;
-    row-gap: 8px;
-  }
-
-  @media (max-width: 992px) {
-    padding-top: 7px;
-    row-gap: 7px;
-  }
-
-  @media (max-width: 768px) {
-    padding-top: 6px;
-    row-gap: 6px;
-  }
+  user-select: none;
 
   ${({ theme }) => theme.fontSizes.responsive};
+`;
 
-  &:hover {
-    background-color: #dddee0;
+export const SortIconWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #ccc;
   }
 
-  &:active {
-    background-color: #f0f0f1;
+  svg:first-child {
+    fill: ${({ state }) => (state === "asc" ? "#1c304f" : "#ccc")};
+  }
+
+  svg:last-child {
+    fill: ${({ state }) => (state === "desc" ? "#1c304f" : "#ccc")};
   }
 `;
 
@@ -205,24 +200,6 @@ export const ColumnResizer = styled.div`
   cursor: col-resize;
 
   background-color: ${({ $active }) => ($active ? "#b0b4b8" : "none")};
-`;
-
-export const SortIconWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: -3px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  svg {
-    width: 16px;
-    height: 16px;
-    fill: #434d59;
-
-    visibility: ${({ state }) =>
-      state === "asc" || state === "desc" ? "visible" : "hidden"};
-    transform: ${({ state }) => (state === "desc" ? "rotate(180deg)" : "none")};
-  }
 `;
 
 export const TableBody = styled.tbody`

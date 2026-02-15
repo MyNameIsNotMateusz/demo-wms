@@ -1,4 +1,4 @@
-import palletCreatorIcon from "../assets/icons/palletCreatorIcon.png";
+import plannedDeliveryIcon from "../assets/icons/plannedDeliveryIcon.png";
 
 export const navItems = {
   tabs: [
@@ -8,12 +8,12 @@ export const navItems = {
       to: "/logisticsStock",
       sections: [
         {
-          title: "Stock Operations",
+          title: "Logistics Operations",
           items: [
             {
-              text: "Pallet Creator",
-              code: "pallet_creator",
-              icon: palletCreatorIcon,
+              text: "Planned Delivery",
+              code: "planned_delivery",
+              icon: plannedDeliveryIcon,
             },
           ],
         },

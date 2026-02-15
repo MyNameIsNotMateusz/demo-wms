@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { thunks } from "../store/thunks";
+import { tableThunks } from "../store/thunks/tableThunks";
 
-const { fetchLogisticsStock } = thunks;
+const { fetchLogisticsStock } = tableThunks;
 
 export const useInitialWarehouseData = (accessToken) => {
   const dispatch = useDispatch();

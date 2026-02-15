@@ -6,11 +6,13 @@ import { useAuth } from "./auth/AuthProvider";
 import { TableContainer } from "./features/table/TableContainer";
 import { useLogisticsStock } from "./features/logisticsStock/useLogisticsStock";
 import { useInitialWarehouseData } from "./hooks/useInitialTableData";
+import { useLoadDictionaries } from "./hooks/useLoadDictionaries";
 
 export const App = () => {
   const { accessToken } = useAuth();
 
   useInitialWarehouseData(accessToken);
+  useLoadDictionaries(accessToken);
 
   const tabsAccess = useSelector((state) => state.auth.tabsAccess);
   const warehouseAccess = tabsAccess?.find((tab) => tab.code === "warehouse");

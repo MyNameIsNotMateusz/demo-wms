@@ -1,5 +1,5 @@
 import { fetchLogisticsStock } from "../../features/logisticsStock/logisticsStockSlice";
 
-export const thunks = {
+export const tableThunks = {
   fetchLogisticsStock,
 };
