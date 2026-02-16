@@ -4,7 +4,7 @@ import { Login } from "./auth/Login";
 import { AppLayout } from "./components/layout/AppLayout";
 import { useAuth } from "./auth/AuthProvider";
 import { TableContainer } from "./features/table/TableContainer";
-import { useLogisticsStock } from "./features/logisticsStock/useLogisticsStock";
+import { useLogisticsStock } from "./features/tables/logisticsStock/useLogisticsStock";
 import { useInitialWarehouseData } from "./hooks/useInitialTableData";
 import { useLoadDictionaries } from "./hooks/useLoadDictionaries";
 

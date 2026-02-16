@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BASE_API_URL, DEFAULT_HEADERS } from "../../api/config";
+import { DEFAULT_HEADERS, BASE_API_URL } from "../../../api/config";
 
 export const fetchLogisticsStock = createAsyncThunk(
   "logisticsStock/fetchLogisticsStock",
