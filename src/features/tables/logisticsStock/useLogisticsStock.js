@@ -1,17 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setSortConfig, setFilters } from "./logisticsStockSlice";
 import { selectLogisticsStock } from "./logisticsStockSelector";
+import { logisticsStockColumns } from "./logisticsStockColumns";
 
 export const useLogisticsStock = () => {
   const dispatch = useDispatch();
-  const { columns, filters, sortConfig } = useSelector(
+  const { filters, sortConfig } = useSelector(
     (state) => state.logisticsStock,
   );
   const data = useSelector(selectLogisticsStock);
 
   return {
     tableOrigin: "logisticsStock",
-    columns,
+    columns: logisticsStockColumns,
     data,
     sortConfig,
     filters,

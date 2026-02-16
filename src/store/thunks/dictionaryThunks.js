@@ -1,5 +1,5 @@
-import { fetchContractors } from "../../features/contractors/contractorsSlice";
-import { fetchPlannedDeliveries } from "../../features/plannedDelivery/plannedDeliverySlice";
+import { fetchContractors } from "../../features/dictionaries/contractorsSlice";
+import { fetchPlannedDeliveries } from "../../features/dictionaries/plannedDeliverySlice";
 
 export const dictionaryThunks = {
   fetchContractors,

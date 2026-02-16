@@ -30,17 +30,6 @@ export const fetchLogisticsStock = createAsyncThunk(
 );
 
 const initialState = {
-  columns: [
-    "Pallet ID",
-    "Material Code",
-    "Material Name",
-    "Type",
-    "Quantity",
-    "Unit",
-    "Status",
-    "Destination",
-    "Created At",
-  ],
   rows: [],
   sortConfig: {},
   filters: {},
