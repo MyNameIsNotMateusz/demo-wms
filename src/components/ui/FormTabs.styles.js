@@ -45,7 +45,7 @@ export const Indicator = styled.div`
   background: #ffffff;
   position: absolute;
   top: 2px;
-  left: ${({ $activeTab }) => `calc(130px * ${$activeTab - 1} + 2px)`};
+  left: ${({ $activeTab }) => `calc(130px * ${$activeTab} + 2px)`};
   z-index: 9;
   border: 0.5px solid rgba(0, 0, 0, 0.04);
   box-shadow:

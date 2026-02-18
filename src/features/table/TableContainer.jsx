@@ -1,6 +1,6 @@
 import { TableWrapper } from "./TableContainer.styles";
 import { TableComponent } from "./TableComponent";
-import { Loader } from "../../components/ui/Loader";
+import { Loader } from "../../components/ui";
 import { TablePagination } from "./TablePagination";
 import { Tabs } from "./Tabs";
 import { TableActions } from "./TableActions";
@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
 import { selectIsWarehouseDataLoaded } from "../../store/selectors/tableLoadSelectors";
 import { useSelector } from "react-redux";
+import { formRegistry } from "../../data/formsRegistry";
+import { useOutletContext } from "react-router-dom";
 
 export const TableContainer = ({
   tableOrigin,
@@ -19,6 +21,9 @@ export const TableContainer = ({
   setFilters,
 }) => {
   const isLoaded = useSelector(selectIsWarehouseDataLoaded);
+
+  const { isTableDarkened, activeForm, handleCloseForm } = useOutletContext();
+  const ActiveForm = formRegistry[activeForm];
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
@@ -44,6 +49,11 @@ export const TableContainer = ({
 
   return (
     <TableWrapper>
+
+      {isTableDarkened && ActiveForm && (
+        <ActiveForm onClose={handleCloseForm} />
+      )}
+
       {!isLoaded ? (
         <Loader />
       ) : (

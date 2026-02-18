@@ -1,6 +1,6 @@
 import { StyledFormInput, InputLabel, InputWrapper } from "./FormInput.styles";
 
-export const FormInput = ({ id, label, type, value, disabled, setter }) => {
+export const FormInput = ({ id, label, type, value, disabled, handleChange }) => {
   return (
     <InputWrapper>
       <InputLabel htmlFor={id}>{label}</InputLabel>
@@ -10,7 +10,7 @@ export const FormInput = ({ id, label, type, value, disabled, setter }) => {
         value={value}
         disabled={disabled}
         onChange={(e) => {
-          setter(e.target.value);
+          handleChange(e.target.value);
         }}
       />
     </InputWrapper>

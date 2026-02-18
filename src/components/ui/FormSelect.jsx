@@ -9,7 +9,7 @@ export const FormSelect = ({
   label,
   placeholder,
   value,
-  setter,
+  handleChange,
   options,
 }) => {
   return (
@@ -19,13 +19,13 @@ export const FormSelect = ({
         name={id}
         value={value}
         onChange={(e) => {
-          setter(e.target.value);
+          handleChange(e.target.value);
         }}
       >
         <option value="">{placeholder}</option>
         {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </StyledFormSelect>

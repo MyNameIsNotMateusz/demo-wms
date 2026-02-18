@@ -11,10 +11,10 @@ import { Navbar } from "./Navbar";
 
 export const AppLayout = () => {
   const [isTableDarkened, setIsTableDarkened] = useState(false);
-  const [activeFormName, setActiveFormName] = useState(null);
+  const [activeForm, setActiveForm] = useState(null);
 
   const handleOpenForm = (formName) => {
-    setActiveFormName((prevForm) => {
+    setActiveForm((prevForm) => {
       const isSameForm = prevForm === formName;
       setIsTableDarkened(!isSameForm);
       return isSameForm ? null : formName;
@@ -23,12 +23,12 @@ export const AppLayout = () => {
 
   const handleCloseForm = () => {
     setIsTableDarkened(false);
-    setActiveFormName(null);
+    setActiveForm(null);
   };
 
   const resetState = () => {
     setIsTableDarkened(false);
-    setActiveFormName(null);
+    setActiveForm(null);
   };
 
   return (
@@ -38,7 +38,7 @@ export const AppLayout = () => {
       <NavigationWrapper>
         <Navbar
           handleOpenForm={handleOpenForm}
-          activeFormName={activeFormName}
+          activeForm={activeForm}
           resetState={resetState}
         />
       </NavigationWrapper>
@@ -46,7 +46,7 @@ export const AppLayout = () => {
         <Outlet
           context={{
             isTableDarkened,
-            activeFormName,
+            activeForm,
             handleCloseForm,
           }}
         />

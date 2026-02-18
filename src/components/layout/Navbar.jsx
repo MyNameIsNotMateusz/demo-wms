@@ -22,7 +22,7 @@ import { clearAuthData } from "../../features/auth/authSlice";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
+export const Navbar = ({ handleOpenForm, activeForm, resetState }) => {
   const { setAccessToken } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -108,8 +108,8 @@ export const Navbar = ({ handleOpenForm, activeFormName, resetState }) => {
                   .map((item, itemIndex) => (
                     <NavDetailItem
                       key={itemIndex}
-                      onClick={() => handleOpenForm(item.text)}
-                      $isActive={item.text === activeFormName}
+                      onClick={() => handleOpenForm(item.code)}
+                      $isActive={item.code === activeForm}
                     >
                       <IconWrapper>
                         <img src={item.icon} alt={item.text} />
