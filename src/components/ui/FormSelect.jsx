@@ -1,8 +1,6 @@
-import {
-  SelectWrapper,
-  SelectLabel,
-  StyledFormSelect,
-} from "./FormSelect.styles";
+import ReactSelect from "react-select";
+import { SelectWrapper, SelectLabel } from "./FormSelect.styles";
+import { useTheme } from "styled-components";
 
 export const FormSelect = ({
   id,
@@ -12,23 +10,39 @@ export const FormSelect = ({
   handleChange,
   options,
 }) => {
+  const theme = useTheme();
+  const selectedOption = options.find((opt) => opt.value === value) || null;
+
   return (
     <SelectWrapper>
       <SelectLabel htmlFor={id}>{label}</SelectLabel>
-      <StyledFormSelect
-        name={id}
-        value={value}
-        onChange={(e) => {
-          handleChange(e.target.value);
+      <ReactSelect
+        inputId={id}
+        value={selectedOption}
+        onChange={(option) => handleChange(option?.value || "")}
+        options={options}
+        placeholder={placeholder}
+        styles={{
+          control: (base) => ({
+            ...base,
+            ...theme.fontSizes.responsive,
+            borderRadius: "4px",
+            borderColor: "#ccc",
+            "&:hover": { borderColor: "#ccc" },
+            boxShadow: "none",
+          }),
+          option: (base, state) => ({
+            ...base,
+            ...theme.fontSizes.responsive,
+            backgroundColor: state.isFocused && "#0159c3",
+            color: state.isFocused ? "#fff" : "#333333",
+          }),
+          singleValue: (base) => ({
+            ...base,
+            ...theme.fontSizes.responsive,
+          }),
         }}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </StyledFormSelect>
+      />
     </SelectWrapper>
   );
 };
