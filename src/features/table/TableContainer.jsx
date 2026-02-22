@@ -5,7 +5,7 @@ import { TablePagination } from "./TablePagination";
 import { Tabs } from "./Tabs";
 import { TableActions } from "./TableActions";
 import { useEffect, useState } from "react";
-import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
+import { adjustColumnWidths } from "../../utils/table";
 import { selectIsWarehouseDataLoaded } from "../../store/selectors/tableLoadSelectors";
 import { useSelector } from "react-redux";
 import { formRegistry } from "../../data/formsRegistry";

@@ -1,10 +1,19 @@
 import { useState } from "react";
-import { FormLayout, FormCard } from "../../../components/layout";
+import { FormLayout, FormCard, FormTable } from "../../../components/layout";
 import { tabsConfig } from "./tabsConfig";
-import { FormCardWrapper, FormRow } from "./PlannedDeliveryForm.styles";
+import {
+  FormCardWrapper,
+  FormRow,
+  FormTableWrapper,
+} from "./PlannedDeliveryForm.styles";
 import { FormSelect, FormTabs, FormInput } from "../../../components/ui";
 import { updateFormData } from "../../../utils/forms/updateFormData";
 import { useSelector } from "react-redux";
+import { columns } from "./plannedDeliveryTableConfig";
+import {
+  setDeliveryItemsSortConfig,
+  setDeliveryItemsFilters,
+} from "./plannedDeliveryFormSlice";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -18,7 +27,12 @@ export const PlannedDeliveryForm = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
+  const [selectedDeliveryItems, setSelectedDeliveryItems] = useState({});
+
   const { contractors } = useSelector((state) => state.contractors);
+  const { deliveryItemsSortConfig, deliveryItemsFilters } = useSelector(
+    (state) => state.plannedDeliveryForm,
+  );
 
   return (
     <FormLayout
@@ -80,7 +94,22 @@ export const PlannedDeliveryForm = ({ onClose }) => {
             />
           </FormRow>
         </FormCard>
-        <FormCard title="Delivery Items"></FormCard>
+        <FormCard title="Delivery Items">
+          <FormTableWrapper>
+            <FormTable
+              tableOrigin="deliveryItems"
+              columns={columns}
+              rows={formData.items}
+              selectedRows={selectedDeliveryItems}
+              setSelectedRows={setSelectedDeliveryItems}
+              idKey="id"
+              sortConfig={deliveryItemsSortConfig}
+              setSortConfig={setDeliveryItemsSortConfig}
+              filters={deliveryItemsFilters}
+              setFilters={setDeliveryItemsFilters}
+            />
+          </FormTableWrapper>
+        </FormCard>
       </FormCardWrapper>
 
       <FormTabs

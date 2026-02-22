@@ -20,3 +20,4 @@ export const adjustColumnWidths = (tableOrigin) => {
     headerCell.style.maxWidth = width;
   });
 };
+

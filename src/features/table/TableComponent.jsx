@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { applyTableHeaderShadow } from "./tableEffects";
-import { adjustColumnWidths } from "../../utils/table/adjustColumnWidths";
+import { adjustColumnWidths } from "../../utils/table";
 import { startColumnResize } from "./useColumnResize";
 import {
   TableWrapper,
