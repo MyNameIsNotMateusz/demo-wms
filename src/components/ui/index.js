@@ -1,9 +1,10 @@
-import { FormInput } from "./FormInput";
-import { FormSelect } from "./FormSelect";
-import { FormTabs } from "./FormTabs";
+import { FormInput } from "./form/FormInput";
+import { FormSelect } from "./form/FormSelect";
+import { FormTabs } from "./form/FormTabs";
 import { Loader } from "./Loader";
-import { SubmitButton } from "./SubmitButton";
-import { TableActionButton } from "./TableActionButton";
+import { SubmitButton } from "./form/SubmitButton";
+import { TableActionButton } from "./table/TableActionButton";
+import { CellInput } from "./table/CellInput";
 
 export {
   FormInput,
@@ -12,4 +13,5 @@ export {
   Loader,
   SubmitButton,
   TableActionButton,
+  CellInput
 };

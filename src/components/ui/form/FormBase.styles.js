@@ -4,6 +4,7 @@ export const FormCardWrapper = styled.div`
   display: flex;
   flex: 1;
   column-gap: 16px;
+  overflow: auto;
 
   @media (max-width: 1600px) {
     column-gap: 14px;
@@ -75,4 +76,10 @@ export const FormTableWrapper = styled.div`
     width: 0;
     height: 0;
   }
+`;
+
+export const FormActionsWrapper = styled.div`
+  display: flex;
+  column-gap: 5px;
+  margin-top: auto;
 `;

@@ -12,3 +12,17 @@ export const selectAllRows = (displayedData, setter, idKey) => {
 export const deselectAllRows = (setter) => {
   setter({});
 };
+
+export const handleRowClick = (id, setter) => {
+  setter((prev) => {
+    const newState = { ...prev };
+
+    if (newState[id]) {
+      delete newState[id];
+    } else {
+      newState[id] = true;
+    }
+
+    return newState;
+  });
+};

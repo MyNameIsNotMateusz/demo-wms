@@ -8,7 +8,6 @@ export const StyledFormTable = styled.table`
 export const TableHeader = styled.thead`
   position: sticky;
   top: 0px;
-  z-index: 2000;
 `;
 
 export const TableHeaderRow = styled.tr`
@@ -76,21 +75,10 @@ export const ColumnFilterInput = styled.input`
   background-color: #fff;
   color: #434d59;
   font-weight: 500;
-  padding: 4px 5px;
+  padding: 7px 5px;
   width: 100%;
 
-  ${({ theme }) => theme.fontSizes.responsive};
-
-  @media (max-width: 1600px) {
-    padding: 3px 4px;
-  }
-
-  @media (max-width: 1200px) {
-    padding: 2px 3px;
-  }
-  @media (max-width: 768px) {
-    padding: 1.5px 2px;
-  }
+  font-size: ${({ theme }) => theme.fontSizes.xs};
 `;
 
 export const TableBody = styled.tbody`

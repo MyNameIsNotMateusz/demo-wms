@@ -4,7 +4,7 @@ export const StyledFormCard = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 100%;
+  max-width: 50%;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
