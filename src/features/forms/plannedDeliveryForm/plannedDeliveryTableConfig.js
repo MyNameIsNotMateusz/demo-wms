@@ -1,4 +1,4 @@
-export const columns = [
+export const deliveryItemsColumns = [
   "Sequence Number",
   "Material Code",
   "Name",
@@ -6,3 +6,9 @@ export const columns = [
   "Quantity",
   "Unit",
 ];
+
+export const PlannedDeliveriesColumns = [
+  "Contractor Name",
+  "Planned Delivery",
+  "Delivery Document"
+]

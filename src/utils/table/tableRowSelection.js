@@ -13,16 +13,18 @@ export const deselectAllRows = (setter) => {
   setter({});
 };
 
-export const handleRowClick = (id, setter) => {
+export const handleRowClick = (id, setter, multiple = true) => {
   setter((prev) => {
-    const newState = { ...prev };
-
-    if (newState[id]) {
-      delete newState[id];
+    if (multiple) {
+      const newState = { ...prev };
+      if (newState[id]) {
+        delete newState[id];
+      } else {
+        newState[id] = true;
+      }
+      return newState;
     } else {
-      newState[id] = true;
+      return prev[id] ? {} : { [id]: true };
     }
-
-    return newState;
   });
 };

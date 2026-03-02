@@ -1,11 +1,12 @@
 import { FormTable } from "../../../components/layout";
-import { columns } from "./plannedDeliveryTableConfig";
-import { useState } from "react";
+import { deliveryItemsColumns } from "./plannedDeliveryTableConfig";
 import {
   setDeliveryItemsSortConfig,
   setDeliveryItemsFilters,
+  updateDeliveryItems,
+  applyMaterialLookupData,
 } from "./plannedDeliveryFormSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   TableBodyRow,
   TableBodyCell,
@@ -20,22 +21,23 @@ import {
 
 export const DeliveryItemsTable = ({
   data,
-  setData,
   isFocusedRef,
   handleMaterialLookup,
   selectedRows,
   setSelectedRows,
   editedValues,
-  setEditedValues
+  setEditedValues,
 }) => {
   const { deliveryItemsSortConfig, deliveryItemsFilters } = useSelector(
     (state) => state.plannedDeliveryForm,
   );
 
+  const dispatch = useDispatch();
+
   return (
     <FormTable
       tableOrigin="deliveryItems"
-      columns={columns}
+      columns={deliveryItemsColumns}
       rows={data}
       selectedRows={selectedRows}
       setSelectedRows={setSelectedRows}
@@ -73,13 +75,19 @@ export const DeliveryItemsTable = ({
               }}
               handleChange={(val) => {
                 handleChange("seq_number", val, setEditedValues, row.id);
-                handleMaterialLookup(row.id, "seq_number", val, setData);
+                handleMaterialLookup(
+                  row.id,
+                  "seq_number",
+                  val,
+                  dispatch,
+                  applyMaterialLookupData,
+                );
               }}
               handleBlur={(val) => {
                 isFocusedRef.current = false;
                 handleBlur(
-                  setData,
-                  "id",
+                  dispatch,
+                  updateDeliveryItems,
                   row.id,
                   "seq_number",
                   val,
@@ -104,13 +112,19 @@ export const DeliveryItemsTable = ({
               }}
               handleChange={(val) => {
                 handleChange("material_code", val, setEditedValues, row.id);
-                handleMaterialLookup(row.id, "material_code", val, setData);
+                handleMaterialLookup(
+                  row.id,
+                  "material_code",
+                  val,
+                  dispatch,
+                  applyMaterialLookupData,
+                );
               }}
               handleBlur={(val) => {
                 isFocusedRef.current = false;
                 handleBlur(
-                  setData,
-                  "id",
+                  dispatch,
+                  updateDeliveryItems,
                   row.id,
                   "material_code",
                   val,
@@ -140,8 +154,8 @@ export const DeliveryItemsTable = ({
               }}
               handleBlur={(val) => {
                 handleBlur(
-                  setData,
-                  "id",
+                  dispatch,
+                  updateDeliveryItems,
                   row.id,
                   "planned_quantity",
                   val,

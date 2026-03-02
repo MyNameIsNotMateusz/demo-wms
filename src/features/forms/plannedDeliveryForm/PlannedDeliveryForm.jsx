@@ -20,27 +20,47 @@ import { handleError } from "../../../utils/alerts";
 import { v4 as uuidv4 } from "uuid";
 import { lookupMaterial } from "../../../utils/table/lookupMaterial";
 import { useAuth } from "../../../auth/AuthProvider";
-import { removeRowsByIds } from "../../../utils/table/removeRowsByIds";
+import {
+  selectDeliveryItems,
+  selectPlannedDeliveries,
+} from "./plannedDeliverySelectors";
+import {
+  addDeliveryItemRow,
+  removeDeliveryItems,
+  applyMaterialLookupData,
+  updateDeliveryItems,
+} from "./plannedDeliveryFormSlice";
+import { useDispatch } from "react-redux";
+import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const { accessToken } = useAuth();
+
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     contractor_tax_id: "",
     planned_date: "",
     delivery_document: "",
     remarks: "",
   });
+
+  const displayedDeliveryItems = useSelector(selectDeliveryItems);
+  const displayedPlannedDeliveries = useSelector(selectPlannedDeliveries);
+
   const [editedValues, setEditedValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
-  const [deliveryItems, setDeliveryItems] = useState([]);
-
   const [selectedDeliveryItems, setSelectedDeliveryItems] = useState({});
+  const [selectedPlannedDeliveries, setSelectedPlannedDeliveries] = useState(
+    {},
+  );
 
   const isFocusedRef = useRef(false);
 
   const { contractors } = useSelector((state) => state.contractors);
+  const { plannedDeliveries } = useSelector((state) => state.plannedDelivery);
 
   useEffect(() => {
     const handlePaste = async (e) => {
@@ -67,7 +87,14 @@ export const PlannedDeliveryForm = ({ onClose }) => {
           secondCol = isNaN(parsed) ? 0 : parsed;
         }
 
-        await handlePastedMaterial(firstCol, secondCol);
+        await handlePastedMaterial(
+          firstCol,
+          secondCol,
+          dispatch,
+          handleMaterialLookup,
+          applyMaterialLookupData,
+          updateDeliveryItems,
+        );
       }
     };
 
@@ -93,13 +120,14 @@ export const PlannedDeliveryForm = ({ onClose }) => {
       unit: "",
     };
 
-    setDeliveryItems((prev) => [newRow, ...prev]);
+    dispatch(addDeliveryItemRow(newRow));
 
     return uniqueId;
   };
 
-  const handleMaterialLookup = async (id, key, value, setter) => {
+  const handleMaterialLookup = async (id, key, value, dispatch, reducer) => {
     const emptyRow = {
+      id,
       name: "",
       type: "",
       unit: "",
@@ -108,43 +136,32 @@ export const PlannedDeliveryForm = ({ onClose }) => {
     };
 
     if (!value) {
-      setter((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...emptyRow } : item)),
-      );
+      dispatch(reducer(emptyRow));
       return false;
     }
 
     try {
       const responseData = await lookupMaterial(key, value, accessToken);
 
-      let success = false;
+      if (!responseData || !responseData.name) {
+        dispatch(reducer(emptyRow));
+        return false;
+      }
 
-      setter((prev) =>
-        prev.map((item) => {
-          if (item.id !== id) return item;
-
-          if (!responseData || !responseData.name) {
-            return { ...item, ...emptyRow };
-          }
-
-          success = true;
-
-          return {
-            ...item,
-            name: responseData.name,
-            type: responseData.type,
-            unit: responseData.unit,
-            material_code: responseData.code,
-            seq_number: responseData.seq_number,
-          };
+      dispatch(
+        reducer({
+          id,
+          name: responseData.name,
+          type: responseData.type,
+          unit: responseData.unit,
+          material_code: responseData.code,
+          seq_number: responseData.seq_number,
         }),
       );
 
-      return success;
+      return true;
     } catch (error) {
-      setter((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...emptyRow } : item)),
-      );
+      dispatch(reducer(emptyRow));
       return false;
     }
   };
@@ -152,8 +169,9 @@ export const PlannedDeliveryForm = ({ onClose }) => {
   const handleRemoveSelectedRows = (
     selectedRows,
     data,
-    setData,
     setSelectedRows,
+    reducer,
+    dispatch,
   ) => {
     const idsToRemove = Object.keys(selectedRows);
 
@@ -175,40 +193,49 @@ export const PlannedDeliveryForm = ({ onClose }) => {
             ? data[indexToRemove - 1]
             : null;
 
-      removeRowsByIds(idsToRemove, setData);
-
+      dispatch(reducer(idsToRemove));
       setSelectedRows(nextItem ? { [nextItem.id]: true } : {});
     } else {
-      removeRowsByIds(idsToRemove, setData);
+      dispatch(reducer(idsToRemove));
       setSelectedRows({});
     }
   };
-
-  const handlePastedMaterial = async (value, quantity) => {
+  const handlePastedMaterial = async (
+    value,
+    quantity,
+    dispatch,
+    handleMaterialLookupFn,
+    applyLookupReducer,
+    updateReducer,
+  ) => {
     const newRowId = addDeliveryItem();
     if (!newRowId) return;
 
-    const foundByCode = await handleMaterialLookup(
+    const foundByCode = await handleMaterialLookupFn(
       newRowId,
       "material_code",
       value,
-      setDeliveryItems,
+      dispatch,
+      applyLookupReducer,
     );
 
     if (!foundByCode) {
-      await handleMaterialLookup(
+      await handleMaterialLookupFn(
         newRowId,
         "seq_number",
         value,
-        setDeliveryItems,
+        dispatch,
+        applyLookupReducer,
       );
     }
 
     if (quantity !== 0) {
-      setDeliveryItems((prev) =>
-        prev.map((item) =>
-          item.id === newRowId ? { ...item, planned_quantity: quantity } : item,
-        ),
+      dispatch(
+        updateReducer({
+          id: newRowId,
+          key: "planned_quantity",
+          value: quantity,
+        }),
       );
     }
   };
@@ -219,89 +246,105 @@ export const PlannedDeliveryForm = ({ onClose }) => {
       onClose={onClose}
       isLoading={isLoading}
     >
-      <FormCardWrapper>
-        <FormCard title="Delivery Details">
-          <FormRow>
-            <FormSelect
-              id="contractor"
-              label="Contractor Selection *"
-              placeholder="Select a Contractor"
-              value={formData.contractor_tax_id}
-              handleChange={(val) =>
-                updateFormData(setFormData, "contractor_tax_id", val)
-              }
-              options={contractors.map((c) => ({
-                label: c.name,
-                value: c.tax_id,
-              }))}
-            />
-          </FormRow>
-          <FormRow>
-            <FormInput
-              id="plannedDate"
-              label="Planned Delivery Date *"
-              type="date"
-              value={formData.planned_date}
-              disabled={!formData.contractor_tax_id}
-              handleChange={(val) =>
-                updateFormData(setFormData, "planned_date", val)
-              }
-            />
-          </FormRow>
-          <FormRow>
-            <FormInput
-              id="deliveryDocument"
-              label="Delivery Document"
-              type="text"
-              value={formData.delivery_document}
-              disabled={!formData.contractor_tax_id}
-              handleChange={(val) =>
-                updateFormData(setFormData, "delivery_document", val)
-              }
-            />
-          </FormRow>
-          <FormRow>
-            <FormInput
-              id="remarks"
-              label="Remarks"
-              type="text"
-              value={formData.remarks}
-              disabled={!formData.contractor_tax_id}
-              handleChange={(val) =>
-                updateFormData(setFormData, "remarks", val)
-              }
-            />
-          </FormRow>
-        </FormCard>
-        <FormCard title="Delivery Items">
-          <FormTableWrapper>
-            <DeliveryItemsTable
-              data={deliveryItems}
-              setData={setDeliveryItems}
-              isFocusedRef={isFocusedRef}
-              handleMaterialLookup={handleMaterialLookup}
-              selectedRows={selectedDeliveryItems}
-              setSelectedRows={setSelectedDeliveryItems}
-              editedValues={editedValues}
-              setEditedValues={setEditedValues}
-            />
-          </FormTableWrapper>
-          <FormActionsWrapper>
-            <TableActionButton handleClick={addDeliveryItem} type="add" />
-            <TableActionButton
-              handleClick={() =>
-                handleRemoveSelectedRows(
-                  selectedDeliveryItems,
-                  deliveryItems,
-                  setDeliveryItems,
-                  setSelectedDeliveryItems,
-                )
-              }
-              type="remove"
-            />
-          </FormActionsWrapper>
-        </FormCard>
-      </FormCardWrapper>
+      {activeTab === 0 && (
+        <FormCardWrapper>
+          <FormCard title="Delivery Details">
+            <FormRow>
+              <FormSelect
+                id="contractor"
+                label="Contractor Selection *"
+                placeholder="Select a Contractor"
+                value={formData.contractor_tax_id}
+                handleChange={(val) =>
+                  updateFormData(setFormData, "contractor_tax_id", val)
+                }
+                options={contractors.map((c) => ({
+                  label: c.name,
+                  value: c.tax_id,
+                }))}
+              />
+            </FormRow>
+            <FormRow>
+              <FormInput
+                id="plannedDate"
+                label="Planned Delivery Date *"
+                type="date"
+                value={formData.planned_date}
+                disabled={!formData.contractor_tax_id}
+                handleChange={(val) =>
+                  updateFormData(setFormData, "planned_date", val)
+                }
+              />
+            </FormRow>
+            <FormRow>
+              <FormInput
+                id="deliveryDocument"
+                label="Delivery Document"
+                type="text"
+                value={formData.delivery_document}
+                disabled={!formData.contractor_tax_id}
+                handleChange={(val) =>
+                  updateFormData(setFormData, "delivery_document", val)
+                }
+              />
+            </FormRow>
+            <FormRow>
+              <FormInput
+                id="remarks"
+                label="Remarks"
+                type="text"
+                value={formData.remarks}
+                disabled={!formData.contractor_tax_id}
+                handleChange={(val) =>
+                  updateFormData(setFormData, "remarks", val)
+                }
+              />
+            </FormRow>
+          </FormCard>
+          <FormCard title="Delivery Items">
+            <FormTableWrapper>
+              <DeliveryItemsTable
+                data={displayedDeliveryItems}
+                isFocusedRef={isFocusedRef}
+                handleMaterialLookup={handleMaterialLookup}
+                selectedRows={selectedDeliveryItems}
+                setSelectedRows={setSelectedDeliveryItems}
+                editedValues={editedValues}
+                setEditedValues={setEditedValues}
+              />
+            </FormTableWrapper>
+            <FormActionsWrapper>
+              <TableActionButton handleClick={addDeliveryItem} type="add" />
+              <TableActionButton
+                handleClick={() =>
+                  handleRemoveSelectedRows(
+                    selectedDeliveryItems,
+                    displayedDeliveryItems,
+                    setSelectedDeliveryItems,
+                    removeDeliveryItems,
+                    dispatch,
+                  )
+                }
+                type="remove"
+              />
+            </FormActionsWrapper>
+          </FormCard>
+        </FormCardWrapper>
+      )}
+
+      {activeTab === 1 && (
+        <FormCardWrapper>
+          <FormCard title="Planned Deliveries">
+            <FormTableWrapper>
+              <PlannedDeliveriesTable
+                data={displayedPlannedDeliveries}
+                selectedRows={selectedPlannedDeliveries}
+                setSelectedRows={setSelectedPlannedDeliveries}
+              />
+            </FormTableWrapper>
+          </FormCard>
+        </FormCardWrapper>
+      )}
 
       <FormTabs
         tabs={tabsConfig}

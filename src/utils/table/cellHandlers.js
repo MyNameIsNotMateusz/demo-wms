@@ -33,8 +33,8 @@ export const handleChange = (key, value, setter, id) => {
 };
 
 export const handleBlur = (
-  setter,
-  idKey,
+  dispatch,
+  reducer,
   id,
   key,
   value,
@@ -51,11 +51,7 @@ export const handleBlur = (
     }
   }
 
-  setter((prev) =>
-    prev.map((item) =>
-      item[idKey] === id ? { ...item, [key]: finalValue } : item,
-    ),
-  );
+  dispatch(reducer({ id, key, value: finalValue }));
 
   setEditedValues({});
 };
