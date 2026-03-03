@@ -11,16 +11,16 @@ export const login = async (loginPayload) => {
       body: JSON.stringify(loginPayload),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      handleError(errorData.message || "Invalid email or password");
+      throw new Error(data.errors?.[0] || "Invalid email or password");
     }
 
-    const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Login error: ", error);
-    handleError("Please try again.");
+    handleError(error.message || "Please try again.");
+    return null;
   }
 };
 

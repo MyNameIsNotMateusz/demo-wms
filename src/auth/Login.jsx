@@ -35,16 +35,17 @@ export const Login = () => {
       return;
     }
 
-    try {
-      const loginData = await login({ email, password });
-      if (!loginData.token) return;
-      setAccessToken(loginData.token);
-      dispatch(setAuthData(loginData));
-    } catch (error) {
-      handleError("Login failed");
-    } finally {
+    const loginData = await login({ email, password });
+
+    if (!loginData || !loginData.token) {
       setIsLoading(false);
+      return;
     }
+
+    setAccessToken(loginData.token);
+    dispatch(setAuthData(loginData));
+
+    setIsLoading(false);
   };
 
   return (
