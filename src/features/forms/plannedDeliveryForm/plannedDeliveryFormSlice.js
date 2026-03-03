@@ -7,6 +7,9 @@ const initialState = {
   plannedDeliveriesRows: [],
   plannedDeliveriesSortConfig: {},
   plannedDeliveriesFilters: {},
+  deliveryDetailsRows: [],
+  deliveryDetailsSortConfig: {},
+  deliveryDetailsFilters: {},
 };
 
 const plannedDeliveryFormSlice = createSlice({
@@ -128,6 +131,54 @@ const plannedDeliveryFormSlice = createSlice({
         state.plannedDeliveriesFilters = newFilters;
       }
     },
+    setDeliveryDetailsSortConfig: (state, action) => {
+      const index = action.payload;
+
+      if (state.deliveryDetailsSortConfig[index] == null) {
+        state.deliveryDetailsSortConfig = {
+          [index]: "asc",
+        };
+      } else {
+        const order = state.deliveryDetailsSortConfig[index];
+
+        switch (order) {
+          case "asc":
+            state.deliveryDetailsSortConfig = {
+              [index]: "desc",
+            };
+            break;
+          case "desc":
+            state.deliveryDetailsSortConfig = {
+              [index]: "original",
+            };
+            break;
+          case "original":
+            state.deliveryDetailsSortConfig = {
+              [index]: "asc",
+            };
+            break;
+        }
+      }
+    },
+    setDeliveryDetailsFilters: (state, action) => {
+      const { index, value } = action.payload;
+      const newFilters = {
+        ...state.deliveryDetailsFilters,
+        [index]: value,
+      };
+
+      if (Object.values(newFilters).every((val) => val === "")) {
+        state.deliveryDetailsFilters = {};
+      } else {
+        state.deliveryDetailsFilters = newFilters;
+      }
+    },
+    setDeliveryDetailsRows: (state, action) => {
+      state.deliveryDetailsRows = action.payload;
+    },
+    addDeliveryDetailsRow: (state, action) => {
+      state.deliveryDetailsRows.unshift(action.payload);
+    },
   },
 });
 
@@ -142,4 +193,8 @@ export const {
   applyMaterialLookupData,
   setPlannedDeliveriesSortConfig,
   setPlannedDeliveriesFilters,
+  setDeliveryDetailsSortConfig,
+  setDeliveryDetailsFilters,
+  setDeliveryDetailsRows,
+  addDeliveryDetailsRow
 } = plannedDeliveryFormSlice.actions;

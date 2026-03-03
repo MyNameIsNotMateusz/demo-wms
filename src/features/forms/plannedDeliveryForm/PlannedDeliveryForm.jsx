@@ -29,9 +29,15 @@ import {
   removeDeliveryItems,
   applyMaterialLookupData,
   updateDeliveryItems,
+  setDeliveryDetailsRows,
+  addDeliveryDetailsRow,
 } from "./plannedDeliveryFormSlice";
 import { useDispatch } from "react-redux";
 import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
+import { handleMaterialLookup } from "./utils/api";
+import { handleRemoveSelectedRows } from "./utils/tableOperations";
+import { handlePastedMaterial } from "./utils/clipboard";
+import { addDeliveryItem } from "./utils/tableOperations";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const { accessToken } = useAuth();
@@ -60,7 +66,6 @@ export const PlannedDeliveryForm = ({ onClose }) => {
   const isFocusedRef = useRef(false);
 
   const { contractors } = useSelector((state) => state.contractors);
-  const { plannedDeliveries } = useSelector((state) => state.plannedDelivery);
 
   useEffect(() => {
     const handlePaste = async (e) => {
@@ -94,6 +99,13 @@ export const PlannedDeliveryForm = ({ onClose }) => {
           handleMaterialLookup,
           applyMaterialLookupData,
           updateDeliveryItems,
+          lookupMaterial,
+          accessToken,
+          addDeliveryItem,
+          formData,
+          uuidv4,
+          handleError,
+          addDeliveryItemRow,
         );
       }
     };
@@ -102,143 +114,37 @@ export const PlannedDeliveryForm = ({ onClose }) => {
     return () => window.removeEventListener("keydown", handlePaste);
   }, [formData.contractor_tax_id]);
 
-  const addDeliveryItem = () => {
-    if (formData.contractor_tax_id === "") {
-      handleError("Please select a contractor first.");
-      return null;
-    }
+  useEffect(() => {
+    const selectedIds = Object.keys(selectedPlannedDeliveries);
 
-    const uniqueId = uuidv4();
-
-    const newRow = {
-      id: uniqueId,
-      seq_number: "",
-      material_code: "",
-      name: "",
-      type: "",
-      planned_quantity: 0,
-      unit: "",
-    };
-
-    dispatch(addDeliveryItemRow(newRow));
-
-    return uniqueId;
-  };
-
-  const handleMaterialLookup = async (id, key, value, dispatch, reducer) => {
-    const emptyRow = {
-      id,
-      name: "",
-      type: "",
-      unit: "",
-      material_code: key === "seq_number" ? "" : undefined,
-      seq_number: key === "material_code" ? "" : undefined,
-    };
-
-    if (!value) {
-      dispatch(reducer(emptyRow));
-      return false;
-    }
-
-    try {
-      const responseData = await lookupMaterial(key, value, accessToken);
-
-      if (!responseData || !responseData.name) {
-        dispatch(reducer(emptyRow));
-        return false;
-      }
-
-      dispatch(
-        reducer({
-          id,
-          name: responseData.name,
-          type: responseData.type,
-          unit: responseData.unit,
-          material_code: responseData.code,
-          seq_number: responseData.seq_number,
-        }),
-      );
-
-      return true;
-    } catch (error) {
-      dispatch(reducer(emptyRow));
-      return false;
-    }
-  };
-
-  const handleRemoveSelectedRows = (
-    selectedRows,
-    data,
-    setSelectedRows,
-    reducer,
-    dispatch,
-  ) => {
-    const idsToRemove = Object.keys(selectedRows);
-
-    if (idsToRemove.length === 0) {
-      handleError("No row selected.");
+    if (selectedIds.length === 0) {
+      dispatch(setDeliveryDetailsRows([]));
       return;
     }
 
-    if (idsToRemove.length === 1) {
-      const onlyId = idsToRemove[0];
-      const indexToRemove = data.findIndex((row) => row.id === onlyId);
+    const selectedId = selectedIds[0];
 
-      const nextItem =
-        data[indexToRemove + 1] &&
-        !idsToRemove.includes(String(data[indexToRemove + 1].id))
-          ? data[indexToRemove + 1]
-          : data[indexToRemove - 1] &&
-              !idsToRemove.includes(String(data[indexToRemove - 1].id))
-            ? data[indexToRemove - 1]
-            : null;
-
-      dispatch(reducer(idsToRemove));
-      setSelectedRows(nextItem ? { [nextItem.id]: true } : {});
-    } else {
-      dispatch(reducer(idsToRemove));
-      setSelectedRows({});
-    }
-  };
-  const handlePastedMaterial = async (
-    value,
-    quantity,
-    dispatch,
-    handleMaterialLookupFn,
-    applyLookupReducer,
-    updateReducer,
-  ) => {
-    const newRowId = addDeliveryItem();
-    if (!newRowId) return;
-
-    const foundByCode = await handleMaterialLookupFn(
-      newRowId,
-      "material_code",
-      value,
-      dispatch,
-      applyLookupReducer,
+    const selectedDelivery = displayedPlannedDeliveries.find(
+      (delivery) => delivery.id === selectedId,
     );
 
-    if (!foundByCode) {
-      await handleMaterialLookupFn(
-        newRowId,
-        "seq_number",
-        value,
-        dispatch,
-        applyLookupReducer,
-      );
+    if (!selectedDelivery || !selectedDelivery.items) {
+      dispatch(setDeliveryDetailsRows([]));
+      return;
     }
 
-    if (quantity !== 0) {
-      dispatch(
-        updateReducer({
-          id: newRowId,
-          key: "planned_quantity",
-          value: quantity,
-        }),
-      );
-    }
-  };
+    const mappedItems = selectedDelivery.items.map((item) => ({
+      id: item.id,
+      seq_number: item.material.seq_number,
+      material_code: item.material.material_code,
+      name: item.material.name,
+      type: item.material.type,
+      planned_quantity: Math.round(parseFloat(item.planned_quantity)),
+      unit: item.material.unit,
+    }));
+
+    dispatch(setDeliveryDetailsRows(mappedItems));
+  }, [selectedPlannedDeliveries, displayedPlannedDeliveries, dispatch]);
 
   return (
     <FormLayout
@@ -306,7 +212,6 @@ export const PlannedDeliveryForm = ({ onClose }) => {
               <DeliveryItemsTable
                 data={displayedDeliveryItems}
                 isFocusedRef={isFocusedRef}
-                handleMaterialLookup={handleMaterialLookup}
                 selectedRows={selectedDeliveryItems}
                 setSelectedRows={setSelectedDeliveryItems}
                 editedValues={editedValues}
@@ -314,7 +219,18 @@ export const PlannedDeliveryForm = ({ onClose }) => {
               />
             </FormTableWrapper>
             <FormActionsWrapper>
-              <TableActionButton handleClick={addDeliveryItem} type="add" />
+              <TableActionButton
+                handleClick={() =>
+                  addDeliveryItem(
+                    formData,
+                    uuidv4,
+                    handleError,
+                    dispatch,
+                    addDeliveryItemRow,
+                  )
+                }
+                type="add"
+              />
               <TableActionButton
                 handleClick={() =>
                   handleRemoveSelectedRows(
@@ -323,6 +239,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                     setSelectedDeliveryItems,
                     removeDeliveryItems,
                     dispatch,
+                    handleError,
                   )
                 }
                 type="remove"

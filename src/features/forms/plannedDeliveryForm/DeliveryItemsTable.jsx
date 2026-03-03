@@ -18,11 +18,13 @@ import {
   handleChange,
   handleBlur,
 } from "../../../utils/table/cellHandlers";
+import { handleMaterialLookup } from "./utils/api";
+import { lookupMaterial } from "../../../utils/table/lookupMaterial";
+import { useAuth } from "../../../auth/AuthProvider";
 
 export const DeliveryItemsTable = ({
   data,
   isFocusedRef,
-  handleMaterialLookup,
   selectedRows,
   setSelectedRows,
   editedValues,
@@ -33,6 +35,8 @@ export const DeliveryItemsTable = ({
   );
 
   const dispatch = useDispatch();
+
+  const { accessToken } = useAuth();
 
   return (
     <FormTable
@@ -81,6 +85,8 @@ export const DeliveryItemsTable = ({
                   val,
                   dispatch,
                   applyMaterialLookupData,
+                  lookupMaterial,
+                  accessToken
                 );
               }}
               handleBlur={(val) => {
@@ -118,6 +124,8 @@ export const DeliveryItemsTable = ({
                   val,
                   dispatch,
                   applyMaterialLookupData,
+                  lookupMaterial,
+                  accessToken
                 );
               }}
               handleBlur={(val) => {
