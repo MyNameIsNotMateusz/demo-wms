@@ -10,7 +10,24 @@ export const FormSelect = ({
   options,
   isDisabled,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const selectedOption = options.find((opt) => opt.value === value) || null;
+
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (event.target.closest(".react-select__menu")) {
+        return;
+      }
+      setMenuOpen(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, []);
 
   return (
     <SelectWrapper>
@@ -22,8 +39,14 @@ export const FormSelect = ({
         options={options}
         placeholder={placeholder}
         isDisabled={isDisabled}
+        menuIsOpen={menuOpen}
+        onMenuOpen={() => setMenuOpen(true)}
+        onMenuClose={() => setMenuOpen(false)}
         menuPortalTarget={document.body}
         menuPosition="fixed"
+        classNames={{
+          menu: () => "react-select__menu",
+        }}
         styles={{
           control: (base) => ({
             ...base,
