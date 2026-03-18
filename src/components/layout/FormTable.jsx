@@ -31,6 +31,7 @@ export const FormTable = ({
   filters,
   setFilters,
   children,
+  showSelectAll = true,
 }) => {
   const dispatch = useDispatch();
 
@@ -39,24 +40,27 @@ export const FormTable = ({
       <TableHeader>
         <TableHeaderRow>
           <TableHeaderCell>
-            <input
-              type="checkbox"
-              title="Select all rows"
-              style={{ cursor: "pointer" }}
-              disabled={!rows.length}
-              checked={
-                rows.length === 0
-                  ? false
-                  : Object.keys(selectedRows).length === rows.length
-              }
-              onChange={(e) => {
-                if (e.target.checked) {
-                  selectAllRows(rows, setSelectedRows, idKey);
-                } else {
-                  deselectAllRows(setSelectedRows);
+            {showSelectAll && (
+              <input
+                type="checkbox"
+                title="Select all rows"
+                style={{ cursor: "pointer" }}
+                disabled={!rows.length}
+                checked={
+                  rows.length === 0
+                    ? false
+                    : Object.keys(selectedRows).length === rows.length
                 }
-              }}
-            />
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    selectAllRows(rows, setSelectedRows, idKey);
+                  } else {
+                    deselectAllRows(setSelectedRows);
+                  }
+                }}
+              />
+            )}
+
           </TableHeaderCell>
           {columns.map((title, index) => (
             <TableHeaderCell key={index}>

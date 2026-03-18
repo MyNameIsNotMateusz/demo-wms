@@ -12,17 +12,21 @@ import {
   FormTabs,
   FormInput,
   TableActionButton,
+  SubmitButton,
+  ReadOnlyField
 } from "../../../components/ui";
 import { updateFormData } from "../../../utils/forms/updateFormData";
 import { useSelector } from "react-redux";
 import { DeliveryItemsTable } from "./DeliveryItemsTable";
-import { handleError } from "../../../utils/alerts";
+import { handleError, handleSuccess } from "../../../utils/alerts";
 import { v4 as uuidv4 } from "uuid";
 import { lookupMaterial } from "../../../utils/table/lookupMaterial";
 import { useAuth } from "../../../auth/AuthProvider";
 import {
   selectDeliveryItems,
   selectPlannedDeliveries,
+  selectPlannedDeliveryRemarksById,
+  selectDeliveryDetails
 } from "./plannedDeliverySelectors";
 import {
   addDeliveryItemRow,
@@ -31,13 +35,18 @@ import {
   updateDeliveryItems,
   setDeliveryDetailsRows,
   addDeliveryDetailsRow,
+  clearDeliveryItemsState,
+  removeDeliveryDetails
 } from "./plannedDeliveryFormSlice";
 import { useDispatch } from "react-redux";
 import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
-import { handleMaterialLookup } from "./utils/api";
-import { handleRemoveSelectedRows } from "./utils/tableOperations";
+import { handleMaterialLookup, cancelPlannedDelivery, updatePlannedDelivery } from "./utils/api";
+import { handleRemoveSelectedRows, addDeliveryItem, addDeliveryRow } from "./utils/tableOperations";
 import { handlePastedMaterial } from "./utils/clipboard";
-import { addDeliveryItem } from "./utils/tableOperations";
+import { addPlannedDelivery } from "./utils/addPlannedDelivery";
+import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
+import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
+import { DeliveryDetailsTable } from "./DeliveryDetailsTable";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const { accessToken } = useAuth();
@@ -51,21 +60,32 @@ export const PlannedDeliveryForm = ({ onClose }) => {
     remarks: "",
   });
 
+  const { fetchPlannedDeliveries } = dictionaryThunks;
+
   const displayedDeliveryItems = useSelector(selectDeliveryItems);
   const displayedPlannedDeliveries = useSelector(selectPlannedDeliveries);
+  const displayedDeliveryDetails = useSelector(selectDeliveryDetails);
 
   const [editedValues, setEditedValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-
+  const [deletedDetailsItems, setDeletedDetailsItems] = useState([]);
   const [selectedDeliveryItems, setSelectedDeliveryItems] = useState({});
   const [selectedPlannedDeliveries, setSelectedPlannedDeliveries] = useState(
     {},
   );
+  const [selectedDeliveryDetails, setSelectedDeliveryDetails] = useState({});
+
+  const [isDetailsTableEdited, setIsDetailsTableEdited] = useState(false);
 
   const isFocusedRef = useRef(false);
 
   const { contractors } = useSelector((state) => state.contractors);
+  const { deliveryItemsRows, deliveryDetailsRows } = useSelector((state) => state.plannedDeliveryForm);
+
+  const remarks = useSelector((state) =>
+    selectPlannedDeliveryRemarksById(state, Object.keys(selectedPlannedDeliveries)[0])
+  );
 
   useEffect(() => {
     const handlePaste = async (e) => {
@@ -115,6 +135,8 @@ export const PlannedDeliveryForm = ({ onClose }) => {
   }, [formData.contractor_tax_id]);
 
   useEffect(() => {
+    setIsDetailsTableEdited(false);
+    setDeletedDetailsItems([]);
     const selectedIds = Object.keys(selectedPlannedDeliveries);
 
     if (selectedIds.length === 0) {
@@ -145,6 +167,30 @@ export const PlannedDeliveryForm = ({ onClose }) => {
 
     dispatch(setDeliveryDetailsRows(mappedItems));
   }, [selectedPlannedDeliveries, displayedPlannedDeliveries, dispatch]);
+
+  const handleSubmit = async () => {
+    const success = await addPlannedDelivery(
+      formData,
+      deliveryItemsRows,
+      handleError,
+      handleSuccess,
+      setIsLoading,
+      BASE_API_URL,
+      DEFAULT_HEADERS,
+      accessToken
+    );
+
+    if (!success) return;
+
+    dispatch(fetchPlannedDeliveries(accessToken));
+    dispatch(clearDeliveryItemsState());
+    setFormData({
+      contractor_tax_id: "",
+      planned_date: "",
+      delivery_document: "",
+      remarks: "",
+    })
+  };
 
   return (
     <FormLayout
@@ -206,6 +252,10 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 }
               />
             </FormRow>
+            <SubmitButton
+              isLoading={isLoading}
+              onClick={handleSubmit}
+            />
           </FormCard>
           <FormCard title="Delivery Items">
             <FormTableWrapper>
@@ -259,6 +309,73 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 setSelectedRows={setSelectedPlannedDeliveries}
               />
             </FormTableWrapper>
+            <SubmitButton
+              isLoading={isLoading}
+              onClick={() => cancelPlannedDelivery(selectedPlannedDeliveries, accessToken, setIsLoading, setSelectedPlannedDeliveries, dispatch, fetchPlannedDeliveries, handleSuccess, handleError)}
+              label="cancel delivery"
+            />
+          </FormCard>
+          <FormCard title="Delivery Details">
+            <FormRow>
+              <ReadOnlyField
+                label="Remarks"
+                value={remarks}
+              />
+            </FormRow>
+            <FormTableWrapper>
+              <DeliveryDetailsTable
+                data={displayedDeliveryDetails}
+                isFocusedRef={isFocusedRef}
+                selectedRows={selectedDeliveryDetails}
+                setSelectedRows={setSelectedDeliveryDetails}
+                editedValues={editedValues}
+                setEditedValues={setEditedValues}
+                setIsEdited={setIsDetailsTableEdited}
+              />
+            </FormTableWrapper>
+            <FormActionsWrapper>
+              <TableActionButton
+                handleClick={() => {
+                  const success = addDeliveryRow(
+                    selectedPlannedDeliveries,
+                    handleError,
+                    dispatch,
+                    addDeliveryDetailsRow
+                  );
+
+                  if (!success) return;
+
+                  setIsDetailsTableEdited(true);
+                }}
+                type="add"
+              />
+              <TableActionButton
+                handleClick={() => {
+                  const success = handleRemoveSelectedRows(
+                    selectedDeliveryDetails,
+                    displayedDeliveryDetails,
+                    setSelectedDeliveryDetails,
+                    removeDeliveryDetails,
+                    dispatch,
+                    handleError,
+                  );
+
+                  if (!success) return;
+
+                  setDeletedDetailsItems(prev => [
+                    ...prev,
+                    ...Object.keys(selectedDeliveryDetails),
+                  ]);
+
+                  setIsDetailsTableEdited(true);
+                }}
+                type="remove"
+              />
+            </FormActionsWrapper>
+            <SubmitButton
+              isLoading={isLoading}
+              onClick={() => updatePlannedDelivery(isDetailsTableEdited, handleError, deliveryDetailsRows, selectedPlannedDeliveries, deletedDetailsItems, setIsLoading, accessToken, setDeletedDetailsItems, dispatch, fetchPlannedDeliveries, handleSuccess, setSelectedPlannedDeliveries)}
+            />
           </FormCard>
         </FormCardWrapper>
       )}

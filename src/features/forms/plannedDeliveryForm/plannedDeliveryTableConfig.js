@@ -7,7 +7,7 @@ export const deliveryItemsColumns = [
   "Unit",
 ];
 
-export const PlannedDeliveriesColumns = [
+export const plannedDeliveriesColumns = [
   "Contractor Name",
   "Planned Delivery",
   "Delivery Document"

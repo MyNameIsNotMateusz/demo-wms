@@ -1,12 +1,10 @@
 import styled from "styled-components";
 
-export const SelectWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledFieldWrapper = styled.div`
   flex: 1;
 `;
 
-export const SelectLabel = styled.label`
+export const FieldLabel = styled.label`
   position: relative;
   width: fit-content;
   color: ${({ theme }) => theme.colors.text};
@@ -15,4 +13,9 @@ export const SelectLabel = styled.label`
   white-space: nowrap;
 
   ${({ theme }) => theme.fontSizes.responsive};
+`;
+
+export const FieldValue = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  color: #656c75;
 `;

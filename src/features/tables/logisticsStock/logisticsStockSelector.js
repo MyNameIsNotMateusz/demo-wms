@@ -45,12 +45,13 @@ export const selectLogisticsStock = createSelector(
     const header = columns[parseInt(currentSortedColumnIndex, 10)];
     const dataKey = columnsMapping[header];
 
-    const sorted = [...filteredItems].sort((a, b) => {
+    return [...filteredItems].sort((a, b) => {
       const aVal = (a[dataKey] ?? "").toString();
       const bVal = (b[dataKey] ?? "").toString();
-      return aVal.localeCompare(bVal, "pl", { numeric: true });
-    });
 
-    return order === "desc" ? sorted.reverse() : sorted;
+      return order === "desc"
+        ? bVal.localeCompare(aVal, "pl", { numeric: true })
+        : aVal.localeCompare(bVal, "pl", { numeric: true });
+    });
   },
 );

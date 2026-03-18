@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export const handleRemoveSelectedRows = (
   selectedRows,
   data,
@@ -10,7 +12,7 @@ export const handleRemoveSelectedRows = (
 
   if (idsToRemove.length === 0) {
     handleError("No row selected.");
-    return;
+    return false;
   }
 
   if (idsToRemove.length === 1) {
@@ -32,38 +34,8 @@ export const handleRemoveSelectedRows = (
     dispatch(reducer(idsToRemove));
     setSelectedRows({});
   }
-};
 
-export const handleAddDeliveryDetailsRow = (
-  selectedPlannedDeliveries,
-  dispatch,
-  addDeliveryDetailsRow,
-  handleError,
-  uuidv4,
-) => {
-  const selectedIds = Object.keys(selectedPlannedDeliveries);
-
-  if (selectedIds.length === 0) {
-    handleError("Please select a delivery first.");
-    return null;
-  }
-
-  const uniqueId = uuidv4();
-
-  const newRow = {
-    id: uniqueId,
-    seq_number: "",
-    material_code: "",
-    name: "",
-    type: "",
-    quantity: 0,
-    unit: "",
-    isNew: true,
-  };
-
-  dispatch(addDeliveryDetailsRow(newRow));
-
-  return uniqueId;
+  return true;
 };
 
 export const addDeliveryItem = (
@@ -93,4 +65,32 @@ export const addDeliveryItem = (
   dispatch(addDeliveryItemRow(newRow));
 
   return uniqueId;
+};
+
+export const addDeliveryRow = (
+  selectedDeliveryId,
+  handleError,
+  dispatch,
+  reducer,
+) => {
+  if (!Object.keys(selectedDeliveryId)[0]) {
+    handleError("Please select a delivery first.");
+    return false;
+  }
+
+  const uniqueId = uuidv4();
+
+  const newRow = {
+    id: uniqueId,
+    seq_number: "",
+    material_code: "",
+    name: "",
+    type: "",
+    planned_quantity: 0,
+    unit: "",
+    isNew: true,
+  };
+
+  dispatch(reducer(newRow));
+  return true;
 };

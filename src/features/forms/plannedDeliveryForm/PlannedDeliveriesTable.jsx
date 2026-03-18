@@ -1,5 +1,5 @@
 import { FormTable } from "../../../components/layout";
-import { PlannedDeliveriesColumns } from "./plannedDeliveryTableConfig";
+import { plannedDeliveriesColumns } from "./plannedDeliveryTableConfig";
 import {
   setPlannedDeliveriesSortConfig,
   setPlannedDeliveriesFilters,
@@ -23,15 +23,12 @@ export const PlannedDeliveriesTable = ({
   return (
     <FormTable
       tableOrigin="plannedDeliveries"
-      columns={PlannedDeliveriesColumns}
-      rows={data}
-      selectedRows={selectedRows}
-      setSelectedRows={setSelectedRows}
-      idKey="id"
+      columns={plannedDeliveriesColumns}
       sortConfig={plannedDeliveriesSortConfig}
       setSortConfig={setPlannedDeliveriesSortConfig}
       filters={plannedDeliveriesFilters}
       setFilters={setPlannedDeliveriesFilters}
+      showSelectAll={false}
     >
       {data.map((row, index) => (
         <TableBodyRow

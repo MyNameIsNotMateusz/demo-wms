@@ -7,9 +7,9 @@ import plannedDeliveryFormReducer from "../features/forms/plannedDeliveryForm/pl
 
 export default configureStore({
   reducer: {
+    plannedDeliveryForm: plannedDeliveryFormReducer,
     contractors: contractorsReducer,
     plannedDelivery: plannedDeliveryReducer,
-    plannedDeliveryForm: plannedDeliveryFormReducer,
     logisticsStock: logisticsStockReducer,
     auth: authReducer,
   },

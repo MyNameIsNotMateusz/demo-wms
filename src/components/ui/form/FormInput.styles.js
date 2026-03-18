@@ -4,7 +4,7 @@ export const InputWrapper = styled.div`
   flex: 1;
 `;
 
-export const InputLabel = styled.div`
+export const InputLabel = styled.label`
   position: relative;
   width: fit-content;
   color: ${({ theme }) => theme.colors.text};

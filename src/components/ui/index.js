@@ -5,6 +5,7 @@ import { Loader } from "./Loader";
 import { SubmitButton } from "./form/SubmitButton";
 import { TableActionButton } from "./table/TableActionButton";
 import { CellInput } from "./table/CellInput";
+import { ReadOnlyField } from "./form/ReadOnlyField";
 
 export {
   FormInput,
@@ -13,5 +14,6 @@ export {
   Loader,
   SubmitButton,
   TableActionButton,
-  CellInput
+  CellInput,
+  ReadOnlyField,
 };

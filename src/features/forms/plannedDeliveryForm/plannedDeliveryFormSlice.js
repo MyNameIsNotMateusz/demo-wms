@@ -4,7 +4,6 @@ const initialState = {
   deliveryItemsRows: [],
   deliveryItemsSortConfig: {},
   deliveryItemsFilters: {},
-  plannedDeliveriesRows: [],
   plannedDeliveriesSortConfig: {},
   plannedDeliveriesFilters: {},
   deliveryDetailsRows: [],
@@ -75,6 +74,11 @@ const plannedDeliveryFormSlice = createSlice({
       state.deliveryItemsRows = state.deliveryItemsRows.filter(
         (item) => !idsToRemove.includes(item.id),
       );
+    },
+    clearDeliveryItemsState: (state) => {
+      state.deliveryItemsRows = [];
+      state.deliveryItemsSortConfig = {};
+      state.deliveryItemsFilters = {};
     },
     applyMaterialLookupData: (state, action) => {
       const { id, name, type, unit, material_code, seq_number } =
@@ -179,6 +183,34 @@ const plannedDeliveryFormSlice = createSlice({
     addDeliveryDetailsRow: (state, action) => {
       state.deliveryDetailsRows.unshift(action.payload);
     },
+    removeDeliveryDetails: (state, action) => {
+      const idsToRemove = action.payload;
+      state.deliveryDetailsRows = state.deliveryDetailsRows.filter(
+        (item) => !idsToRemove.includes(item.id),
+      );
+    },
+    applyMaterialToDeliveryDetails: (state, action) => {
+      const { id, name, type, unit, material_code, seq_number } =
+        action.payload;
+
+      const row = state.deliveryDetailsRows.find((row) => row.id === id);
+      if (row) {
+        if (name !== undefined) row.name = name;
+        if (type !== undefined) row.type = type;
+        if (unit !== undefined) row.unit = unit;
+        if (material_code !== undefined) row.material_code = material_code;
+        if (seq_number !== undefined) row.seq_number = seq_number;
+      }
+    },
+    updateDeliveryDetails: (state, action) => {
+      const { id, key, value } = action.payload;
+
+      const item = state.deliveryDetailsRows.find((row) => row.id === id);
+
+      if (item) {
+        item[key] = value;
+      }
+    },
   },
 });
 
@@ -196,5 +228,9 @@ export const {
   setDeliveryDetailsSortConfig,
   setDeliveryDetailsFilters,
   setDeliveryDetailsRows,
-  addDeliveryDetailsRow
+  addDeliveryDetailsRow,
+  clearDeliveryItemsState,
+  removeDeliveryDetails,
+  updateDeliveryDetails,
+  applyMaterialToDeliveryDetails,
 } = plannedDeliveryFormSlice.actions;
