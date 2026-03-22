@@ -200,7 +200,11 @@ export const PlannedDeliveryForm = ({ onClose }) => {
     >
       {activeTab === 0 && (
         <FormCardWrapper>
-          <FormCard title="Delivery Details">
+          <FormCard title="Delivery Details"
+            footer={<SubmitButton
+              isLoading={isLoading}
+              onClick={handleSubmit}
+            />}>
             <FormRow>
               <FormSelect
                 id="contractor"
@@ -252,10 +256,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 }
               />
             </FormRow>
-            <SubmitButton
-              isLoading={isLoading}
-              onClick={handleSubmit}
-            />
+
           </FormCard>
           <FormCard title="Delivery Items">
             <FormTableWrapper>

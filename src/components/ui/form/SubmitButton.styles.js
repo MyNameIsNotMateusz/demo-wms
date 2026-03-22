@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const StyledSubmitButton = styled.input`
   margin-top: auto;
   padding: 12px 24px;
+  width: 100%;
   font-size: 16px;
   border: none;
   border-radius: 4px;
