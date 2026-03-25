@@ -83,3 +83,61 @@ export const FormActionsWrapper = styled.div`
   column-gap: 5px;
   margin-top: auto;
 `;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  max-width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+`;
+
+export const FormSection = styled.div`
+  display: flex;
+  column-gap: 16px;
+
+  @media (max-width: 1600px) {
+    column-gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    column-gap: 12px;
+  }
+
+  @media (max-width: 768px) {
+    column-gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    column-gap: 7px;
+  }
+`;
+
+export const FormColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: ${({ $flex }) => $flex || "1"};
+  row-gap: 10px;
+`;

@@ -4,12 +4,16 @@ import logisticsStockReducer from "../features/tables/logisticsStock/logisticsSt
 import contractorsReducer from "../features/dictionaries/contractorsSlice";
 import plannedDeliveryReducer from "../features/dictionaries/plannedDeliverySlice";
 import plannedDeliveryFormReducer from "../features/forms/plannedDeliveryForm/plannedDeliveryFormSlice";
+import recipesReducer from "../features/dictionaries/recipesSlice";
+import createComponentsFormReducer from "../features/forms/createComponentsForm/createComponentsFormSlice";
 
 export default configureStore({
   reducer: {
-    plannedDeliveryForm: plannedDeliveryFormReducer,
+    recipes: recipesReducer,
     contractors: contractorsReducer,
     plannedDelivery: plannedDeliveryReducer,
+    plannedDeliveryForm: plannedDeliveryFormReducer,
+    createComponentsForm: createComponentsFormReducer,
     logisticsStock: logisticsStockReducer,
     auth: authReducer,
   },

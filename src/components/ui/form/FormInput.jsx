@@ -1,9 +1,9 @@
 import { StyledFormInput, InputLabel, InputWrapper } from "./FormInput.styles";
 
-export const FormInput = ({ id, label, type, value, disabled, handleChange }) => {
+export const FormInput = ({ id, label, type, value, disabled, handleChange, extra }) => {
   return (
     <InputWrapper>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
+      <InputLabel htmlFor={id}>{label} {extra}</InputLabel>
       <StyledFormInput
         type={type}
         name={id}
