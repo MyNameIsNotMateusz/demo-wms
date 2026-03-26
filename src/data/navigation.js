@@ -1,5 +1,6 @@
 import plannedDeliveryIcon from "../assets/icons/plannedDeliveryIcon.png";
 import createComponentsIcon from "../assets/icons/createComponentsIcon.png";
+import userManagementIcon from "../assets/icons/usersManagement.png";
 
 export const navItems = {
   tabs: [
@@ -34,7 +35,18 @@ export const navItems = {
       label: "Settings",
       code: "settings",
       to: "/settings",
-      sections: [],
+      sections: [
+        {
+          title: "System Settings",
+          items: [
+            {
+              text: "User Management",
+              code: "user_management",
+              icon: userManagementIcon,
+            },
+          ],
+        },
+      ],
     },
   ],
 };
