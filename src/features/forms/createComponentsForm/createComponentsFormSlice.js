@@ -27,6 +27,7 @@ export const fetchCoils = createAsyncThunk(
 );
 
 const initialState = {
+  fullStock: [],
   coils: [],
   isLoading: false,
   isError: false,
@@ -35,6 +36,11 @@ const initialState = {
 const createComponentsFormSlice = createSlice({
   name: "createComponentsForm",
   initialState,
+  reducers: {
+    setFullStock: (state, action) => {
+      state.fullStock = action.payload || [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCoils.pending, (state) => {
@@ -53,5 +59,7 @@ const createComponentsFormSlice = createSlice({
       });
   },
 });
+
+export const { setFullStock } = createComponentsFormSlice.actions;
 
 export default createComponentsFormSlice.reducer;

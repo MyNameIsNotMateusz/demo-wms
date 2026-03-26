@@ -9,6 +9,8 @@ import { selectProjects } from "./createComponentsSelectors";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCoils } from "./createComponentsFormSlice";
 import { MaterialSummary } from "./MaterialSummary";
+import { getRecipesForMaterial } from "./utils/getRecipesForMaterial";
+import { setFullStock } from "./createComponentsFormSlice";
 
 export const CreateComponentsForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -37,6 +39,9 @@ export const CreateComponentsForm = ({ onClose }) => {
         is_simplified: null,
     });
     const [isAssemblyMode, setIsAssemblyMode] = useState(null);
+    const [maxProducible, setMaxProducible] = useState(null);
+    const [maxProducibleSelected, setMaxProducibleSelected] = useState(null);
+
 
     const {
         coils,
@@ -62,6 +67,14 @@ export const CreateComponentsForm = ({ onClose }) => {
         setPreviewSrc(data.graphic_uml);
         updateFormData(setFormData, "project", data.projects?.[0]?.name);
         updateFormData(setFormData, "material_code", data.code);
+
+        const recipes = getRecipesForMaterial({
+            projects,
+            projectName: data.projects?.[0]?.name,
+            materialCode: data.code
+        });
+        setRecipes(recipes);
+
         setMaterialExtraData({
             destination: data.destination,
             is_simplified: data.is_simplified,
@@ -87,6 +100,12 @@ export const CreateComponentsForm = ({ onClose }) => {
 
     const handleMaterialCodeChange = async (val) => {
         updateFormData(setFormData, "material_code", val);
+        const recipes = getRecipesForMaterial({
+            projects,
+            projectName: formData.project,
+            materialCode: val
+        })
+        setRecipes(recipes);
 
         if (!val) {
             setMaterialExtraData({ destination: null, is_simplified: null });
@@ -209,6 +228,8 @@ export const CreateComponentsForm = ({ onClose }) => {
                             <ImagePreview
                                 id="graphic_uml"
                                 label="Material Image"
+                                src={previewSrc}
+                                name={formData.material_code}
                             />
                         </FormRow>
                     </FormColumn>
