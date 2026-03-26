@@ -141,3 +141,9 @@ export const FormColumn = styled.div`
   flex: ${({ $flex }) => $flex || "1"};
   row-gap: 10px;
 `;
+
+export const SummaryWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
