@@ -12,6 +12,7 @@ export const UserTable = ({
     data,
     selectedRows,
     setSelectedRows,
+    isUserFormVisible
 }) => {
     const { userSortConfig, userFilters } = useSelector(
         (state) => state.userManagementForm,
@@ -31,7 +32,7 @@ export const UserTable = ({
                 <TableBodyRow
                     key={index}
                     onClick={(e) => {
-                        if (e.target.tagName.toLowerCase() === "input") return;
+                        if (e.target.tagName.toLowerCase() === "input" || isUserFormVisible) return;
                         handleRowClick(row.email, setSelectedRows, false);
                     }}
                 >
@@ -41,6 +42,7 @@ export const UserTable = ({
                             style={{ cursor: "pointer" }}
                             checked={selectedRows[row.email] || false}
                             onChange={() => {
+                                if (isUserFormVisible) return;
                                 handleRowClick(row.email, setSelectedRows, false);
                             }}
                         />

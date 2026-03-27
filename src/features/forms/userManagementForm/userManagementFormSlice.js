@@ -23,10 +23,33 @@ export const fetchUsers = createAsyncThunk(
   },
 );
 
+export const fetchAccessTabs = createAsyncThunk(
+  "userManagementFormSlice/fetchAccessTabs",
+  async (token) => {
+    try {
+      const response = await fetch(`${BASE_API_URL}common/tabs/catalog/`, {
+        headers: DEFAULT_HEADERS(token),
+      });
+
+      if (!response.ok) {
+        console.error("Error loading access tabs:", response.status);
+        throw new Error("Failed to load access tabs.");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching access tabs:", error);
+      throw error;
+    }
+  },
+);
+
 const initialState = {
   userRows: [],
   userSortConfig: {},
   userFilters: {},
+  accessTabs: [],
   isLoading: false,
   isError: false,
 };
@@ -91,6 +114,20 @@ const userManagementFormSlice = createSlice({
         state.userRows = action.payload;
       })
       .addCase(fetchUsers.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(fetchAccessTabs.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchAccessTabs.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+
+        state.accessTabs = action.payload;
+      })
+      .addCase(fetchAccessTabs.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

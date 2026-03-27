@@ -8,10 +8,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { selectUsers } from "./userManagementSelectors";
 import { UserTable } from "./UserTable";
-import { fetchUsers } from "./userManagementFormSlice";
+import { fetchUsers, fetchAccessTabs } from "./userManagementFormSlice";
 import { useAuth } from "../../../auth/AuthProvider";
 import { Summary, TableActionButton } from "../../../components/ui";
 import { handleError, handleSuccess } from "../../../utils/alerts";
+import { toggleAccessUtil, toggleAllChildrenUtil, selectAllAccessesUtil } from "./utils/accessUtils";
+import { UserForm } from "./UserForm";
 
 export const UserManagementForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -29,13 +31,16 @@ export const UserManagementForm = ({ onClose }) => {
     const [isUserFormVisible, setIsUserFormVisible] = useState(false);
     const [userFormData, setUserFormData] = useState({});
     const [mode, setMode] = useState(null);
+    const [selectedAccesses, setSelectedAccesses] = useState({});
+    const [editedValues, setEditedValues] = useState({});
 
-    const { userRows } = useSelector(
+    const { userRows, accessTabs } = useSelector(
         (state) => state.userManagementForm,
     );
 
     useEffect(() => {
         dispatch(fetchUsers(accessToken));
+        dispatch(fetchAccessTabs(accessToken));
     }, [dispatch]);
 
     useEffect(() => {
@@ -66,7 +71,6 @@ export const UserManagementForm = ({ onClose }) => {
             }
 
             const email = Object.keys(selectedUser)[0];
-
             const user = userRows.find((u) => u.email === email);
 
             if (!user) {
@@ -75,6 +79,28 @@ export const UserManagementForm = ({ onClose }) => {
             }
 
             setUserFormData(user);
+
+            if (user?.tabs_access?.length) {
+                const mappedAccesses = user.tabs_access.reduce((acc, tab) => {
+                    const enabledSubtabs = Object.entries(tab.subtabs)
+                        .filter(([, value]) => value === true)
+                        .reduce((subAcc, [key]) => {
+                            subAcc[key] = true;
+                            return subAcc;
+                        }, {});
+
+                    if (Object.keys(enabledSubtabs).length > 0) {
+                        acc[tab.code] = enabledSubtabs;
+                    }
+
+                    return acc;
+                }, {});
+
+                setSelectedAccesses(mappedAccesses);
+            } else {
+                setSelectedAccesses({});
+            }
+
             setMode("edit");
             setIsUserFormVisible(true);
         }
@@ -90,19 +116,55 @@ export const UserManagementForm = ({ onClose }) => {
                 is_active: true,
             });
 
+            setSelectedAccesses({});
+
             setMode("create");
             setIsUserFormVisible(true);
         }
     };
 
+    const toggleAccess = (code, category) => {
+        setSelectedAccesses((prev) =>
+            toggleAccessUtil(prev, code, category)
+        );
+    };
+
+    const toggleAllChildren = (category, isChecked) => {
+        setSelectedAccesses((prev) =>
+            toggleAllChildrenUtil(prev, category, isChecked, accessTabs)
+        );
+    };
+
+    const selectAllAccesses = () => {
+        setSelectedAccesses(selectAllAccessesUtil(accessTabs));
+    };
+
+    const handleCloseUserForm = () => {
+        setUserFormData({});
+        setIsUserFormVisible(false);
+    };
+
     return (
-        <FormLayout title="User Management Form" onClose={onClose} isLoading={isLoading}>
+        <FormLayout
+            title="User Management Form"
+            onClose={onClose}
+            isLoading={isLoading}
+            extra={isUserFormVisible && (
+                <UserForm
+                    title={mode === "create" ? "Add New User" : "Edit User"}
+                    onClose={handleCloseUserForm}
+                    isLoading={isLoading}
+                    formData={userFormData}
+                    setFormData={setUserFormData}
+                />
+            )}
+        >
             <FormTableWrapper>
-                <h1 onClick={() => console.log(userFormData)}>hej</h1>
                 <UserTable
                     data={displayedUsers}
                     selectedRows={selectedUser}
                     setSelectedRows={setSelectedUser}
+                    isUserFormVisible={isUserFormVisible}
                 />
             </FormTableWrapper>
             <SummaryWrapper>

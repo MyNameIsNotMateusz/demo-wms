@@ -7,9 +7,10 @@ import {
   FormBody,
 } from "./FormLayout.styles";
 
-export const FormLayout = ({ title, onClose, isLoading, children }) => {
+export const FormLayout = ({ title, onClose, isLoading, children, extra }) => {
   return (
     <FormWrapper>
+      {extra}
       <FormHeader>
         <FormHeaderText>{title}</FormHeaderText>
         <CloseButton onClick={() => !isLoading && onClose?.()}>
