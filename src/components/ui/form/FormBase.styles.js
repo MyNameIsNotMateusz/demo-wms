@@ -90,6 +90,7 @@ export const Form = styled.form`
   height: 100%;
   overflow: auto;
   max-width: 100%;
+  gap: 10px;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -111,6 +112,14 @@ export const Form = styled.form`
     display: none;
     width: 0;
     height: 0;
+  }
+
+  @media (max-width: 1600px) {
+    gap: 8px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 6px;
   }
 `;
 
@@ -146,4 +155,11 @@ export const SummaryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+export const CheckboxGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  align-self: flex-start;
 `;

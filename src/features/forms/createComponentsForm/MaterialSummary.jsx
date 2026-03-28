@@ -1,4 +1,5 @@
 import { Summary } from "../../../components/ui";
+import { SummaryWrapper } from "../../../components/ui/form/FormBase.styles";
 
 export const MaterialSummary = ({ materialData, materialCode }) => {
     if (
@@ -10,7 +11,7 @@ export const MaterialSummary = ({ materialData, materialCode }) => {
     }
 
     return (
-        <>
+        <SummaryWrapper>
             <Summary
                 label="Destination"
                 value={
@@ -26,6 +27,6 @@ export const MaterialSummary = ({ materialData, materialCode }) => {
                 label="Label"
                 value={materialData.is_simplified ? "NO" : "YES"}
             />
-        </>
+        </SummaryWrapper>
     )
 }

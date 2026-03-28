@@ -1,6 +1,6 @@
 import { FormLayout } from "../../../components/layout"
 import { useEffect, useState } from "react";
-import { Form, FormSection, FormColumn, FormRow } from "../../../components/ui/form/FormBase.styles";
+import { Form, FormSection, FormColumn, FormRow, SummaryWrapper } from "../../../components/ui/form/FormBase.styles";
 import { FormInput, FetchButton, FormSelect, ImagePreview } from "../../../components/ui";
 import { updateFormData } from "../../../utils/forms/updateFormData";
 import { fetchData } from "../../../utils/forms/fetchData";
@@ -234,7 +234,6 @@ export const CreateComponentsForm = ({ onClose }) => {
                         </FormRow>
                     </FormColumn>
                 </FormSection>
-
                 <MaterialSummary
                     materialData={materialExtraData}
                     materialCode={formData.material_code}

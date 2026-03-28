@@ -14,6 +14,7 @@ import { Summary, TableActionButton } from "../../../components/ui";
 import { handleError, handleSuccess } from "../../../utils/alerts";
 import { toggleAccessUtil, toggleAllChildrenUtil, selectAllAccessesUtil } from "./utils/accessUtils";
 import { UserForm } from "./UserForm";
+import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 
 export const UserManagementForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -32,7 +33,6 @@ export const UserManagementForm = ({ onClose }) => {
     const [userFormData, setUserFormData] = useState({});
     const [mode, setMode] = useState(null);
     const [selectedAccesses, setSelectedAccesses] = useState({});
-    const [editedValues, setEditedValues] = useState({});
 
     const { userRows, accessTabs } = useSelector(
         (state) => state.userManagementForm,
@@ -82,8 +82,13 @@ export const UserManagementForm = ({ onClose }) => {
 
             if (user?.tabs_access?.length) {
                 const mappedAccesses = user.tabs_access.reduce((acc, tab) => {
+                    const accessTab = accessTabs.find((t) => t.code === tab.code);
+                    if (!accessTab) return acc;
+
+                    const allowedChildrenCodes = accessTab.children.map((c) => c.code);
+
                     const enabledSubtabs = Object.entries(tab.subtabs)
-                        .filter(([, value]) => value === true)
+                        .filter(([key, value]) => value === true && allowedChildrenCodes.includes(key))
                         .reduce((subAcc, [key]) => {
                             subAcc[key] = true;
                             return subAcc;
@@ -144,6 +149,115 @@ export const UserManagementForm = ({ onClose }) => {
         setIsUserFormVisible(false);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const { name, email, password, position, role, is_staff } = userFormData;
+
+        if (
+            mode === "create" &&
+            userRows.some(
+                (u) => u.email.toLowerCase() === email.toLowerCase()
+            )
+        ) {
+            handleError("A user with this email already exists.");
+            return;
+        }
+
+        const isMissingRequiredFields =
+            !name || !email || !position || !role || (mode === "create" && !password);
+
+        if (isMissingRequiredFields) {
+            handleError(
+                "Please fill in all required fields: name, email, password (for new users), position, and role."
+            );
+            return;
+        }
+
+        if (role === "admin" && !is_staff) {
+            handleError(
+                'For an "admin" account, the Is Staff checkbox must be checked.'
+            );
+            return;
+        }
+
+        if (mode === "create") {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                handleError(
+                    "Please enter a valid email address (example: name@domain.com)."
+                );
+                return;
+            }
+
+            if (password.length < 8) {
+                handleError("Password must be at least 8 characters long.");
+                return;
+            }
+
+            if (/^\d+$/.test(password)) {
+                handleError("Password cannot consist of only numbers.");
+                return;
+            }
+
+            if (
+                !/[A-Z]/.test(password) ||
+                !/[a-z]/.test(password) ||
+                !/[0-9]/.test(password)
+            ) {
+                handleError(
+                    "Password must contain at least one uppercase letter, one lowercase letter, and one number."
+                );
+                return;
+            }
+        }
+
+        const tab_access = Object.values(selectedAccesses).flatMap((category) =>
+            Object.entries(category)
+                .filter(([_, isActive]) => isActive)
+                .map(([key]) => key)
+        );
+
+        const userToSend =
+            mode === "create"
+                ? { ...userFormData, tab_access }
+                : (() => {
+                    const { created_at, id, tabs_access, ...restUser } = userFormData;
+                    return { ...restUser, tab_access };
+                })();
+
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(
+                `${BASE_API_URL}common/users/upsert/`,
+                {
+                    method: "POST",
+                    headers: DEFAULT_HEADERS(accessToken),
+                    body: JSON.stringify(userToSend),
+                }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const backendMessage =
+                    errorData?.errors?.errors?.join(", ") ||
+                    "Error creating/updating user";
+                throw new Error(backendMessage);
+            }
+
+            dispatch(fetchUsers(accessToken));
+            setSelectedAccesses({});
+            handleCloseUserForm();
+            handleSuccess("Operation completed successfully.");
+        } catch (error) {
+            console.error(error);
+            handleError(`Operation failed: ${error.message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <FormLayout
             title="User Management Form"
@@ -156,6 +270,12 @@ export const UserManagementForm = ({ onClose }) => {
                     isLoading={isLoading}
                     formData={userFormData}
                     setFormData={setUserFormData}
+                    mode={mode}
+                    selectAllAccesses={selectAllAccesses}
+                    selectedAccesses={selectedAccesses}
+                    toggleAllChildren={toggleAllChildren}
+                    toggleAccess={toggleAccess}
+                    handleSubmit={handleSubmit}
                 />
             )}
         >

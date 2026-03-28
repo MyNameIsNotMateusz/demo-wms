@@ -51,7 +51,9 @@ export const UserTable = ({
                     <TableBodyCell>{row.name}</TableBodyCell>
                     <TableBodyCell>{row.email}</TableBodyCell>
                     <TableBodyCell>{row.position}</TableBodyCell>
-                    <TableBodyCell>{row.role}</TableBodyCell>
+                    <TableBodyCell>
+                        {row.role.charAt(0).toUpperCase() + row.role.slice(1)}
+                    </TableBodyCell>
                     <TableBodyCell>
                         {row.is_active === true ? "Active" : "Inactive"}
                     </TableBodyCell>

@@ -9,6 +9,7 @@ import { ReadOnlyField } from "./form/ReadOnlyField";
 import { FetchButton } from "./form/FetchButton";
 import { ImagePreview } from "./form/ImagePreview";
 import { Summary } from "./form/Summary";
+import { CheckboxField } from "./form/CheckboxField";
 
 export {
   FormInput,
@@ -21,5 +22,6 @@ export {
   ReadOnlyField,
   FetchButton,
   ImagePreview,
-  Summary
+  Summary,
+  CheckboxField,
 };
