@@ -8,11 +8,13 @@ import recipesReducer from "../features/dictionaries/recipesSlice";
 import createComponentsFormReducer from "../features/forms/createComponentsForm/createComponentsFormSlice";
 import userManagementFormReducer from "../features/forms/userManagementForm/userManagementFormSlice";
 import contractorManagementFormReducer from "../features/forms/contractorManagementForm/contractorManagementFormSlice";
+import projectsReducer from "../features/dictionaries/projectsSlice";
 
 export default configureStore({
   reducer: {
     recipes: recipesReducer,
     contractors: contractorsReducer,
+    projects: projectsReducer,
     plannedDelivery: plannedDeliveryReducer,
     contractorManagementForm: contractorManagementFormReducer,
     userManagementForm: userManagementFormReducer,

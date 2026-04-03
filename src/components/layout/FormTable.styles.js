@@ -8,6 +8,7 @@ export const StyledFormTable = styled.table`
 export const TableHeader = styled.thead`
   position: sticky;
   top: 0px;
+  z-index: 2;
 `;
 
 export const TableHeaderRow = styled.tr`

@@ -1,8 +1,8 @@
-export const selectAllRows = (displayedData, setter, idKey) => {
+export const selectAllRows = (displayedData, setter, getRowId) => {
   const newSelectedRows = {};
 
   displayedData.forEach((item) => {
-    const key = item[idKey];
+    const key = getRowId(item);
     newSelectedRows[key] = true;
   });
 

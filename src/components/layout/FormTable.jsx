@@ -25,7 +25,7 @@ export const FormTable = ({
   rows,
   selectedRows,
   setSelectedRows,
-  idKey,
+  getRowId,
   sortConfig,
   setSortConfig,
   filters,
@@ -53,7 +53,7 @@ export const FormTable = ({
                 }
                 onChange={(e) => {
                   if (e.target.checked) {
-                    selectAllRows(rows, setSelectedRows, idKey);
+                    selectAllRows(rows, setSelectedRows, getRowId);
                   } else {
                     deselectAllRows(setSelectedRows);
                   }

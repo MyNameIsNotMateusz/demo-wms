@@ -1,16 +1,33 @@
 import { FormLayout } from "../../../components/layout"
 import { updateFormData } from "../../../utils/forms/updateFormData"
-import { Form, FormRow } from "../../../components/ui/form/FormBase.styles";
-import { FormInput, FormSelect, SubmitButton, FetchButton } from "../../../components/ui";
+import { Form, FormActionsWrapper, FormRow, FormTableWrapper } from "../../../components/ui/form/FormBase.styles";
+import { FormInput, FormSelect, SubmitButton, FetchButton, TableActionButton } from "../../../components/ui";
 import { useState } from "react";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { useAuth } from "../../../auth/AuthProvider";
-import { handleError, handleSuccess } from "../../../utils/alerts";
+import { ProjectsTable } from "./ProjectsTable";
+import { selectProjects } from "./contractorManagementSelectors";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { addNewProjectRow, removeProjectRow } from "./contractorManagementFormSlice";
+import { getNextSelectedProject } from "./utils/projectsTableUtils";
+import { handleError } from "../../../utils/alerts";
+import { updateProjectRow } from "./contractorManagementFormSlice";
+import { findProjectByCode } from "./utils/projectUtils";
 
-export const UserForm = ({ title, onClose, isLoading, formData, setFormData, mode, handleSubmit }) => {
+export const ContractorForm = ({ title, onClose, isLoading, formData, setFormData, handleSubmit }) => {
     const { accessToken } = useAuth();
 
+    const displayedProjects = useSelector(selectProjects);
+
+    const dispatch = useDispatch();
+
     const [isFetchingContractor, setIsFetchingContractor] = useState(false);
+    const [selectedProjects, setSelectedProjects] = useState({});
+
+    const {
+        projectsList
+    } = useSelector((state) => state.projects);
 
     const handleFetchContractor = async (e) => {
         e.preventDefault();
@@ -53,9 +70,77 @@ export const UserForm = ({ title, onClose, isLoading, formData, setFormData, mod
             }));
         } catch (error) {
             console.error(error);
-            handleError(`Operation failed: ${error.message}`);
         } finally {
             setIsFetchingContractor(false);
+        }
+    };
+
+    const handleAddNewProjectRow = (e) => {
+        e.preventDefault();
+
+        const rowId = uuidv4();
+
+        dispatch(addNewProjectRow({ rowId }));
+    };
+
+    const handleRemoveProjectRow = (e) => {
+        e.preventDefault();
+
+        const selectedKeys = Object.keys(selectedProjects);
+
+        if (selectedKeys.length === 0) {
+            handleError("No project selected.");
+            return;
+        }
+
+        if (selectedKeys.length > 1) {
+            dispatch(removeProjectRow(selectedKeys));
+            setSelectedProjects({});
+            return;
+        }
+
+        const selectedKey = selectedKeys[0];
+
+        dispatch(removeProjectRow(selectedKeys));
+
+        const nextKey = getNextSelectedProject(
+            displayedProjects,
+            selectedKey
+        );
+
+        if (nextKey) {
+            setSelectedProjects({ [nextKey]: true });
+        } else {
+            setSelectedProjects({});
+        }
+    };
+
+    const handleUpdateProject = (rowId, key, value) => {
+        dispatch(updateProjectRow({ rowId, key, value }));
+
+        if (value === "") {
+            dispatch(updateProjectRow({ rowId, key: "name", value: "" }));
+            dispatch(updateProjectRow({ rowId, key: "type", value: "" }));
+            return;
+        }
+
+        const selectedProject = findProjectByCode(projectsList, value);
+
+        if (selectedProject) {
+            dispatch(
+                updateProjectRow({
+                    rowId,
+                    key: "name",
+                    value: selectedProject.name,
+                })
+            );
+            dispatch(
+                updateProjectRow({
+                    rowId,
+                    key: "type",
+                    value: selectedProject.type,
+                })
+            );
         }
     };
 
@@ -173,8 +258,27 @@ export const UserForm = ({ title, onClose, isLoading, formData, setFormData, mod
                         }))}
                     />
                 </FormRow>
-
+                <FormTableWrapper>
+                    <ProjectsTable
+                        data={displayedProjects}
+                        selectedRows={selectedProjects}
+                        setSelectedRows={setSelectedProjects}
+                        handleUpdateProject={handleUpdateProject}
+                        projects={projectsList}
+                    />
+                </FormTableWrapper>
+                <FormActionsWrapper>
+                    <TableActionButton
+                        handleClick={(e) => handleAddNewProjectRow(e)}
+                        type="add"
+                    />
+                    <TableActionButton
+                        handleClick={(e) => handleRemoveProjectRow(e)}
+                        type="remove"
+                    />
+                </FormActionsWrapper>
             </Form>
+
             <SubmitButton
                 isLoading={isLoading}
                 onClick={handleSubmit}

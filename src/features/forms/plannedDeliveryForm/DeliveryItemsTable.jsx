@@ -45,7 +45,7 @@ export const DeliveryItemsTable = ({
       rows={data}
       selectedRows={selectedRows}
       setSelectedRows={setSelectedRows}
-      idKey="id"
+      getRowId={(row) => row.id}
       sortConfig={deliveryItemsSortConfig}
       setSortConfig={setDeliveryItemsSortConfig}
       filters={deliveryItemsFilters}
