@@ -2,6 +2,8 @@ export const adjustColumnWidths = (tableOrigin) => {
   const table = document.querySelector(`[data-table-origin="${tableOrigin}"]`);
   const headerCells = table.querySelectorAll("thead .tableCell");
 
+  console.log(headerCells);
+
   headerCells.forEach((headerCell) => {
     const width = getComputedStyle(headerCell).width;
     const columnIndex = headerCell.cellIndex;
@@ -20,4 +22,3 @@ export const adjustColumnWidths = (tableOrigin) => {
     headerCell.style.maxWidth = width;
   });
 };
-

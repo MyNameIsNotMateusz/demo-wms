@@ -1,6 +1,7 @@
 import plannedDeliveryIcon from "../assets/icons/plannedDeliveryIcon.png";
 import createComponentsIcon from "../assets/icons/createComponentsIcon.png";
 import userManagementIcon from "../assets/icons/usersManagement.png";
+import contractorManagementIcon from "../assets/icons/contractorManagement.png";
 
 export const navItems = {
   tabs: [
@@ -43,6 +44,11 @@ export const navItems = {
               text: "User Management",
               code: "user_management",
               icon: userManagementIcon,
+            },
+            {
+              text: "Contractor Management",
+              code: "contractor_management",
+              icon: contractorManagementIcon,
             },
           ],
         },

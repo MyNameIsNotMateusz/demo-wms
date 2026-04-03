@@ -7,12 +7,14 @@ import plannedDeliveryFormReducer from "../features/forms/plannedDeliveryForm/pl
 import recipesReducer from "../features/dictionaries/recipesSlice";
 import createComponentsFormReducer from "../features/forms/createComponentsForm/createComponentsFormSlice";
 import userManagementFormReducer from "../features/forms/userManagementForm/userManagementFormSlice";
+import contractorManagementFormReducer from "../features/forms/contractorManagementForm/contractorManagementFormSlice";
 
 export default configureStore({
   reducer: {
     recipes: recipesReducer,
     contractors: contractorsReducer,
     plannedDelivery: plannedDeliveryReducer,
+    contractorManagementForm: contractorManagementFormReducer,
     userManagementForm: userManagementFormReducer,
     plannedDeliveryForm: plannedDeliveryFormReducer,
     createComponentsForm: createComponentsFormReducer,

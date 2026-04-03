@@ -63,11 +63,9 @@ export const FormTable = ({
 
           </TableHeaderCell>
           {columns.map((title, index) => (
-            <TableHeaderCell key={index}>
-              <ColumnFilterContainer
-                onClick={() => toggleSort(index, setSortConfig, dispatch)}
-              >
-                <ColumnHeader>
+            <TableHeaderCell key={index} className="tableCell">
+              <ColumnFilterContainer>
+                <ColumnHeader onClick={() => toggleSort(index, setSortConfig, dispatch)}>
                   <ColumnTitle>{title}</ColumnTitle>
                   <SortIconWrapper state={sortConfig[index]}>
                     <svg
