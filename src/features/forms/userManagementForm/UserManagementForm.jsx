@@ -15,6 +15,7 @@ import { handleError, handleSuccess } from "../../../utils/alerts";
 import { toggleAccessUtil, toggleAllChildrenUtil, selectAllAccessesUtil } from "./utils/accessUtils";
 import { UserForm } from "./UserForm";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
+import { validateUserForm } from "./utils/userValidation";
 
 export const UserManagementForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -152,83 +153,35 @@ export const UserManagementForm = ({ onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { name, email, password, position, role, is_staff } = userFormData;
-
-        if (
-            mode === "create" &&
-            userRows.some(
-                (u) => u.email.toLowerCase() === email.toLowerCase()
-            )
-        ) {
-            handleError("A user with this email already exists.");
-            return;
-        }
-
-        const isMissingRequiredFields =
-            !name || !email || !position || !role || (mode === "create" && !password);
-
-        if (isMissingRequiredFields) {
-            handleError(
-                "Please fill in all required fields: name, email, password (for new users), position, and role."
-            );
-            return;
-        }
-
-        if (role === "admin" && !is_staff) {
-            handleError(
-                'For an "admin" account, the Is Staff checkbox must be checked.'
-            );
-            return;
-        }
-
-        if (mode === "create") {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                handleError(
-                    "Please enter a valid email address (example: name@domain.com)."
-                );
-                return;
-            }
-
-            if (password.length < 8) {
-                handleError("Password must be at least 8 characters long.");
-                return;
-            }
-
-            if (/^\d+$/.test(password)) {
-                handleError("Password cannot consist of only numbers.");
-                return;
-            }
-
-            if (
-                !/[A-Z]/.test(password) ||
-                !/[a-z]/.test(password) ||
-                !/[0-9]/.test(password)
-            ) {
-                handleError(
-                    "Password must contain at least one uppercase letter, one lowercase letter, and one number."
-                );
-                return;
-            }
-        }
-
-        const tab_access = Object.values(selectedAccesses).flatMap((category) =>
-            Object.entries(category)
-                .filter(([_, isActive]) => isActive)
-                .map(([key]) => key)
-        );
-
-        const userToSend =
-            mode === "create"
-                ? { ...userFormData, tab_access }
-                : (() => {
-                    const { created_at, id, tabs_access, ...restUser } = userFormData;
-                    return { ...restUser, tab_access };
-                })();
-
         setIsLoading(true);
 
         try {
+            const isValid = validateUserForm(
+                userFormData,
+                mode,
+                userRows,
+                handleError
+            );
+
+            if (!isValid) {
+                setIsLoading(false);
+                return;
+            }
+
+            const tab_access = Object.values(selectedAccesses).flatMap((category) =>
+                Object.entries(category)
+                    .filter(([_, isActive]) => isActive)
+                    .map(([key]) => key)
+            );
+
+            const userToSend =
+                mode === "create"
+                    ? { ...userFormData, tab_access }
+                    : (() => {
+                        const { created_at, id, tabs_access, ...restUser } = userFormData;
+                        return { ...restUser, tab_access };
+                    })();
+
             const response = await fetch(
                 `${BASE_API_URL}common/users/upsert/`,
                 {
