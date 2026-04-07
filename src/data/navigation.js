@@ -2,6 +2,7 @@ import plannedDeliveryIcon from "../assets/icons/plannedDeliveryIcon.png";
 import createComponentsIcon from "../assets/icons/createComponentsIcon.png";
 import userManagementIcon from "../assets/icons/usersManagement.png";
 import contractorManagementIcon from "../assets/icons/contractorManagement.png";
+import changePasswordIcon from "../assets/icons/changePasswordIcon.png";
 
 export const navItems = {
   tabs: [
@@ -49,6 +50,11 @@ export const navItems = {
               text: "Contractor Management",
               code: "contractor_management",
               icon: contractorManagementIcon,
+            },
+            {
+              text: "Change Password",
+              code: "change_password",
+              icon: changePasswordIcon,
             },
           ],
         },

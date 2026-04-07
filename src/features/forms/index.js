@@ -2,10 +2,12 @@ import { CreateComponentsForm } from "./createComponentsForm/CreateComponentsFor
 import { PlannedDeliveryForm } from "./plannedDeliveryForm/PlannedDeliveryForm";
 import { UserManagementForm } from "./userManagementForm/UserManagementForm";
 import { ContractorManagementForm } from "./contractorManagementForm/ContractorManagementForm";
+import { ChangePasswordForm } from "./changePassword/ChangePasswordForm";
 
 export {
   CreateComponentsForm,
   PlannedDeliveryForm,
   UserManagementForm,
   ContractorManagementForm,
+  ChangePasswordForm,
 };
