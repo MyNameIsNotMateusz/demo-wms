@@ -4,6 +4,7 @@ import { UserManagementForm } from "./userManagementForm/UserManagementForm";
 import { ContractorManagementForm } from "./contractorManagementForm/ContractorManagementForm";
 import { ChangePasswordForm } from "./changePassword/ChangePasswordForm";
 import { MaterialManagementForm } from "./materialManagement/MaterialManagementForm";
+import { ProjectManagementForm } from "./projectManagementForm/ProjectManagementForm";
 
 export {
   CreateComponentsForm,
@@ -12,4 +13,5 @@ export {
   ContractorManagementForm,
   ChangePasswordForm,
   MaterialManagementForm,
+  ProjectManagementForm,
 };
