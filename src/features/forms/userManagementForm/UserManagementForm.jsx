@@ -16,6 +16,8 @@ import { toggleAccessUtil, toggleAllChildrenUtil, selectAllAccessesUtil } from "
 import { UserForm } from "./UserForm";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { validateUserForm } from "./utils/userValidation";
+import { handleCloseForm } from "../../../utils/forms/handleCloseForm";
+import { getSelectedItem } from "../../../utils/forms/getSelectedItem";
 
 export const UserManagementForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -66,18 +68,15 @@ export const UserManagementForm = ({ onClose }) => {
         if (isUserFormVisible) return;
 
         if (mode === "edit") {
-            if (!selectedUser || Object.keys(selectedUser).length === 0) {
-                handleError("Please select a user to edit first.");
-                return;
-            }
+            const user = getSelectedItem({
+                selected: selectedUser,
+                collection: userRows,
+                keyName: "email",
+                errorMessage: "Please select a user to edit first.",
+                handleError,
+            });
 
-            const email = Object.keys(selectedUser)[0];
-            const user = userRows.find((u) => u.email === email);
-
-            if (!user) {
-                handleError("User not found.");
-                return;
-            }
+            if (!user) return;
 
             setUserFormData(user);
 
@@ -89,7 +88,10 @@ export const UserManagementForm = ({ onClose }) => {
                     const allowedChildrenCodes = accessTab.children.map((c) => c.code);
 
                     const enabledSubtabs = Object.entries(tab.subtabs)
-                        .filter(([key, value]) => value === true && allowedChildrenCodes.includes(key))
+                        .filter(
+                            ([key, value]) =>
+                                value === true && allowedChildrenCodes.includes(key)
+                        )
                         .reduce((subAcc, [key]) => {
                             subAcc[key] = true;
                             return subAcc;
@@ -145,11 +147,6 @@ export const UserManagementForm = ({ onClose }) => {
         setSelectedAccesses(selectAllAccessesUtil(accessTabs));
     };
 
-    const handleCloseUserForm = () => {
-        setUserFormData({});
-        setIsUserFormVisible(false);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -201,7 +198,7 @@ export const UserManagementForm = ({ onClose }) => {
 
             dispatch(fetchUsers(accessToken));
             setSelectedAccesses({});
-            handleCloseUserForm();
+            handleCloseForm(setUserFormData, setIsUserFormVisible, setMode);
             handleSuccess("Operation completed successfully.");
         } catch (error) {
             console.error(error);
@@ -219,7 +216,6 @@ export const UserManagementForm = ({ onClose }) => {
             extra={isUserFormVisible && (
                 <UserForm
                     title={mode === "create" ? "Add New User" : "Edit User"}
-                    onClose={handleCloseUserForm}
                     isLoading={isLoading}
                     formData={userFormData}
                     setFormData={setUserFormData}
@@ -229,6 +225,8 @@ export const UserManagementForm = ({ onClose }) => {
                     toggleAllChildren={toggleAllChildren}
                     toggleAccess={toggleAccess}
                     handleSubmit={handleSubmit}
+                    setIsUserFormVisible={setIsUserFormVisible}
+                    setMode={setMode}
                 />
             )}
         >

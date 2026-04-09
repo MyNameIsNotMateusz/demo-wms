@@ -8,8 +8,9 @@ import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { useAuth } from "../../../auth/AuthProvider";
 import { handleError, handleSuccess } from "../../../utils/alerts";
 import { useSelector } from "react-redux";
+import { handleCloseForm } from "../../../utils/forms/handleCloseForm";
 
-export const UserForm = ({ title, onClose, isLoading, formData, setFormData, mode, selectAllAccesses, selectedAccesses, toggleAllChildren, toggleAccess, handleSubmit }) => {
+export const UserForm = ({ title, isLoading, formData, setFormData, mode, selectAllAccesses, selectedAccesses, toggleAllChildren, toggleAccess, handleSubmit, setIsUserFormVisible, setMode }) => {
     const { accessToken } = useAuth();
 
     const [isResettingPassword, setIsResettingPassword] = useState(false);
@@ -58,7 +59,13 @@ export const UserForm = ({ title, onClose, isLoading, formData, setFormData, mod
     return (
         <FormLayout
             title={title}
-            onClose={onClose}
+            onClose={() =>
+                handleCloseForm({
+                    setFormData,
+                    setIsFormVisible: setIsUserFormVisible,
+                    setMode,
+                })
+            }
         >
             <Form>
                 <FormRow>

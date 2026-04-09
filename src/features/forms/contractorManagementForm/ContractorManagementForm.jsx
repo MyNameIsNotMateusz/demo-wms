@@ -15,6 +15,8 @@ import { useAuth } from "../../../auth/AuthProvider";
 import { setProjects, resetProjects } from "./contractorManagementFormSlice"
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { validateContractorForm } from "./utils/contractorValidation";
+import { handleCloseForm } from "../../../utils/forms/handleCloseForm";
+import { getSelectedItem } from "../../../utils/forms/getSelectedItem";
 
 export const ContractorManagementForm = ({ onClose }) => {
 
@@ -71,20 +73,15 @@ export const ContractorManagementForm = ({ onClose }) => {
         if (isContractorFormVisible) return;
 
         if (mode === "edit") {
-            if (!selectedContractor || Object.keys(selectedContractor).length === 0) {
-                handleError("Please select a contractor to edit first.");
-                return;
-            }
+            const contractor = getSelectedItem({
+                selected: selectedContractor,
+                collection: contractors,
+                keyName: "tax_id",
+                errorMessage: "Please select a contractor to edit first.",
+                handleError,
+            });
 
-            const selectedNIP = Object.keys(selectedContractor)[0];
-            const contractor = contractors.find(
-                (c) => c.tax_id === selectedNIP
-            );
-
-            if (!contractor) {
-                handleError("Contractor not found.");
-                return;
-            }
+            if (!contractor) return;
 
             setContractorFormData(contractor);
             setMode("edit");
@@ -108,9 +105,11 @@ export const ContractorManagementForm = ({ onClose }) => {
     };
 
     const handleCloseContractorForm = () => {
-        setContractorFormData({});
-        setIsContractorFormVisible(false);
-        setMode(null);
+        handleCloseForm({
+            setFormData: setContractorFormData,
+            setIsFormVisible: setIsContractorFormVisible,
+            setMode,
+        })
         dispatch(resetProjects());
     };
 

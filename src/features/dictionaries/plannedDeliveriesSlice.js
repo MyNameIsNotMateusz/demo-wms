@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../api/config";
 
 export const fetchPlannedDeliveries = createAsyncThunk(
-  "plannedDeliverySlice/fetchPlannedDeliveries",
+  "plannedDeliveriesSlice/fetchPlannedDeliveries",
   async (token) => {
     try {
       const response = await fetch(
@@ -32,7 +32,7 @@ const initialState = {
   isError: false,
 };
 
-export const plannedDeliverySlice = createSlice({
+export const plannedDeliveriesSlice = createSlice({
   name: "plannedDelivery",
   initialState,
   extraReducers: (builder) => {
@@ -54,4 +54,4 @@ export const plannedDeliverySlice = createSlice({
   },
 });
 
-export default plannedDeliverySlice.reducer;
+export default plannedDeliveriesSlice.reducer;

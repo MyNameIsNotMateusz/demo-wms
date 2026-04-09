@@ -7,6 +7,7 @@ const {
   fetchPlannedDeliveries,
   fetchRecipes,
   fetchProjects,
+  fetchMaterials,
 } = dictionaryThunks;
 
 export const useLoadDictionaries = (accessToken) => {
@@ -21,6 +22,7 @@ export const useLoadDictionaries = (accessToken) => {
     dispatch(fetchPlannedDeliveries(accessToken));
     dispatch(fetchRecipes(accessToken));
     dispatch(fetchProjects(accessToken));
+    dispatch(fetchMaterials(accessToken));
 
     hasFetched.current = true;
   }, [dispatch, accessToken]);

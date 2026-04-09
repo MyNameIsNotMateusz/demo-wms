@@ -3,6 +3,7 @@ import createComponentsIcon from "../assets/icons/createComponentsIcon.png";
 import userManagementIcon from "../assets/icons/usersManagement.png";
 import contractorManagementIcon from "../assets/icons/contractorManagement.png";
 import changePasswordIcon from "../assets/icons/changePasswordIcon.png";
+import materialManagementIcon from "../assets/icons/materialManagement.png";
 
 export const navItems = {
   tabs: [
@@ -55,6 +56,16 @@ export const navItems = {
               text: "Change Password",
               code: "change_password",
               icon: changePasswordIcon,
+            },
+          ],
+        },
+        {
+          title: "Warehouse Settings",
+          items: [
+            {
+              text: "Material Management",
+              code: "material_management",
+              icon: materialManagementIcon,
             },
           ],
         },

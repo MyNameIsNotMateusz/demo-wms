@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   contractorSortConfig: {},
