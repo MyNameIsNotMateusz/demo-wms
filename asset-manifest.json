@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/demo-wms/static/js/main.512ab88c.js",
+    "main.js": "/demo-wms/static/js/main.cb8bcef1.js",
     "index.html": "/demo-wms/index.html",
-    "main.512ab88c.js.map": "/demo-wms/static/js/main.512ab88c.js.map"
+    "main.cb8bcef1.js.map": "/demo-wms/static/js/main.cb8bcef1.js.map"
   },
   "entrypoints": [
-    "static/js/main.512ab88c.js"
+    "static/js/main.cb8bcef1.js"
   ]
 }
