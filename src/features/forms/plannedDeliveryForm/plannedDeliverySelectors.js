@@ -12,7 +12,7 @@ const getDeliveryItemsFilters = (state) =>
   state.plannedDeliveryForm.deliveryItemsFilters;
 
 const getPlannedDeliveriesRows = (state) =>
-  state.plannedDelivery.plannedDeliveries;
+  state.plannedDeliveries.plannedDeliveries;
 const getPlannedDeliveriesSortConfig = (state) =>
   state.plannedDeliveryForm.plannedDeliveriesSortConfig;
 const getPlannedDeliveriesFilters = (state) =>

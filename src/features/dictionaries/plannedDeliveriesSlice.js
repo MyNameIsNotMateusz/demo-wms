@@ -33,7 +33,7 @@ const initialState = {
 };
 
 export const plannedDeliveriesSlice = createSlice({
-  name: "plannedDelivery",
+  name: "plannedDeliveries",
   initialState,
   extraReducers: (builder) => {
     builder

@@ -156,7 +156,6 @@ export const ContractorManagementForm = ({ onClose }) => {
                 throw new Error(backendMessage);
             }
 
-            setContractorFormData({});
             dispatch(resetProjects());
             handleSuccess("Operation completed successfully.");
             dispatch(fetchContractors(accessToken));

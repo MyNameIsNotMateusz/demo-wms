@@ -6,3 +6,5 @@ export const projectColumns = [
   "Start Date",
   "End Date",
 ];
+
+export const materialsColumns = ["Material Type", "Material Code", "Material Name"];
