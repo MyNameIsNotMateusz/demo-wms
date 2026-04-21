@@ -12,6 +12,7 @@ import projectsReducer from "../features/dictionaries/projectsSlice";
 import materialsReducer from "../features/dictionaries/materialsSlice";
 import materialManagementFormReducer from "../features/forms/materialManagement/materialManagementFormSlice";
 import projectManagementFormReducer from "../features/forms/projectManagementForm/projectManagementFormSlice";
+import recipesManagerFormReducer from "../features/forms/recipesManagerForm/recipesManagerFormSlice";
 
 export default configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export default configureStore({
     contractors: contractorsReducer,
     projects: projectsReducer,
     plannedDeliveries: plannedDeliveriesReducer,
+    recipesManagerForm: recipesManagerFormReducer,
     projectManagementForm: projectManagementFormReducer,
     materialManagementForm: materialManagementFormReducer,
     contractorManagementForm: contractorManagementFormReducer,

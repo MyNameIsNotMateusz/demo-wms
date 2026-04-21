@@ -5,6 +5,7 @@ import { ContractorManagementForm } from "./contractorManagementForm/ContractorM
 import { ChangePasswordForm } from "./changePassword/ChangePasswordForm";
 import { MaterialManagementForm } from "./materialManagement/MaterialManagementForm";
 import { ProjectManagementForm } from "./projectManagementForm/ProjectManagementForm";
+import { RecipesManagerForm } from "./recipesManagerForm/RecipesManagerForm";
 
 export {
   CreateComponentsForm,
@@ -14,4 +15,5 @@ export {
   ChangePasswordForm,
   MaterialManagementForm,
   ProjectManagementForm,
+  RecipesManagerForm,
 };

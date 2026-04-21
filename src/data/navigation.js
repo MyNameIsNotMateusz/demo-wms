@@ -5,6 +5,7 @@ import contractorManagementIcon from "../assets/icons/contractorManagement.png";
 import changePasswordIcon from "../assets/icons/changePasswordIcon.png";
 import materialManagementIcon from "../assets/icons/materialManagement.png";
 import projectManagementIcon from "../assets/icons/projectManagement.png";
+import recipesManagerIcon from "../assets/icons/recipesManagerIcon.png";
 
 export const navItems = {
   tabs: [
@@ -72,6 +73,16 @@ export const navItems = {
               text: "Project Management",
               code: "project_management",
               icon: projectManagementIcon,
+            },
+          ],
+        },
+        {
+          title: "Material Management",
+          items: [
+            {
+              text: "Recipes Manager",
+              code: "recipes_manager",
+              icon: recipesManagerIcon,
             },
           ],
         },

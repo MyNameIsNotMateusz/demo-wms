@@ -26,7 +26,7 @@ export const ContractorManagementForm = ({ onClose }) => {
 
     const displayedContractors = useSelector(selectContractors);
 
-    const { fetchContractors } = dictionaryThunks;
+    const { fetchContractors, fetchRecipes } = dictionaryThunks;
 
     const [isLoading, setIsLoading] = useState(false);
     const [selectedContractor, setSelectedContractor] = useState({});
@@ -159,6 +159,7 @@ export const ContractorManagementForm = ({ onClose }) => {
             dispatch(resetProjects());
             handleSuccess("Operation completed successfully.");
             dispatch(fetchContractors(accessToken));
+            dispatch(fetchRecipes(accessToken));
             setSelectedContractor({});
             handleCloseContractorForm();
         } catch (error) {

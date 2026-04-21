@@ -6,6 +6,7 @@ import {
   ChangePasswordForm,
   MaterialManagementForm,
   ProjectManagementForm,
+  RecipesManagerForm,
 } from "../features/forms";
 
 export const formRegistry = {
@@ -16,4 +17,5 @@ export const formRegistry = {
   change_password: ChangePasswordForm,
   material_management: MaterialManagementForm,
   project_management: ProjectManagementForm,
+  recipes_manager: RecipesManagerForm,
 };
