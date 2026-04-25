@@ -116,8 +116,6 @@ export const ProjectManagementForm = ({ onClose }) => {
                 jsonPayload.materials = [];
             }
 
-            console.log(jsonPayload);
-
             const response = await fetch(
                 `${BASE_API_URL}common/projects/upsert/`,
                 {

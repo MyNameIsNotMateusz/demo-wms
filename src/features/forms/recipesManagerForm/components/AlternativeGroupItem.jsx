@@ -1,62 +1,92 @@
-import { FormTable } from "../../../components/layout"
-import { recipeMaterialsColumns } from "./recipesManagerTableConfig"
-import { useDispatch, useSelector } from "react-redux"
-import { setRecipeMaterialsSortConfig, setRecipeMaterialsFilters, updateRecipeMaterial, updateRecipeQuantity } from "./recipesManagerFormSlice"
-import { TableBodyRow, TableBodyCell } from "../../../components/ui/table/TableBase.styles"
-import { handleRowClick } from "../../../utils/table/tableRowSelection";
-import { TableSelect } from "../../../components/ui/table/TableSelect";
-import { adjustColumnWidths } from "../../../utils/table";
-import { CellInput } from "../../../components/ui"
-import { handleFocus, handleChange, handleBlur } from "../../../utils/table/cellHandlers"
-import { useState } from "react"
+import {
+    GroupItemWrapper,
+    GroupItemHeader,
+    GroupItemTitle,
+    GroupItemActions,
+    GroupItemContent,
+    GroupItemRow
+} from "./AlternativeGroupItem.styles";
+import { CellInput, TableActionButton } from "../../../../components/ui";
+import { getGroupItems } from "../helpers/groupHelpers";
+import { handleRowClick } from "../../../../utils/table/tableRowSelection";
+import { useDispatch } from "react-redux";
+import { handleRemoveMaterial } from "../utils/handleRemoveMaterial";
+import { TableSelect } from "../../../../components/ui/table/TableSelect";
+import { updateRecipeMaterial, updateRecipeQuantity } from "../recipesManagerFormSlice";
+import { useState } from "react";
+import { handleFocus, handleChange, handleBlur } from "../../../../utils/table/cellHandlers";
 
-export const MaterialsTable = ({
-    data,
-    selectedRows,
-    setSelectedRows,
-    availableMaterialCodes,
-    materials,
+export const AlternativeGroupItem = ({
+    group,
+    selectedGroup,
+    handleSelectGroup,
+    handleAddAlternativeMaterial,
+    recipeMaterials,
     selectedProcess,
+    activeAlternativeRow,
+    setActiveAlternativeRow,
+    materials,
+    availableMaterialCodes,
     setHasChanges
 }) => {
 
     const dispatch = useDispatch();
 
-    const { recipeMaterialsSortConfig, recipeMaterialsFilters } = useSelector(
-        (state) => state.recipesManagerForm,
+    const groupItems = getGroupItems(
+        recipeMaterials,
+        selectedProcess,
+        group.group
     );
 
     const [editedValues, setEditedValues] = useState({});
 
     return (
-        <FormTable
-            tableOrigin="recipeMaterials"
-            columns={recipeMaterialsColumns}
-            rows={data}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-            getRowId={(row) => row.material_code}
-            sortConfig={recipeMaterialsSortConfig}
-            setSortConfig={setRecipeMaterialsSortConfig}
-            filters={recipeMaterialsFilters}
-            setFilters={setRecipeMaterialsFilters}
-        >
-
-            {data.map((row, index) => (
-                <TableBodyRow
-                    key={index}
-                >
-                    <TableBodyCell>
+        <GroupItemWrapper>
+            <GroupItemHeader>
+                <input
+                    type="checkbox"
+                    style={{ cursor: "pointer" }}
+                    checked={selectedGroup === group.group.toString()}
+                    onChange={() => handleSelectGroup(group.group)}
+                />
+                <GroupItemTitle>
+                    Group {group.group}
+                </GroupItemTitle>
+                <GroupItemActions>
+                    <TableActionButton
+                        handleClick={() => handleAddAlternativeMaterial(group.group)}
+                        type="add"
+                        isSmall={true}
+                    />
+                    <TableActionButton
+                        handleClick={() => handleRemoveMaterial({
+                            selectedMaterials: activeAlternativeRow,
+                            data: groupItems,
+                            dispatch,
+                            selectedProcess,
+                            setSelectedMaterials: setActiveAlternativeRow,
+                            setHasChanges
+                        })}
+                        type="remove"
+                        isSmall={true}
+                    />
+                </GroupItemActions>
+            </GroupItemHeader>
+            <GroupItemContent>
+                {groupItems.map((row) => (
+                    <GroupItemRow key={row.material_code}>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}
-                            checked={selectedRows[row.material_code] || false}
+                            checked={activeAlternativeRow[row.material_code] || false}
                             onChange={() =>
-                                handleRowClick(row.material_code, setSelectedRows)
+                                handleRowClick(
+                                    row.material_code,
+                                    setActiveAlternativeRow,
+                                    false,
+                                )
                             }
                         />
-                    </TableBodyCell>
-                    <TableBodyCell>
                         <TableSelect
                             id="material_code"
                             value={row.material_code}
@@ -72,7 +102,6 @@ export const MaterialsTable = ({
                                 );
                                 setHasChanges(true);
                             }}
-                            handleFocus={() => adjustColumnWidths("recipeMaterials")}
                             options={[
                                 ...(row.material_code !== ""
                                     ? [{ label: row.material_code, value: row.material_code }]
@@ -83,8 +112,6 @@ export const MaterialsTable = ({
                                 })),
                             ]}
                         />
-                    </TableBodyCell>
-                    <TableBodyCell>
                         <CellInput
                             type="number"
                             value={
@@ -118,9 +145,9 @@ export const MaterialsTable = ({
                                 setHasChanges(true);
                             }}
                         />
-                    </TableBodyCell>
-                </TableBodyRow>
-            ))}
-        </FormTable>
+                    </GroupItemRow>
+                ))}
+            </GroupItemContent>
+        </GroupItemWrapper>
     )
-}
+};

@@ -124,11 +124,11 @@ const labels = {
   edit: "Edit"
 };
 
-export const TableActionButton = ({ handleClick, type }) => {
+export const TableActionButton = ({ handleClick, type, isSmall = false }) => {
   return (
-    <StyledActionButton onClick={handleClick}>
-      <ActionButtonText>{labels[type]}</ActionButtonText>
-      <ActionButtonIcon>{icons[type]}</ActionButtonIcon>
+    <StyledActionButton $isSmall={isSmall} onClick={handleClick}>
+      <ActionButtonText $isSmall={isSmall}>{labels[type]}</ActionButtonText>
+      <ActionButtonIcon $isSmall={isSmall}>{icons[type]}</ActionButtonIcon>
     </StyledActionButton>
   );
 };

@@ -1,15 +1,24 @@
 import { FormCard, FormLayout } from "../../../components/layout";
 import { useState, useEffect } from "react";
 import { FormActionsWrapper, FormCardWrapper, FormRow, FormTableWrapper } from "../../../components/ui/form/FormBase.styles";
-import { FormSelect, TableActionButton } from "../../../components/ui";
+import { FormSelect, TableActionButton, SubmitButton } from "../../../components/ui";
 import { useSelector, useDispatch } from "react-redux";
 import { updateFormData } from "../../../utils/forms/updateFormData";
-import { setRecipeMaterials, addRecipeMaterial, removeRecipeMaterial } from "./recipesManagerFormSlice";
+import { setRecipeMaterials, addRecipeMaterial, removeRecipeMaterial, resetRecipeMaterialsState } from "./recipesManagerFormSlice";
 import { MaterialsTable } from "./MaterialsTable";
 import { selectMaterials } from "./recipesManagerSelectors";
-import { handleError } from "../../../utils/alerts";
+import { handleError, handleSuccess } from "../../../utils/alerts";
+import { AlternativeGroups } from "./components/AlternativeGroups";
+import { handleRemoveMaterial } from "./utils/handleRemoveMaterial";
+import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
+import { useAuth } from "../../../auth/AuthProvider";
+import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
+import { validateRecipe } from "./utils/validateRecipe";
+import { buildRecipePayload } from "./utils/buildRecipePayload";
 
 export const RecipesManagerForm = ({ onClose }) => {
+
+    const { accessToken } = useAuth();
 
     const dispatch = useDispatch();
 
@@ -20,10 +29,13 @@ export const RecipesManagerForm = ({ onClose }) => {
         process_type: "",
         output_qty: "1.000"
     });
+    const [hasChanges, setHasChanges] = useState(false);
 
     const displayedMaterials = useSelector((state) =>
         selectMaterials(state, formData.process_type)
     );
+
+    const { fetchRecipes } = dictionaryThunks;
 
     const { recipeMaterials } = useSelector(
         (state) => state.recipesManagerForm,
@@ -36,7 +48,9 @@ export const RecipesManagerForm = ({ onClose }) => {
     const [availableMaterialCodes, setAvailableMaterialCodes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMaterials, setSelectedMaterials] = useState({});
-    const [editedValues, setEditedValues] = useState({});
+    const [groups, setGroups] = useState([]);
+    const [selectedGroup, setSelectedGroup] = useState("");
+    const [activeAlternativeRow, setActiveAlternativeRow] = useState({});
 
     useEffect(() => {
         dispatch(setRecipeMaterials([]));
@@ -82,6 +96,34 @@ export const RecipesManagerForm = ({ onClose }) => {
 
         setAvailableMaterialCodes(filteredCodes);
     }, [formData.process_type, recipeMaterials, allMaterialCodes]);
+
+    useEffect(() => {
+        if (!formData.output_material_code) {
+            setGroups([]);
+            return;
+        }
+
+        const processToUpdate = recipeMaterials.find(
+            (item) => item.process === formData.process_type
+        );
+
+        if (!processToUpdate) {
+            setGroups([]);
+            return;
+        }
+
+        const alternativeGroups = Array.from(
+            new Set(
+                processToUpdate.inputs
+                    .map((input) => input.alternative_group)
+                    .filter((group) => group !== null)
+                    .map((group) => Number(group))
+            )
+        );
+
+        setGroups(alternativeGroups.map((group) => ({ group })));
+        setActiveAlternativeRow({});
+    }, [formData.output_material_code, formData.process_type]);
 
 
     const {
@@ -164,38 +206,159 @@ export const RecipesManagerForm = ({ onClose }) => {
                 selectedProcess: formData.process_type,
             })
         );
+        setHasChanges(true);
     };
 
-    const handleRemoveMaterial = () => {
-        const selectedKeys = Object.keys(selectedMaterials);
+    const handleAddGroup = () => {
+        if (formData.process_type === "") {
+            handleError(
+                "No process selected. Please select a process before adding a group."
+            );
+            return;
+        }
 
-        if (selectedKeys.length === 0) return;
+        const nextGroupNumber =
+            groups.length > 0 ? Math.max(...groups.map((g) => g.group)) + 1 : 1;
 
-        const id = selectedKeys[0];
+        setGroups([...groups, { group: nextGroupNumber }]);
+    };
 
-        dispatch(
-            removeRecipeMaterial({
-                ids: selectedKeys,
-                selectedProcess: formData.process_type,
-            })
+    const handleRemoveGroup = () => {
+        if (!selectedGroup) {
+            handleError("No group selected");
+            return;
+        }
+
+        const indexToRemove = groups.findIndex(
+            (g) => g.group.toString() === selectedGroup
         );
 
-        if (selectedKeys.length === 1) {
-            const indexToRemove = displayedMaterials.findIndex(
-                (item) => item.material_code === id
-            );
+        const nextGroup =
+            groups[indexToRemove + 1]?.group.toString() ||
+            groups[indexToRemove - 1]?.group.toString();
 
-            const nextItem =
-                displayedMaterials[indexToRemove + 1] ||
-                displayedMaterials[indexToRemove - 1];
+        const processToUpdate = recipeMaterials.find(
+            (item) => item.process === formData.process_type
+        );
 
-            if (nextItem) {
-                setSelectedMaterials({ [nextItem.material_code]: true });
-                return;
+        if (processToUpdate) {
+            const materialCodesToRemove = processToUpdate.inputs
+                .filter(
+                    (input) =>
+                        String(input.alternative_group) === selectedGroup
+                )
+                .map((input) => input.material_code);
+
+            if (materialCodesToRemove.length > 0) {
+                dispatch(
+                    removeRecipeMaterial({
+                        ids: materialCodesToRemove,
+                        selectedProcess: formData.process_type,
+                    })
+                );
             }
         }
 
-        setSelectedMaterials({});
+        setGroups(
+            groups.filter((g) => g.group.toString() !== selectedGroup)
+        );
+
+        setSelectedGroup(nextGroup || "");
+        setActiveAlternativeRow({});
+    };
+
+    const handleSelectGroup = (groupNumber) => {
+        setSelectedGroup(
+            selectedGroup === groupNumber.toString() ? "" : groupNumber.toString(),
+        );
+    };
+
+    const handleAddAlternativeMaterial = (groupNumber) => {
+        if (availableMaterialCodes.length === 0) {
+            handleError(
+                "There are no available material codes left to add to this process."
+            );
+            return;
+        }
+
+        const materialCode = availableMaterialCodes[0];
+
+        dispatch(
+            addRecipeMaterial({
+                material_code: materialCode.material_code,
+                type: materialCode.type,
+                selectedProcess: formData.process_type,
+                alternative_group: groupNumber,
+            })
+        );
+        setHasChanges(true);
+    };
+
+    const handleSubmit = async () => {
+        if (!hasChanges) {
+            handleError("No changes have been made.");
+            return;
+        }
+
+        const error = validateRecipe({
+            formData,
+            materials,
+            recipeMaterials,
+        });
+
+        if (error) {
+            handleError(error);
+            return;
+        }
+
+        const payload = buildRecipePayload({
+            formData,
+            recipeMaterials,
+        });
+
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(
+                `${BASE_API_URL}common/recipes/upsert/`,
+                {
+                    method: "POST",
+                    headers: DEFAULT_HEADERS(accessToken),
+                    body: JSON.stringify(payload),
+                }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const backendMessage =
+                    errorData?.errors?.join(", ") ||
+                    "Error while fetching projects data";
+                throw new Error(backendMessage);
+            }
+
+            handleSuccess("Operation completed successfully.");
+
+            setActiveAlternativeRow({});
+            setGroups([]);
+            setSelectedGroup("");
+            setFormData({
+                selected_client: "",
+                selected_project: "",
+                output_material_code: "",
+                process_type: "",
+                output_qty: "1.000",
+            });
+            setMaterials([]);
+            setHasChanges(false);
+
+            dispatch(resetRecipeMaterialsState());
+            dispatch(fetchRecipes(accessToken));
+        } catch (error) {
+            console.error("Error while posting recipes:", error);
+            handleError("An error occurred while saving recipes.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -245,7 +408,8 @@ export const RecipesManagerForm = ({ onClose }) => {
                             placeholder="Select a material code"
                             value={formData.output_material_code}
                             handleChange={(val) => {
-                                handleMaterialChange(val)
+                                handleMaterialChange(val);
+                                setHasChanges(false);
                             }}
                             options={materials.map((m) => ({
                                 label: m.material_code,
@@ -260,7 +424,8 @@ export const RecipesManagerForm = ({ onClose }) => {
                             placeholder="Select a process"
                             value={formData.process_type}
                             handleChange={(val) => {
-                                updateFormData(setFormData, "process_type", val)
+                                updateFormData(setFormData, "process_type", val);
+                                setHasChanges(true);
                             }}
                             options={processes.map((process) => ({
                                 label: process,
@@ -277,8 +442,7 @@ export const RecipesManagerForm = ({ onClose }) => {
                             availableMaterialCodes={availableMaterialCodes}
                             materials={materials}
                             selectedProcess={formData.process_type}
-                            editedValues={editedValues}
-                            setEditedValues={setEditedValues}
+                            setHasChanges={setHasChanges}
                         />
                     </FormTableWrapper>
                     <FormActionsWrapper>
@@ -287,12 +451,46 @@ export const RecipesManagerForm = ({ onClose }) => {
                             type="add"
                         />
                         <TableActionButton
-                            handleClick={handleRemoveMaterial}
+                            handleClick={() => handleRemoveMaterial({
+                                selectedMaterials,
+                                data: displayedMaterials,
+                                dispatch,
+                                selectedProcess: formData.process_type,
+                                setSelectedMaterials,
+                                setHasChanges
+                            })}
                             type="remove"
                         />
                     </FormActionsWrapper>
+                    <SubmitButton
+                        isLoading={isLoading}
+                        onClick={handleSubmit}
+                    />
                 </FormCard>
-                <FormCard>
+                <FormCard title="Alternatives">
+                    <AlternativeGroups
+                        groups={groups}
+                        selectedGroup={selectedGroup}
+                        handleSelectGroup={handleSelectGroup}
+                        handleAddAlternativeMaterial={handleAddAlternativeMaterial}
+                        recipeMaterials={recipeMaterials}
+                        selectedProcess={formData.process_type}
+                        activeAlternativeRow={activeAlternativeRow}
+                        setActiveAlternativeRow={setActiveAlternativeRow}
+                        materials={materials}
+                        availableMaterialCodes={availableMaterialCodes}
+                        setHasChanges={setHasChanges}
+                    />
+                    <FormActionsWrapper>
+                        <TableActionButton
+                            handleClick={handleAddGroup}
+                            type="add"
+                        />
+                        <TableActionButton
+                            handleClick={handleRemoveGroup}
+                            type="remove"
+                        />
+                    </FormActionsWrapper>
                 </FormCard>
             </FormCardWrapper>
         </FormLayout>

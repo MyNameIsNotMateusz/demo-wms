@@ -22,24 +22,25 @@ export const selectMaterials = createSelector(
       Quantity: "quantity",
     };
 
-    // 🔥 znajdź właściwy proces
     const currentProcess = rows.find((r) => r.process === selectedProcess);
 
     const inputs = currentProcess ? currentProcess.inputs : [];
 
-    const filteredItems = inputs.filter((row) => {
-      return Object.keys(filters).every((key) => {
-        const colIndex = parseInt(key, 10);
-        const header = columns[colIndex];
-        const dataKey = columnsMapping[header];
-        const cellValue = row[dataKey];
+    const filteredItems = inputs
+      .filter((row) => row.alternative_group === null)
+      .filter((row) => {
+        return Object.keys(filters).every((key) => {
+          const colIndex = parseInt(key, 10);
+          const header = columns[colIndex];
+          const dataKey = columnsMapping[header];
+          const cellValue = row[dataKey];
 
-        return (cellValue ?? "")
-          .toString()
-          .toLowerCase()
-          .includes(filters[key].toLowerCase());
+          return (cellValue ?? "")
+            .toString()
+            .toLowerCase()
+            .includes(filters[key].toLowerCase());
+        });
       });
-    });
 
     if (Object.keys(sortConfig).length === 0) {
       return filteredItems;

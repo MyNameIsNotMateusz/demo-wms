@@ -138,6 +138,11 @@ const recipesManagerFormSlice = createSlice({
         (item) => !ids.includes(item.material_code),
       );
     },
+    resetRecipeMaterialsState: (state) => {
+      state.recipeMaterials = [];
+      state.recipeMaterialsSortConfig = {};
+      state.recipeMaterialsFilters = {};
+    },
   },
 });
 
@@ -151,4 +156,5 @@ export const {
   updateRecipeQuantity,
   addRecipeMaterial,
   removeRecipeMaterial,
+  resetRecipeMaterialsState,
 } = recipesManagerFormSlice.actions;

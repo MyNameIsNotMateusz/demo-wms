@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const StyledActionButton = styled.button`
   position: relative;
-  width: 130px;
-  height: 35px;
+  width: ${({ $isSmall }) => ($isSmall ? "100px" : "130px")};
+  height: ${({ $isSmall }) => ($isSmall ? "32px" : "35px")};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -23,10 +23,12 @@ export const StyledActionButton = styled.button`
 `;
 
 export const ActionButtonText = styled.span`
-  transform: translateX(21px);
+  transform: ${({ $isSmall }) =>
+    $isSmall ? "translateX(13px)" : "translateX(21px)"};
   color: #fff;
   font-weight: 500;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme, $isSmall }) =>
+    $isSmall ? theme.fontSizes.xs : theme.fontSizes.sm};
   transition: all 0.3s;
 
   ${StyledActionButton}:hover & {
@@ -36,9 +38,10 @@ export const ActionButtonText = styled.span`
 
 export const ActionButtonIcon = styled.span`
   position: absolute;
-  transform: translateX(95px);
+  transform: ${({ $isSmall }) =>
+    $isSmall ? "translateX(70px)" : "translateX(95px)"};
   height: 100%;
-  width: 32px;
+  width: ${({ $isSmall }) => ($isSmall ? "26px" : "32px")};
   background-color: hsl(213, 99%, 34%);
   display: flex;
   align-items: center;
@@ -46,12 +49,12 @@ export const ActionButtonIcon = styled.span`
   transition: all 0.3s;
 
   svg {
-    width: 23px;
+    width: ${({ $isSmall }) => ($isSmall ? "17px" : "23px")};
     stroke: #fff;
   }
 
   ${StyledActionButton}:hover & {
-    width: 128px;
+    width: ${({ $isSmall }) => ($isSmall ? "100px" : "128px")};
     transform: translateX(0);
   }
 
