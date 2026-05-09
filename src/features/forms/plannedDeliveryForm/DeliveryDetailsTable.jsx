@@ -5,7 +5,7 @@ import { setDeliveryDetailsFilters, setDeliveryDetailsSortConfig, applyMaterialT
 import { TableBodyCell, TableBodyRow } from "../../../components/ui/table/TableBase.styles";
 import { handleRowClick } from "../../../utils/table/tableRowSelection";
 import { CellInput } from "../../../components/ui";
-import { handleMaterialLookup } from "./utils/api";
+import { handleMaterialLookup } from "./api/api";
 import { lookupMaterial } from "../../../utils/table/lookupMaterial";
 import { useAuth } from "../../../auth/AuthProvider";
 import {
@@ -50,7 +50,7 @@ export const DeliveryDetailsTable = ({
         >
             {data.map((row, index) => (
                 <TableBodyRow key={index}>
-                    <TableBodyCell>
+                    <TableBodyCell $isFirstChild>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}

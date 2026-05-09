@@ -84,6 +84,8 @@ export const FormCardBody = styled.div`
 export const FormCardFooter = styled.div`
   display: flex;
   padding: 16px;
+  padding-top: 0px;
+  column-gap: 16px;
 
   @media (max-width: 1600px) {
     padding: 14px;

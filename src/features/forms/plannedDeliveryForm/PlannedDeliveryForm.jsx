@@ -40,10 +40,10 @@ import {
 } from "./plannedDeliveryFormSlice";
 import { useDispatch } from "react-redux";
 import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
-import { handleMaterialLookup, cancelPlannedDelivery, updatePlannedDelivery } from "./utils/api";
+import { handleMaterialLookup, cancelPlannedDelivery, updatePlannedDelivery } from "./api/api";
 import { handleRemoveSelectedRows, addDeliveryItem, addDeliveryRow } from "./utils/tableOperations";
 import { handlePastedMaterial } from "./utils/clipboard";
-import { addPlannedDelivery } from "./utils/addPlannedDelivery";
+import { addPlannedDelivery } from "./api/addPlannedDelivery";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { DeliveryDetailsTable } from "./DeliveryDetailsTable";
@@ -256,7 +256,6 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 }
               />
             </FormRow>
-
           </FormCard>
           <FormCard title="Delivery Items">
             <FormTableWrapper>
@@ -302,7 +301,13 @@ export const PlannedDeliveryForm = ({ onClose }) => {
 
       {activeTab === 1 && (
         <FormCardWrapper>
-          <FormCard title="Planned Deliveries">
+          <FormCard title="Planned Deliveries"
+            footer={<SubmitButton
+              isLoading={isLoading}
+              onClick={() => cancelPlannedDelivery(selectedPlannedDeliveries, accessToken, setIsLoading, setSelectedPlannedDeliveries, dispatch, fetchPlannedDeliveries, handleSuccess, handleError)}
+              label="cancel delivery"
+            />}
+          >
             <FormTableWrapper>
               <PlannedDeliveriesTable
                 data={displayedPlannedDeliveries}
@@ -310,13 +315,12 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 setSelectedRows={setSelectedPlannedDeliveries}
               />
             </FormTableWrapper>
-            <SubmitButton
-              isLoading={isLoading}
-              onClick={() => cancelPlannedDelivery(selectedPlannedDeliveries, accessToken, setIsLoading, setSelectedPlannedDeliveries, dispatch, fetchPlannedDeliveries, handleSuccess, handleError)}
-              label="cancel delivery"
-            />
           </FormCard>
-          <FormCard title="Delivery Details">
+          <FormCard title="Delivery Details"
+            footer={<SubmitButton
+              isLoading={isLoading}
+              onClick={() => updatePlannedDelivery(isDetailsTableEdited, handleError, deliveryDetailsRows, selectedPlannedDeliveries, deletedDetailsItems, setIsLoading, accessToken, setDeletedDetailsItems, dispatch, fetchPlannedDeliveries, handleSuccess, setSelectedPlannedDeliveries)}
+            />}>
             <FormRow>
               <ReadOnlyField
                 label="Remarks"
@@ -373,10 +377,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                 type="remove"
               />
             </FormActionsWrapper>
-            <SubmitButton
-              isLoading={isLoading}
-              onClick={() => updatePlannedDelivery(isDetailsTableEdited, handleError, deliveryDetailsRows, selectedPlannedDeliveries, deletedDetailsItems, setIsLoading, accessToken, setDeletedDetailsItems, dispatch, fetchPlannedDeliveries, handleSuccess, setSelectedPlannedDeliveries)}
-            />
+
           </FormCard>
         </FormCardWrapper>
       )}

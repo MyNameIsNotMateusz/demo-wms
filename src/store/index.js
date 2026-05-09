@@ -13,6 +13,7 @@ import materialsReducer from "../features/dictionaries/materialsSlice";
 import materialManagementFormReducer from "../features/forms/materialManagement/materialManagementFormSlice";
 import projectManagementFormReducer from "../features/forms/projectManagementForm/projectManagementFormSlice";
 import recipesManagerFormReducer from "../features/forms/recipesManagerForm/recipesManagerFormSlice";
+import wzDocumentsFormReducer from "../features/forms/wzDocuments/wzDocumentsFormSlice";
 
 export default configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export default configureStore({
     contractors: contractorsReducer,
     projects: projectsReducer,
     plannedDeliveries: plannedDeliveriesReducer,
+    wzDocumentsForm: wzDocumentsFormReducer,
     recipesManagerForm: recipesManagerFormReducer,
     projectManagementForm: projectManagementFormReducer,
     materialManagementForm: materialManagementFormReducer,

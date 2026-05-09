@@ -6,6 +6,7 @@ import { ChangePasswordForm } from "./changePassword/ChangePasswordForm";
 import { MaterialManagementForm } from "./materialManagement/MaterialManagementForm";
 import { ProjectManagementForm } from "./projectManagementForm/ProjectManagementForm";
 import { RecipesManagerForm } from "./recipesManagerForm/RecipesManagerForm";
+import { WzDocumentsForm } from "./wzDocuments/WzDocumentsForm";
 
 export {
   CreateComponentsForm,
@@ -16,4 +17,5 @@ export {
   MaterialManagementForm,
   ProjectManagementForm,
   RecipesManagerForm,
+  WzDocumentsForm,
 };

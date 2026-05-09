@@ -36,7 +36,7 @@ export const ProjectTable = ({
                         handleRowClick(row.code, setSelectedRows, false);
                     }}
                 >
-                    <TableBodyCell>
+                    <TableBodyCell $isFirstChild>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}

@@ -18,7 +18,7 @@ import {
   handleChange,
   handleBlur,
 } from "../../../utils/table/cellHandlers";
-import { handleMaterialLookup } from "./utils/api";
+import { handleMaterialLookup } from "./api/api";
 import { lookupMaterial } from "../../../utils/table/lookupMaterial";
 import { useAuth } from "../../../auth/AuthProvider";
 
@@ -53,7 +53,7 @@ export const DeliveryItemsTable = ({
     >
       {data.map((row, index) => (
         <TableBodyRow key={index}>
-          <TableBodyCell>
+          <TableBodyCell $isFirstChild>
             <input
               type="checkbox"
               style={{ cursor: "pointer" }}

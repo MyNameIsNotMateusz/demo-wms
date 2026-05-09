@@ -38,7 +38,7 @@ export const PlannedDeliveriesTable = ({
             handleRowClick(row.id, setSelectedRows, false);
           }}
         >
-          <TableBodyCell>
+          <TableBodyCell $isFirstChild>
             <input
               type="checkbox"
               style={{ cursor: "pointer" }}

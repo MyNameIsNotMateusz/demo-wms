@@ -20,15 +20,16 @@ export const TableBodyCell = styled.td`
   overflow: hidden;
 
   ${({ theme }) => theme.fontSizes.responsive};
-
-  &:first-child {
-    text-align: center;
-    min-width: 35px;
-    max-width: 35px;
-    width: 35px;
-  }
-
   padding: 8px;
+
+  ${({ $isFirstChild }) =>
+    $isFirstChild &&
+    `
+      text-align: center;
+      min-width: 35px;
+      max-width: 35px;
+      width: 35px;
+    `}
 
   @media (max-width: 1200px) {
     padding: 7px;

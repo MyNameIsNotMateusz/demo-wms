@@ -46,7 +46,7 @@ export const MaterialsTable = ({
                 <TableBodyRow
                     key={index}
                 >
-                    <TableBodyCell>
+                    <TableBodyCell $isFirstChild>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}

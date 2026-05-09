@@ -75,7 +75,7 @@ export const PageButton = styled.button`
 
   svg {
     height: 100%;
-    fill: ${({ $active }) => ($active ? "#1c304f" : "#ccc")};
+    color: ${({ $active }) => ($active ? "#1c304f" : "#ccc")};
   }
 
   @media (max-width: 1200px) {

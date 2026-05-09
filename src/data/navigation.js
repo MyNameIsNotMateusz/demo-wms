@@ -6,6 +6,7 @@ import changePasswordIcon from "../assets/icons/changePasswordIcon.png";
 import materialManagementIcon from "../assets/icons/materialManagement.png";
 import projectManagementIcon from "../assets/icons/projectManagement.png";
 import recipesManagerIcon from "../assets/icons/recipesManagerIcon.png";
+import wzDocumentsIcon from "../assets/icons/wzDocumentsIcon.png";
 
 export const navItems = {
   tabs: [
@@ -31,6 +32,16 @@ export const navItems = {
               text: "Planned Delivery",
               code: "planned_delivery",
               icon: plannedDeliveryIcon,
+            },
+          ],
+        },
+        {
+          title: "Documents",
+          items: [
+            {
+              text: "Outbound Delivery Note",
+              code: "outbound_delivery_note",
+              icon: wzDocumentsIcon,
             },
           ],
         },

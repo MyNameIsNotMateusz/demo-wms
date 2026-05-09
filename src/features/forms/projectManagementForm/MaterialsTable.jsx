@@ -43,7 +43,7 @@ export const MaterialsTable = ({ data, selectedRows, setSelectedRows, materials,
                         handleRowClick(getRowId(row), setSelectedRows);
                     }}
                 >
-                    <TableBodyCell>
+                    <TableBodyCell $isFirstChild>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}

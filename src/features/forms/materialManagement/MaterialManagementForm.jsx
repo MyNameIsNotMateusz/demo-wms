@@ -14,7 +14,7 @@ import { handleCloseForm } from "../../../utils/forms/handleCloseForm";
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { validateMaterialForm } from "./utils/materialValidation";
 import { prepareMaterialPayload } from "./utils/materialPayload";
-import { uploadMaterialGraphic } from "./utils/uploadMaterialGraphic";
+import { uploadMaterialGraphic } from "./api/uploadMaterialGraphic";
 
 export const MaterialManagementForm = ({ onClose }) => {
 

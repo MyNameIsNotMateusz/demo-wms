@@ -36,7 +36,7 @@ export const UserTable = ({
                         handleRowClick(row.email, setSelectedRows, false);
                     }}
                 >
-                    <TableBodyCell>
+                    <TableBodyCell $isFirstChild>
                         <input
                             type="checkbox"
                             style={{ cursor: "pointer" }}

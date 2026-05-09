@@ -68,6 +68,12 @@ export const InputWrapper = styled.div`
   transition: 0.2s ease-in-out;
   background-color: #2b2b2b;
 
+  svg {
+    width: 20px;
+    height: 20px;
+    color: #aaa;
+  }
+
   &:focus-within {
     border-width: 1.5px;
     border-style: solid;

@@ -9,7 +9,7 @@ import { handleError, handleSuccess } from "../../../utils/alerts";
 import { v4 as uuidv4 } from "uuid";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { setMaterialsTable, resetMaterialsTable } from "./projectManagementFormSlice";
-import { fetchProjectMaterials } from "./utils/fetchProjectMaterials";
+import { fetchProjectMaterials } from "./api/fetchProjectMaterials";
 import { useAuth } from "../../../auth/AuthProvider";
 import { getSelectedItem } from "../../../utils/forms/getSelectedItem";
 import { ProjectForm } from "./ProjectForm";

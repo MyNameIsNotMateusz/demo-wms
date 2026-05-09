@@ -370,6 +370,10 @@ export const RecipesManagerForm = ({ onClose }) => {
             <FormCardWrapper>
                 <FormCard
                     title="Required"
+                    footer={<SubmitButton
+                        isLoading={isLoading}
+                        onClick={handleSubmit}
+                    />}
                 >
                     <FormRow>
                         <FormSelect
@@ -462,10 +466,7 @@ export const RecipesManagerForm = ({ onClose }) => {
                             type="remove"
                         />
                     </FormActionsWrapper>
-                    <SubmitButton
-                        isLoading={isLoading}
-                        onClick={handleSubmit}
-                    />
+
                 </FormCard>
                 <FormCard title="Alternatives">
                     <AlternativeGroups
