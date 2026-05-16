@@ -6,15 +6,7 @@ export const SummaryStyled = styled.div`
   white-space: nowrap;
   overflow: auto;
   text-transform: uppercase;
-  margin-bottom: 10px;
 
-  @media (max-width: 1600px) {
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 6px;
-  }
 
   ${({ theme }) => theme.fontSizes.responsive};
 

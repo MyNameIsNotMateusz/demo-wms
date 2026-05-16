@@ -163,3 +163,15 @@ export const CheckboxGroup = styled.div`
   row-gap: 5px;
   align-self: flex-start;
 `;
+
+export const ModalContainer = styled.div`
+  position: absolute;
+  z-index: 9999999999999999999;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  width: 40%;
+  max-width: 400px;
+  height: ${({ $full }) => ($full ? "100%" : "auto")};
+  max-height: 100%;
+`;

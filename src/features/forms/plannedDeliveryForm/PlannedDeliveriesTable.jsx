@@ -16,6 +16,7 @@ export const PlannedDeliveriesTable = ({
   selectedRows,
   setSelectedRows,
 }) => {
+  
   const { plannedDeliveriesSortConfig, plannedDeliveriesFilters } = useSelector(
     (state) => state.plannedDeliveryForm,
   );

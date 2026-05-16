@@ -7,6 +7,7 @@ import { MaterialManagementForm } from "./materialManagement/MaterialManagementF
 import { ProjectManagementForm } from "./projectManagementForm/ProjectManagementForm";
 import { RecipesManagerForm } from "./recipesManagerForm/RecipesManagerForm";
 import { WzDocumentsForm } from "./wzDocuments/WzDocumentsForm";
+import { CoilLabelsForm } from "./coilLabels/CoilLabelsForm";
 
 export {
   CreateComponentsForm,
@@ -18,4 +19,5 @@ export {
   ProjectManagementForm,
   RecipesManagerForm,
   WzDocumentsForm,
+  CoilLabelsForm,
 };

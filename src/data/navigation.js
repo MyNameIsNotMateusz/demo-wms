@@ -7,6 +7,12 @@ import materialManagementIcon from "../assets/icons/materialManagement.png";
 import projectManagementIcon from "../assets/icons/projectManagement.png";
 import recipesManagerIcon from "../assets/icons/recipesManagerIcon.png";
 import wzDocumentsIcon from "../assets/icons/wzDocumentsIcon.png";
+import manualInventoryChangeIcon from "../assets/icons/manualInventoryChangeIcon.png";
+import printLabelIcon from "../assets/icons/printLabelIcon.png";
+import coilManagerIcon from "../assets/icons/coilManagerIcon.png";
+import coilLabelsIcon from "../assets/icons/coilLabelsIcon.png";
+import outboundIcon from "../assets/icons/outboundIcon.png";
+import inboundIcon from "../assets/icons/inboundIcon.png";
 
 export const navItems = {
   tabs: [
@@ -23,15 +29,50 @@ export const navItems = {
               code: "create_components",
               icon: createComponentsIcon,
             },
+            {
+              text: "Manual Inventory Change",
+              code: "inventory_change",
+              icon: manualInventoryChangeIcon,
+            },
+            {
+              text: "Print Label",
+              code: "print_label",
+              icon: printLabelIcon,
+            },
+          ],
+        },
+        {
+          title: "Coil Management",
+          items: [
+            {
+              text: "Coil Manager",
+              code: "coil_manager",
+              icon: coilManagerIcon,
+            },
+            {
+              text: "Coil Labels",
+              code: "coil_label_printer",
+              icon: coilLabelsIcon,
+            },
           ],
         },
         {
           title: "Logistics Operations",
           items: [
             {
+              text: "Outbound",
+              code: "outbound",
+              icon: outboundIcon,
+            },
+            {
               text: "Planned Delivery",
               code: "planned_delivery",
               icon: plannedDeliveryIcon,
+            },
+            {
+              text: "Inbound",
+              code: "inbound",
+              icon: inboundIcon,
             },
           ],
         },

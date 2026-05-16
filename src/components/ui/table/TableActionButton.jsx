@@ -3,11 +3,14 @@ import {
   ActionButtonText,
   ActionButtonIcon,
 } from "./TableActionButton.styles";
-import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, PencilIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
 
 const icons = {
   add: (
     <PlusIcon />
+  ),
+  addMultiple: (
+    <RectangleStackIcon />
   ),
   remove: (
     <TrashIcon />
@@ -19,6 +22,7 @@ const icons = {
 
 const labels = {
   add: "Add",
+  addMultiple: "Multi",
   remove: "Remove",
   edit: "Edit"
 };

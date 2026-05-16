@@ -8,6 +8,7 @@ import {
   ProjectManagementForm,
   RecipesManagerForm,
   WzDocumentsForm,
+  CoilLabelsForm,
 } from "../features/forms";
 
 export const formRegistry = {
@@ -20,4 +21,5 @@ export const formRegistry = {
   project_management: ProjectManagementForm,
   recipes_manager: RecipesManagerForm,
   outbound_delivery_note: WzDocumentsForm,
+  coil_label_printer: CoilLabelsForm,
 };
