@@ -601,7 +601,6 @@ export const CreateComponentsForm = ({ onClose }) => {
 
     return (
         <FormLayout title="Create Components Form" onClose={onClose} isLoading={isLoading}>
-            <button onClick={() => console.log(projects)} style={{ height: "50px" }}>kliknij mnie</button>
             <Form>
                 <FormSection>
                     <FormColumn $flex="2.5">
