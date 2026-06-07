@@ -1,19 +1,26 @@
-import { FormTable } from "../../../components/layout"
-import { createdPalletsColumns } from "./createComponentsTableConfig"
 import { useDispatch, useSelector } from "react-redux";
-import { setCreatedPalletsSortConfig, setCreatedPalletsFilters, updateCreatedPalletField } from "./createComponentsFormSlice";
-import { TableBodyCell, TableBodyRow } from "../../../components/ui/table/TableBase.styles";
+import { FormTable } from "../../../components/layout";
+import { palletsColumns } from "./stockModificationTableConfig";
+import {
+    setEditedPalletsSortConfig,
+    setEditedPalletsFilters,
+    updateEditedPallet
+} from "./stockModificationSlice";
+import {
+    TableBodyCell,
+    TableBodyRow,
+} from "../../../components/ui/table/TableBase.styles";
 import { handleRowClick } from "../../../utils/table/tableRowSelection";
-import { CellInput } from "../../../components/ui";
 import {
     handleFocus,
     handleChange,
     handleBlur,
 } from "../../../utils/table/cellHandlers";
+import { CellInput } from "../../../components/ui";
 import { TableSelect } from "../../../components/ui/table/TableSelect";
 import { adjustColumnWidths } from "../../../utils/table";
 
-export const CreatedPalletsTable = ({
+export const EditedPalletsTable = ({
     data,
     selectedRows,
     setSelectedRows,
@@ -23,24 +30,24 @@ export const CreatedPalletsTable = ({
 
     const dispatch = useDispatch();
 
-    const { createdPalletsSortConfig, createdPalletsFilters } = useSelector(
-        (state) => state.createComponentsForm,
+    const { editedPalletsSortConfig, editedPalletsFilters } = useSelector(
+        (state) => state.stockModificationForm,
     );
 
-    const statuses = ["OK", "HOLD", "SCRAP"];
+    const statuses = ["OK", "HOLD", "BLOCKED"];
 
     return (
         <FormTable
-            tableOrigin="createdPallets"
-            columns={createdPalletsColumns}
+            tableOrigin="editedPallets"
+            columns={palletsColumns}
             rows={data}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
             getRowId={(row) => row.id}
-            sortConfig={createdPalletsSortConfig}
-            setSortConfig={setCreatedPalletsSortConfig}
-            filters={createdPalletsFilters}
-            setFilters={setCreatedPalletsFilters}
+            sortConfig={editedPalletsSortConfig}
+            setSortConfig={setEditedPalletsSortConfig}
+            filters={editedPalletsFilters}
+            setFilters={setEditedPalletsFilters}
         >
             {data.map((row, index) => (
                 <TableBodyRow
@@ -67,34 +74,44 @@ export const CreatedPalletsTable = ({
                             }
                         />
                     </TableBodyCell>
+                    <TableBodyCell>{row.id}</TableBodyCell>
+                    <TableBodyCell>{row.material_code}</TableBodyCell>
+                    <TableBodyCell>{row.material_type}</TableBodyCell>
+                    <TableBodyCell>{row.destination}</TableBodyCell>
                     <TableBodyCell>
                         <CellInput
                             type="number"
                             value={
-                                editedValues[row.id]?.quantity ?? row.quantity
+                                editedValues[row.id]?.quantity ??
+                                parseFloat(row.quantity).toFixed(0)
                             }
-                            handleFocus={(val) => {
+                            handleFocus={(val) =>
                                 handleFocus(
                                     "quantity",
-                                    row.quantity,
+                                    val,
                                     setEditedValues,
-                                    row.id,
-                                );
-                            }}
-                            handleChange={(val) => {
-                                handleChange("quantity", val, setEditedValues, row.id);
-                            }}
-                            handleBlur={(val) => {
+                                    row.id
+                                )
+                            }
+                            handleChange={(val) =>
+                                handleChange(
+                                    "quantity",
+                                    val,
+                                    setEditedValues,
+                                    row.id
+                                )
+                            }
+                            handleBlur={(val) =>
                                 handleBlur(
                                     dispatch,
-                                    updateCreatedPalletField,
+                                    updateEditedPallet,
                                     row.id,
                                     "quantity",
                                     val,
                                     setEditedValues,
-                                    "number",
-                                );
-                            }}
+                                    "number"
+                                )
+                            }
                         />
                     </TableBodyCell>
                     <TableBodyCell>
@@ -102,17 +119,18 @@ export const CreatedPalletsTable = ({
                             id="status"
                             value={row.status}
                             handleChange={(val) =>
-                                dispatch(updateCreatedPalletField({ id: row.id, key: "status", value: val }))
+                                dispatch(updateEditedPallet({ id: row.id, key: "status", value: val }))
                             }
-                            handleFocus={() => adjustColumnWidths("createdPallets")}
+                            handleFocus={() => adjustColumnWidths("editedPallets")}
                             options={statuses.map((status) => ({
                                 label: status,
                                 value: status,
                             }))}
                         />
                     </TableBodyCell>
+                    <TableBodyCell>{row.created_at}</TableBodyCell>
                 </TableBodyRow>
             ))}
         </FormTable>
-    )
-}
+    );
+};

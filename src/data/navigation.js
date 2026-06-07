@@ -7,7 +7,7 @@ import materialManagementIcon from "../assets/icons/materialManagement.png";
 import projectManagementIcon from "../assets/icons/projectManagement.png";
 import recipesManagerIcon from "../assets/icons/recipesManagerIcon.png";
 import wzDocumentsIcon from "../assets/icons/wzDocumentsIcon.png";
-import manualInventoryChangeIcon from "../assets/icons/manualInventoryChangeIcon.png";
+import stockModificationIcon from "../assets/icons/stockModificationIcon.png";
 import printLabelIcon from "../assets/icons/printLabelIcon.png";
 import coilManagerIcon from "../assets/icons/coilManagerIcon.png";
 import coilLabelsIcon from "../assets/icons/coilLabelsIcon.png";
@@ -30,9 +30,9 @@ export const navItems = {
               icon: createComponentsIcon,
             },
             {
-              text: "Manual Inventory Change",
+              text: "Stock Modification",
               code: "inventory_change",
-              icon: manualInventoryChangeIcon,
+              icon: stockModificationIcon,
             },
             {
               text: "Print Label",

@@ -15,10 +15,11 @@ import projectManagementFormReducer from "../features/forms/projectManagementFor
 import recipesManagerFormReducer from "../features/forms/recipesManagerForm/recipesManagerFormSlice";
 import wzDocumentsFormReducer from "../features/forms/wzDocuments/wzDocumentsFormSlice";
 import coilLabelsFormReducer from "../features/forms/coilLabels/coilLabelsFormSlice";
+import stockModificationFormReducer from "../features/forms/stockModification/stockModificationSlice";
 
 export default configureStore({
   reducer: {
-    createComponentsForm: createComponentsFormReducer,
+    stockModificationForm: stockModificationFormReducer,
     materials: materialsReducer,
     recipes: recipesReducer,
     contractors: contractorsReducer,
@@ -32,6 +33,7 @@ export default configureStore({
     contractorManagementForm: contractorManagementFormReducer,
     userManagementForm: userManagementFormReducer,
     plannedDeliveryForm: plannedDeliveryFormReducer,
+    createComponentsForm: createComponentsFormReducer,
     logisticsStock: logisticsStockReducer,
     auth: authReducer,
   },

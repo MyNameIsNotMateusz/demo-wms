@@ -9,6 +9,7 @@ import {
   RecipesManagerForm,
   WzDocumentsForm,
   CoilLabelsForm,
+  StockModificationForm,
 } from "../features/forms";
 
 export const formRegistry = {
@@ -22,4 +23,5 @@ export const formRegistry = {
   recipes_manager: RecipesManagerForm,
   outbound_delivery_note: WzDocumentsForm,
   coil_label_printer: CoilLabelsForm,
+  inventory_change: StockModificationForm,
 };

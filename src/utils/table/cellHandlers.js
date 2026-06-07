@@ -49,9 +49,17 @@ export const handleBlur = (
     } else {
       finalValue = Number(value);
     }
+  } else {
+    finalValue = value.trim();
   }
 
-  dispatch(reducer({ id, key, value: finalValue }));
+  dispatch(
+    reducer({
+      id,
+      key,
+      value: finalValue,
+    }),
+  );
 
   setEditedValues({});
 };

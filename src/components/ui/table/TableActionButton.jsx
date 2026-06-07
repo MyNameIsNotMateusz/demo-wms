@@ -3,28 +3,22 @@ import {
   ActionButtonText,
   ActionButtonIcon,
 } from "./TableActionButton.styles";
-import { PlusIcon, TrashIcon, PencilIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, PencilIcon, RectangleStackIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 const icons = {
-  add: (
-    <PlusIcon />
-  ),
-  addMultiple: (
-    <RectangleStackIcon />
-  ),
-  remove: (
-    <TrashIcon />
-  ),
-  edit: (
-    <PencilIcon />
-  )
+  add: <PlusIcon />,
+  addMultiple: <RectangleStackIcon />,
+  remove: <TrashIcon />,
+  edit: <PencilIcon />,
+  restore: <ArrowUturnLeftIcon />,
 };
 
 const labels = {
   add: "Add",
   addMultiple: "Multi",
   remove: "Remove",
-  edit: "Edit"
+  edit: "Edit",
+  restore: "Restore",
 };
 
 export const TableActionButton = ({ handleClick, type, isSmall = false }) => {

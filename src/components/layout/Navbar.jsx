@@ -98,7 +98,7 @@ export const Navbar = ({ handleOpenForm, activeForm, resetState }) => {
                   .filter((item) => {
                     if (
                       userRole !== "admin" &&
-                      ["User Management", "Manual Inventory Change"].includes(
+                      ["User Management", "Stock Modification"].includes(
                         item.text,
                       )
                     )

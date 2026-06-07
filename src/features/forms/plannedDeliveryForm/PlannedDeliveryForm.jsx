@@ -41,12 +41,13 @@ import {
 import { useDispatch } from "react-redux";
 import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
 import { handleMaterialLookup, cancelPlannedDelivery, updatePlannedDelivery } from "./api/api";
-import { handleRemoveSelectedRows, addDeliveryItem, addDeliveryRow } from "./utils/tableOperations";
+import { addDeliveryItem, addDeliveryRow } from "./utils/tableOperations";
 import { handlePastedMaterial } from "./utils/clipboard";
 import { addPlannedDelivery } from "./api/addPlannedDelivery";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { DeliveryDetailsTable } from "./DeliveryDetailsTable";
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const { accessToken } = useAuth();
