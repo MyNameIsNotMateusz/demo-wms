@@ -1,4 +1,5 @@
 export const validateChanges = (
+  pallets,
   removedPallets,
   editedPallets,
   addedPallets,
@@ -36,14 +37,16 @@ export const validateChanges = (
       return false;
     }
 
-    const removedIds = removedPallets.map((pallet) => pallet.id.toLowerCase());
+    const existingIds = [...pallets, ...removedPallets, ...editedPallets].map(
+      (pallet) => pallet.id.toLowerCase(),
+    );
 
-    const conflictExists = palletIds.some((id) => removedIds.includes(id));
+    const alreadyExists = palletIds.some(
+      (id) => id !== "" && existingIds.includes(id),
+    );
 
-    if (conflictExists) {
-      handleError(
-        "The same pallet cannot be added and removed at the same time.",
-      );
+    if (alreadyExists) {
+      handleError("The specified pallet already exists.");
 
       return false;
     }

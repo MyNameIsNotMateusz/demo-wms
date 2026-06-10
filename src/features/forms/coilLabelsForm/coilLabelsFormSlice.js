@@ -41,7 +41,7 @@ const coilLabelsFormSlice = createSlice({
     setCoilsSortConfig: (state, action) => {
       const index = action.payload;
 
-      if (state.userSortConfig[index] == null) {
+      if (state.printedCoilsSortConfig[index] == null) {
         state.printedCoilsSortConfig = {
           [index]: "asc",
         };

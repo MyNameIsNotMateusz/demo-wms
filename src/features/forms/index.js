@@ -2,13 +2,14 @@ import { CreateComponentsForm } from "./createComponentsForm/CreateComponentsFor
 import { PlannedDeliveryForm } from "./plannedDeliveryForm/PlannedDeliveryForm";
 import { UserManagementForm } from "./userManagementForm/UserManagementForm";
 import { ContractorManagementForm } from "./contractorManagementForm/ContractorManagementForm";
-import { ChangePasswordForm } from "./changePassword/ChangePasswordForm";
-import { MaterialManagementForm } from "./materialManagement/MaterialManagementForm";
+import { ChangePasswordForm } from "./changePasswordForm/ChangePasswordForm";
+import { MaterialManagementForm } from "./materialManagementForm/MaterialManagementForm";
 import { ProjectManagementForm } from "./projectManagementForm/ProjectManagementForm";
 import { RecipesManagerForm } from "./recipesManagerForm/RecipesManagerForm";
-import { WzDocumentsForm } from "./wzDocuments/WzDocumentsForm";
-import { CoilLabelsForm } from "./coilLabels/CoilLabelsForm";
-import { StockModificationForm } from "./stockModification/StockModificationForm";
+import { WzDocumentsForm } from "./wzDocumentsForm/WzDocumentsForm";
+import { CoilLabelsForm } from "./coilLabelsForm/CoilLabelsForm";
+import { StockModificationForm } from "./stockModificationForm/StockModificationForm";
+import { PalletLabelsForm } from "./palletLabelsForm/PalletLabelsForm";
 
 export {
   CreateComponentsForm,
@@ -22,4 +23,5 @@ export {
   WzDocumentsForm,
   CoilLabelsForm,
   StockModificationForm,
+  PalletLabelsForm,
 };

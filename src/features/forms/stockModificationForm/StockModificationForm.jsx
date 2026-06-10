@@ -34,7 +34,7 @@ export const StockModificationForm = ({ onClose }) => {
         remarks: "",
     });
 
-    const { removedPallets, addedPallets } = useSelector(
+    const { removedPallets, addedPallets, pallets } = useSelector(
         (state) => state.stockModificationForm,
     );
 
@@ -135,6 +135,7 @@ export const StockModificationForm = ({ onClose }) => {
 
         if (
             !validateChanges(
+                pallets,
                 removedPallets,
                 editedPallets,
                 addedPallets,
@@ -174,13 +175,32 @@ export const StockModificationForm = ({ onClose }) => {
                     await response.json();
 
                 const backendMessage =
-                    errorData?.errors?.join(
-                        ", ",
-                    ) ||
+                    errorData?.errors?.server ||
+                    "";
+
+                let userMessage =
                     "Error while submitting stock modification.";
 
+                if (
+                    backendMessage.includes(
+                        "domain.add_pallets.missing",
+                    )
+                ) {
+                    userMessage =
+                        "The specified pallet does not exist.";
+                }
+
+                if (
+                    backendMessage.includes(
+                        "domain.add_pallets.material_mismatch",
+                    )
+                ) {
+                    userMessage =
+                        "The selected pallet belongs to a different material.";
+                }
+
                 throw new Error(
-                    backendMessage,
+                    userMessage,
                 );
             }
 
@@ -210,6 +230,7 @@ export const StockModificationForm = ({ onClose }) => {
             );
 
             handleError(
+                error.message ||
                 "Error while submitting stock modification form.",
             );
         } finally {

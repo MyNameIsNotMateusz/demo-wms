@@ -8,7 +8,7 @@ import projectManagementIcon from "../assets/icons/projectManagement.png";
 import recipesManagerIcon from "../assets/icons/recipesManagerIcon.png";
 import wzDocumentsIcon from "../assets/icons/wzDocumentsIcon.png";
 import stockModificationIcon from "../assets/icons/stockModificationIcon.png";
-import printLabelIcon from "../assets/icons/printLabelIcon.png";
+import palletLabelsIcon from "../assets/icons/palletLabelsIcon.png";
 import coilManagerIcon from "../assets/icons/coilManagerIcon.png";
 import coilLabelsIcon from "../assets/icons/coilLabelsIcon.png";
 import outboundIcon from "../assets/icons/outboundIcon.png";
@@ -35,9 +35,9 @@ export const navItems = {
               icon: stockModificationIcon,
             },
             {
-              text: "Print Label",
+              text: "Pallet Labels",
               code: "print_label",
-              icon: printLabelIcon,
+              icon: palletLabelsIcon,
             },
           ],
         },

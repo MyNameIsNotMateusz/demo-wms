@@ -10,16 +10,17 @@ import userManagementFormReducer from "../features/forms/userManagementForm/user
 import contractorManagementFormReducer from "../features/forms/contractorManagementForm/contractorManagementFormSlice";
 import projectsReducer from "../features/dictionaries/projectsSlice";
 import materialsReducer from "../features/dictionaries/materialsSlice";
-import materialManagementFormReducer from "../features/forms/materialManagement/materialManagementFormSlice";
+import materialManagementFormReducer from "../features/forms/materialManagementForm/materialManagementFormSlice";
 import projectManagementFormReducer from "../features/forms/projectManagementForm/projectManagementFormSlice";
 import recipesManagerFormReducer from "../features/forms/recipesManagerForm/recipesManagerFormSlice";
-import wzDocumentsFormReducer from "../features/forms/wzDocuments/wzDocumentsFormSlice";
-import coilLabelsFormReducer from "../features/forms/coilLabels/coilLabelsFormSlice";
-import stockModificationFormReducer from "../features/forms/stockModification/stockModificationSlice";
+import wzDocumentsFormReducer from "../features/forms/wzDocumentsForm/wzDocumentsFormSlice";
+import coilLabelsFormReducer from "../features/forms/coilLabelsForm/coilLabelsFormSlice";
+import stockModificationFormReducer from "../features/forms/stockModificationForm/stockModificationSlice";
+import palletLabelsFormReducer from "../features/forms/palletLabelsForm/palletLabelsFormSlice";
 
 export default configureStore({
   reducer: {
-    stockModificationForm: stockModificationFormReducer,
+    palletLabelsForm: palletLabelsFormReducer,
     materials: materialsReducer,
     recipes: recipesReducer,
     contractors: contractorsReducer,
@@ -34,6 +35,7 @@ export default configureStore({
     userManagementForm: userManagementFormReducer,
     plannedDeliveryForm: plannedDeliveryFormReducer,
     createComponentsForm: createComponentsFormReducer,
+    stockModificationForm: stockModificationFormReducer,
     logisticsStock: logisticsStockReducer,
     auth: authReducer,
   },
