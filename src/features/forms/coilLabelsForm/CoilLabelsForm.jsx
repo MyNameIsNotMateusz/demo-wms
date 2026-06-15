@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../auth/AuthProvider";
 import { fetchPrintedCoils } from "./coilLabelsFormSlice";
 import { handleError } from "../../../utils/alerts";
-import { printCoilLabels } from "./pdf/printCoilLabels";
+import { printCoilLabels } from "../../../utils/pdf/coilLabels/printCoilLabels";
 import { SubmitButton } from "../../../components/ui";
 
 export const CoilLabelsForm = ({ onClose }) => {

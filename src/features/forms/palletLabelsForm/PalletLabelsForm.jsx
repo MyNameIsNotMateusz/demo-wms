@@ -7,7 +7,7 @@ import { FormLayout } from "../../../components/layout";
 import { Form, FormTableWrapper } from "../../../components/ui/form/FormBase.styles";
 import { PalletLabelsTable } from "./PalletLabelsTable";
 import { handleError } from "../../../utils/alerts";
-import { printPalletLabels } from "./pdf/printPalletLabels";
+import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
 import { SubmitButton } from "../../../components/ui";
 
 export const PalletLabelsForm = ({ onClose }) => {

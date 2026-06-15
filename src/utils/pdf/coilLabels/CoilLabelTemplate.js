@@ -1,5 +1,5 @@
-import logoIcon from "../../../../assets/icons/logo2.png";
-import { formatTextLines } from "./utils/formatTextLines";
+import logoIcon from "../../../assets/icons/logo2.png";
+import { formatTextLines } from "./formatTextLines";
 
 export const renderCoilLabel = (pdf, data) => {
   const width = 100;

@@ -107,3 +107,29 @@ export const FormCardFooter = styled.div`
     padding: 6px;
   }
 `;
+
+export const FormCardTabs = styled.div`
+  display: flex;
+  padding: 16px;
+  padding-top: 0px;
+
+  @media (max-width: 1600px) {
+    padding: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    padding: 12px;
+  }
+
+  @media (max-width: 992px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px;
+  }
+`;

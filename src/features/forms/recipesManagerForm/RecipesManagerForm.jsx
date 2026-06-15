@@ -466,7 +466,6 @@ export const RecipesManagerForm = ({ onClose }) => {
                             type="remove"
                         />
                     </FormActionsWrapper>
-
                 </FormCard>
                 <FormCard title="Alternatives">
                     <AlternativeGroups

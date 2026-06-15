@@ -28,7 +28,7 @@ import { handleSimpleProduction } from "./utils/production/handleSimpleProductio
 import { buildLabelsData } from "./utils/buildLabelsData";
 import { tableThunks } from "../../../store/thunks/tableThunks";
 import { resetCreateComponentsForm } from "./utils/resetCreateComponentsForm";
-import { printLabels } from "./pdf/printLabels";
+import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
 
 export const CreateComponentsForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -486,6 +486,7 @@ export const CreateComponentsForm = ({ onClose }) => {
             });
         });
 
+
         if (!popupResult || popupResult.submitted === false) return;
 
         const { rows, quantity } = popupResult.data;
@@ -552,7 +553,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                     );
 
                 if (labelsData.length > 0) {
-                    await printLabels(labelsData);
+                    await printPalletLabels(labelsData);
                 }
             }
 

@@ -17,15 +17,17 @@ import wzDocumentsFormReducer from "../features/forms/wzDocumentsForm/wzDocument
 import coilLabelsFormReducer from "../features/forms/coilLabelsForm/coilLabelsFormSlice";
 import stockModificationFormReducer from "../features/forms/stockModificationForm/stockModificationSlice";
 import palletLabelsFormReducer from "../features/forms/palletLabelsForm/palletLabelsFormSlice";
+import coilManagerFormReducer from "../features/forms/coilManagerForm/coilManagerFormSlice";
 
 export default configureStore({
   reducer: {
-    palletLabelsForm: palletLabelsFormReducer,
+    coilManagerForm: coilManagerFormReducer,
     materials: materialsReducer,
     recipes: recipesReducer,
     contractors: contractorsReducer,
     projects: projectsReducer,
     plannedDeliveries: plannedDeliveriesReducer,
+    palletLabelsForm: palletLabelsFormReducer,
     coilLabelsForm: coilLabelsFormReducer,
     wzDocumentsForm: wzDocumentsFormReducer,
     recipesManagerForm: recipesManagerFormReducer,

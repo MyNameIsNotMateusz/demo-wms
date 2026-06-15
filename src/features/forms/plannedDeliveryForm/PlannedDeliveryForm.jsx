@@ -317,6 +317,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
               />
             </FormTableWrapper>
           </FormCard>
+
           <FormCard title="Delivery Details"
             footer={<SubmitButton
               isLoading={isLoading}

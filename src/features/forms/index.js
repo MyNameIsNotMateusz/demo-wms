@@ -10,6 +10,7 @@ import { WzDocumentsForm } from "./wzDocumentsForm/WzDocumentsForm";
 import { CoilLabelsForm } from "./coilLabelsForm/CoilLabelsForm";
 import { StockModificationForm } from "./stockModificationForm/StockModificationForm";
 import { PalletLabelsForm } from "./palletLabelsForm/PalletLabelsForm";
+import { CoilManagerForm } from "./coilManagerForm/CoilManagerForm";
 
 export {
   CreateComponentsForm,
@@ -24,4 +25,5 @@ export {
   CoilLabelsForm,
   StockModificationForm,
   PalletLabelsForm,
+  CoilManagerForm,
 };

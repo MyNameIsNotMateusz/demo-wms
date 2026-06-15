@@ -1,5 +1,5 @@
 import { FormLayout } from "../../../components/layout"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormActionsWrapper, FormTableWrapper } from "../../../components/ui/form/FormBase.styles";
 import { ProjectTable } from "./ProjectTable";
 import { useSelector, useDispatch } from "react-redux";
@@ -35,6 +35,12 @@ export const ProjectManagementForm = ({ onClose }) => {
 
     const { projectsList } = useSelector((state) => state.projects);
     const { materialsTable } = useSelector((state) => state.projectManagementForm);
+
+    useEffect(() => {
+        if (!isProjectFormVisible) {
+            dispatch(resetMaterialsTable());
+        }
+    }, [isProjectFormVisible, dispatch]);
 
     const handleOpenProjectForm = (e, mode) => {
         e.preventDefault();
