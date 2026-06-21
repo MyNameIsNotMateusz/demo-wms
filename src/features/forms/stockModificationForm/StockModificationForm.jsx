@@ -268,7 +268,7 @@ export const StockModificationForm = ({ onClose }) => {
                         }
                     />
                 </FormRow>
-                {activeTab == 0 && (
+                {activeTab === 0 && (
                     <>
                         <FormTableWrapper>
                             <PalletsTable
@@ -307,7 +307,7 @@ export const StockModificationForm = ({ onClose }) => {
                         </FormActionsWrapper>
                     </>
                 )}
-                {activeTab == 1 && (
+                {activeTab === 1 && (
                     <>
                         <FormTableWrapper>
                             <RemovedPalletsTable
@@ -333,7 +333,7 @@ export const StockModificationForm = ({ onClose }) => {
                         </FormActionsWrapper>
                     </>
                 )}
-                {activeTab == 2 && (
+                {activeTab === 2 && (
                     <>
                         <FormTableWrapper>
                             <EditedPalletsTable
@@ -363,7 +363,7 @@ export const StockModificationForm = ({ onClose }) => {
                         </FormActionsWrapper>
                     </>
                 )}
-                {activeTab == 3 && (
+                {activeTab === 3 && (
                     <>
                         <FormTableWrapper>
                             <AddedPalletsTable

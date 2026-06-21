@@ -11,7 +11,8 @@ import {
   CoilLabelsForm,
   StockModificationForm,
   PalletLabelsForm,
-  CoilManagerForm
+  CoilManagerForm,
+  OutboundForm,
 } from "../features/forms";
 
 export const formRegistry = {
@@ -27,5 +28,6 @@ export const formRegistry = {
   coil_label_printer: CoilLabelsForm,
   inventory_change: StockModificationForm,
   print_label: PalletLabelsForm,
-  coil_manager: CoilManagerForm
+  coil_manager: CoilManagerForm,
+  outbound: OutboundForm,
 };

@@ -519,6 +519,7 @@ export const CreateComponentsForm = ({ onClose }) => {
             let data = null;
 
             if (isAssemblyMode) {
+                console.log("Jest true");
                 data =
                     await handleRecipeProduction({
                         accessToken,
@@ -529,6 +530,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                         handleError,
                     });
             } else {
+                console.log("Jest false");
                 data =
                     await handleSimpleProduction({
                         accessToken,
@@ -546,9 +548,14 @@ export const CreateComponentsForm = ({ onClose }) => {
                 materialExtraData.is_simplified ===
                 false
             ) {
+                const palletsForLabels =
+                    data.items ||
+                    data.created_pallets ||
+                    [];
+
                 const labelsData =
                     buildLabelsData(
-                        data.items,
+                        palletsForLabels,
                         formData.material_code
                     );
 
@@ -712,7 +719,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                     />
                 )}
                 <FormTableWrapper>
-                    {activeTab == 0 && isModalOpen && (
+                    {activeTab === 0 && isModalOpen && (
                         <ModalContainer>
                             <AddRowsModal
                                 handleClose={handleCloseModal}
@@ -722,7 +729,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                             />
                         </ModalContainer>
                     )}
-                    {activeTab == 0 && (
+                    {activeTab === 0 && (
                         <CreatedPalletsTable
                             data={displayedCreatedPallets}
                             selectedRows={selectedCreatedPallets}
@@ -731,7 +738,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                             setEditedValues={setEditedValues}
                         />
                     )}
-                    {activeTab == 1 && (
+                    {activeTab === 1 && (
                         <RequiredMaterialsTable
                             data={displayedRequiredMaterials}
                         />

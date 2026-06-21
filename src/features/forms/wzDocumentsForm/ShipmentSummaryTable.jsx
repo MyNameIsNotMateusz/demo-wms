@@ -3,7 +3,6 @@ import { ReadonlyFormTable } from "../../../components/layout/ReadonlyFormTable"
 import { TableBodyCell, TableBodyRow } from "../../../components/ui/table/TableBase.styles"
 
 export const ShipmentSummaryTable = ({ data }) => {
-
     return (
         <ReadonlyFormTable
             columns={shipmentSummaryColumns}

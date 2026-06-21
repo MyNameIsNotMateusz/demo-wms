@@ -6,6 +6,6 @@ export const buildLabelsData = (items, materialCode) => {
 
     quantity: Number(item.quantity),
 
-    sequenceNumber: item.material_seq_num,
+    sequenceNumber: item.material_seq_num || item.material_seq_number,
   }));
 };

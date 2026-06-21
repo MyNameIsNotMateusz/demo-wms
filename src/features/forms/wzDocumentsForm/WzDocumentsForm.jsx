@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useAuth } from "../../../auth/AuthProvider";
 import { setShipments, setEditableShipmentData, resetShipmentsState, updateEditableShipmentRow, addEditableShipmentRow, removeEditableShipmentRows, resetEditableShipmentsState } from "./wzDocumentsFormSlice";
 import { fetchShipments } from "./api/shipmentsApi";
-import { selectEditableShipments, selectShipments } from "./wzDocumentsFormSelectors";
+import { selectEditableShipments, selectShipments } from "./wzDocumentsSelectors";
 import { ShipmentsTable } from "./ShipmentsTable";
 import { groupPalletsByMaterial } from "./utils/groupPalletsByMaterial";
 import { ShipmentSummaryTable } from "./ShipmentSummaryTable";
