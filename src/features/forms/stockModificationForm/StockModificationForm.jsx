@@ -251,7 +251,7 @@ export const StockModificationForm = ({ onClose }) => {
                     />
                     <FormInput
                         id="operator"
-                        label="Operator"
+                        label="Operator Name *"
                         type="text"
                         value={userName}
                         disabled="true"

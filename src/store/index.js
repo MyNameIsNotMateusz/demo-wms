@@ -19,15 +19,16 @@ import stockModificationFormReducer from "../features/forms/stockModificationFor
 import palletLabelsFormReducer from "../features/forms/palletLabelsForm/palletLabelsFormSlice";
 import coilManagerFormReducer from "../features/forms/coilManagerForm/coilManagerFormSlice";
 import outboundFormReducer from "../features/forms/outboundForm/outboundFormSlice";
+import inboundFormReducer from "../features/forms/inboundForm/inboundFormSlice";
 
 export default configureStore({
   reducer: {
-    outboundForm: outboundFormReducer,
+    inboundForm: inboundFormReducer,
+    plannedDeliveries: plannedDeliveriesReducer,
     materials: materialsReducer,
     recipes: recipesReducer,
     contractors: contractorsReducer,
     projects: projectsReducer,
-    plannedDeliveries: plannedDeliveriesReducer,
     coilManagerForm: coilManagerFormReducer,
     palletLabelsForm: palletLabelsFormReducer,
     coilLabelsForm: coilLabelsFormReducer,
@@ -40,6 +41,7 @@ export default configureStore({
     plannedDeliveryForm: plannedDeliveryFormReducer,
     createComponentsForm: createComponentsFormReducer,
     stockModificationForm: stockModificationFormReducer,
+    outboundForm: outboundFormReducer,
     logisticsStock: logisticsStockReducer,
     auth: authReducer,
   },

@@ -55,9 +55,9 @@ export const DeliveryDetailsTable = ({
                             type="checkbox"
                             style={{ cursor: "pointer" }}
                             checked={selectedRows[row.id] || false}
-                            onChange={() => {
-                                handleRowClick(row.id, setSelectedRows);
-                            }}
+                            onChange={() =>
+                                handleRowClick(row.id, setSelectedRows)
+                            }
                         />
                     </TableBodyCell>
                     {row.isNew ? (

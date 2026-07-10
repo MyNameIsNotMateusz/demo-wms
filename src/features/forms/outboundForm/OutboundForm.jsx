@@ -240,9 +240,9 @@ export const OutboundForm = ({ onClose }) => {
                         handleChange={(val) =>
                             updateFormData(setFormData, "contractor_tax_id", val)
                         }
-                        options={contractors.map((p) => ({
-                            label: p.name,
-                            value: p.tax_id,
+                        options={contractors.map((c) => ({
+                            label: c.name,
+                            value: c.tax_id,
                         }))}
                         isDisabled={!formData.outbound_type}
                     />
@@ -264,7 +264,7 @@ export const OutboundForm = ({ onClose }) => {
                 <FormRow>
                     <FormInput
                         id="operator_name"
-                        label="Operator *"
+                        label="Operator Name *"
                         type="text"
                         value={formData.operator_name}
                         handleChange={(val) =>

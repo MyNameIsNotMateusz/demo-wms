@@ -652,7 +652,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                         <FormRow>
                             <FormInput
                                 id="operator_name"
-                                label="Operator *"
+                                label="Operator Name *"
                                 type="text"
                                 value={formData.operator_name}
                                 handleChange={(val) =>
@@ -697,7 +697,7 @@ export const CreateComponentsForm = ({ onClose }) => {
                         )}
                     </FormColumn>
 
-                    <FormColumn $flex="1">
+                    <FormColumn $flex="1">npm
                         <FormRow>
                             <ImagePreview
                                 id="graphic_uml"

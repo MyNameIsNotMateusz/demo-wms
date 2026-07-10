@@ -47,7 +47,7 @@ export const handleBlur = (
     if (value === "" || Number(value) < 0) {
       finalValue = 0;
     } else {
-      finalValue = Number(value);
+      finalValue = Number(Number(value).toFixed(3));
     }
   } else {
     finalValue = value.trim();

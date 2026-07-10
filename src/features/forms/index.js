@@ -12,6 +12,7 @@ import { StockModificationForm } from "./stockModificationForm/StockModification
 import { PalletLabelsForm } from "./palletLabelsForm/PalletLabelsForm";
 import { CoilManagerForm } from "./coilManagerForm/CoilManagerForm";
 import { OutboundForm } from "./outboundForm/OutboundForm";
+import { InboundForm } from "./inboundForm/InboundForm";
 
 export {
   CreateComponentsForm,
@@ -28,4 +29,5 @@ export {
   PalletLabelsForm,
   CoilManagerForm,
   OutboundForm,
+  InboundForm,
 };

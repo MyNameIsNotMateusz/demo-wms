@@ -3,7 +3,7 @@ import {
   ActionButtonText,
   ActionButtonIcon,
 } from "./TableActionButton.styles";
-import { PlusIcon, TrashIcon, PencilIcon, RectangleStackIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, PencilIcon, RectangleStackIcon, ArrowUturnLeftIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const icons = {
   add: <PlusIcon />,
@@ -11,6 +11,7 @@ const icons = {
   remove: <TrashIcon />,
   edit: <PencilIcon />,
   restore: <ArrowUturnLeftIcon />,
+  search: <MagnifyingGlassIcon />,
 };
 
 const labels = {
@@ -19,11 +20,12 @@ const labels = {
   remove: "Remove",
   edit: "Edit",
   restore: "Restore",
+  search: "Search",
 };
 
 export const TableActionButton = ({ handleClick, type, isSmall = false }) => {
   return (
-    <StyledActionButton $isSmall={isSmall} onClick={handleClick}>
+    <StyledActionButton type="button" $isSmall={isSmall} onClick={handleClick}>
       <ActionButtonText $isSmall={isSmall}>{labels[type]}</ActionButtonText>
       <ActionButtonIcon $isSmall={isSmall}>{icons[type]}</ActionButtonIcon>
     </StyledActionButton>

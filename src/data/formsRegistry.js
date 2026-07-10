@@ -13,6 +13,7 @@ import {
   PalletLabelsForm,
   CoilManagerForm,
   OutboundForm,
+  InboundForm
 } from "../features/forms";
 
 export const formRegistry = {
@@ -30,4 +31,5 @@ export const formRegistry = {
   print_label: PalletLabelsForm,
   coil_manager: CoilManagerForm,
   outbound: OutboundForm,
+  inbound: InboundForm,
 };
