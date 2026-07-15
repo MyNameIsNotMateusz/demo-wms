@@ -1,6 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
+import productionStockReducer from "../features/tables/productionStock/productionStockSlice";
 import logisticsStockReducer from "../features/tables/logisticsStock/logisticsStockSlice";
+import serviceStockReducer from "../features/tables/serviceStock/serviceStockSlice";
+import coilStockReducer from "../features/tables/coilStock/coilStockSlice";
+import ckdStockReducer from "../features/tables/ckdStock/ckdStockSlice";
+import productionTransactionsReducer from "../features/tables/productionTransactions/productionTransactionsSlice";
+import logisticsTransactionsReducer from "../features/tables/logisticsTransactions/logisticsTransactionsSlice";
+import coilTransactionsReducer from "../features/tables/coilTransactions/coilTransactionsSlice";
 import contractorsReducer from "../features/dictionaries/contractorsSlice";
 import plannedDeliveriesReducer from "../features/dictionaries/plannedDeliveriesSlice";
 import plannedDeliveryFormReducer from "../features/forms/plannedDeliveryForm/plannedDeliveryFormSlice";
@@ -23,12 +30,12 @@ import inboundFormReducer from "../features/forms/inboundForm/inboundFormSlice";
 
 export default configureStore({
   reducer: {
-    inboundForm: inboundFormReducer,
     plannedDeliveries: plannedDeliveriesReducer,
     materials: materialsReducer,
     recipes: recipesReducer,
     contractors: contractorsReducer,
     projects: projectsReducer,
+    inboundForm: inboundFormReducer,
     coilManagerForm: coilManagerFormReducer,
     palletLabelsForm: palletLabelsFormReducer,
     coilLabelsForm: coilLabelsFormReducer,
@@ -42,7 +49,14 @@ export default configureStore({
     createComponentsForm: createComponentsFormReducer,
     stockModificationForm: stockModificationFormReducer,
     outboundForm: outboundFormReducer,
+    productionStock: productionStockReducer,
     logisticsStock: logisticsStockReducer,
+    serviceStock: serviceStockReducer,
+    coilStock: coilStockReducer,
+    ckdStock: ckdStockReducer,
+    productionTransactions: productionTransactionsReducer,
+    logisticsTransactions: logisticsTransactionsReducer,
+    coilTransactions: coilTransactionsReducer,
     auth: authReducer,
   },
 });

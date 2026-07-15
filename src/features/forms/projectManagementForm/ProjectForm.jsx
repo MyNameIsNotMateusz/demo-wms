@@ -136,6 +136,7 @@ export const ProjectForm = ({ title, setFormData, setIsProjectFormVisible, setMo
                             { label: "Sales", value: "SALES" },
                             { label: "Material Supplier", value: "SUPPLIER" },
                             { label: "Service", value: "SERVICE" },
+                            { label: "Production", value: "PRODUCTION" },
                         ]}
                     />
                 </FormRow>

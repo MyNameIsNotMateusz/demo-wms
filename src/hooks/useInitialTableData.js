@@ -2,7 +2,16 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tableThunks } from "../store/thunks/tableThunks";
 
-const { fetchLogisticsStock } = tableThunks;
+const {
+  fetchProductionStock,
+  fetchLogisticsStock,
+  fetchServiceStock,
+  fetchCoilStock,
+  fetchCkdStock,
+  fetchProductionTransactions,
+  fetchLogisticsTransactions,
+  fetchCoilTransactions,
+} = tableThunks;
 
 export const useInitialWarehouseData = (accessToken) => {
   const dispatch = useDispatch();
@@ -17,8 +26,36 @@ export const useInitialWarehouseData = (accessToken) => {
 
     if (!warehouseAccess?.subtabs) return;
 
+    if (warehouseAccess.subtabs.sheet_production_stock) {
+      dispatch(fetchProductionStock(accessToken));
+    }
+
     if (warehouseAccess.subtabs.sheet_logistic_stock) {
       dispatch(fetchLogisticsStock(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_service_stock) {
+      dispatch(fetchServiceStock(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_coil_stock) {
+      dispatch(fetchCoilStock(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_ckd_stock) {
+      dispatch(fetchCkdStock(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_production_transaction) {
+      dispatch(fetchProductionTransactions(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_logistics_transaction) {
+      dispatch(fetchLogisticsTransactions(accessToken));
+    }
+
+    if (warehouseAccess.subtabs.sheet_coil_transaction) {
+      dispatch(fetchCoilTransactions(accessToken));
     }
 
     hasFetched.current = true;

@@ -19,7 +19,7 @@ export const navItems = {
     {
       label: "Warehouse",
       code: "warehouse",
-      to: "/logisticsStock",
+      to: "/productionStock",
       sections: [
         {
           title: "Stock Operations",

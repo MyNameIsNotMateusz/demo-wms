@@ -550,7 +550,6 @@ export const InboundForm = ({ onClose }) => {
         >
             <Form>
                 <FormRow>
-                    <h1 onClick={() => console.log()}>hej</h1>
                     <FormSelect
                         id="inbound_type"
                         label="Inbound Type *"

@@ -7,6 +7,13 @@ import { TableContainer } from "./features/table/TableContainer";
 import { useLogisticsStock } from "./features/tables/logisticsStock/useLogisticsStock";
 import { useInitialWarehouseData } from "./hooks/useInitialTableData";
 import { useLoadDictionaries } from "./hooks/useLoadDictionaries";
+import { useProductionStock } from "./features/tables/productionStock/useProductionStock";
+import { useServiceStock } from "./features/tables/serviceStock/useServiceStock";
+import { useCoilStock } from "./features/tables/coilStock/useCoilStock";
+import { useCkdStock } from "./features/tables/ckdStock/useCkdStock";
+import { useProductionTransactions } from "./features/tables/productionTransactions/useProductionTransactions";
+import { useLogisticsTransactions } from "./features/tables/logisticsTransactions/useLogisticsTransactions";
+import { useCoilTransactions } from "./features/tables/coilTransactions/useCoilTransactions";
 
 export const App = () => {
   const { accessToken } = useAuth();
@@ -20,7 +27,14 @@ export const App = () => {
     ? Object.values(warehouseAccess.subtabs).some(Boolean)
     : false;
 
+  const productionStockProps = useProductionStock();
   const logisticsStockProps = useLogisticsStock();
+  const serviceStockProps = useServiceStock();
+  const coilStockProps = useCoilStock();
+  const ckdStockProps = useCkdStock();
+  const productionTransactionsProps = useProductionTransactions();
+  const logisticsTransactionsProps = useLogisticsTransactions();
+  const coilTransactionsProps = useCoilTransactions();
 
   if (!accessToken) {
     return (
@@ -41,7 +55,7 @@ export const App = () => {
           element={
             accessToken ? (
               <Navigate
-                to={hasWarehouseAccess ? "/logisticsStock" : "/settings"}
+                to={hasWarehouseAccess ? "/productionStock" : "/settings"}
               />
             ) : (
               <Login />
@@ -49,12 +63,48 @@ export const App = () => {
           }
         />
         <Route path="/" element={<AppLayout />}>
-          <Route index element={<Navigate to="/logisticsStock" />} />
+          <Route index element={<Navigate to="/productionStock" />} />
+
+          <Route
+            path="/productionStock"
+            element={<TableContainer {...productionStockProps} />}
+          />
 
           <Route
             path="/logisticsStock"
             element={<TableContainer {...logisticsStockProps} />}
           />
+
+          <Route
+            path="/serviceStock"
+            element={<TableContainer {...serviceStockProps} />}
+          />
+
+          <Route
+            path="/coilStock"
+            element={<TableContainer {...coilStockProps} />}
+          />
+
+          <Route
+            path="/ckdStock"
+            element={<TableContainer {...ckdStockProps} />}
+          />
+
+          <Route
+            path="/productionTransactions"
+            element={<TableContainer {...productionTransactionsProps} />}
+          />
+
+          <Route
+            path="/logisticsTransactions"
+            element={<TableContainer {...logisticsTransactionsProps} />}
+          />
+
+          <Route
+            path="/transactions"
+            element={<TableContainer {...coilTransactionsProps} />}
+          />
+
         </Route>
       </Routes>
     </HashRouter>
