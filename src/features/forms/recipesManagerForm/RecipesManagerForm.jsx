@@ -159,7 +159,6 @@ export const RecipesManagerForm = ({ onClose }) => {
         const selectedProject = projects.find((p) => p.name === val)
 
         if (selectedProject) {
-            console.log(selectedProject.materials);
             setMaterials(selectedProject.materials || []);
         } else {
             setMaterials([]);

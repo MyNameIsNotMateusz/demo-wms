@@ -303,6 +303,7 @@ export const CreateComponentsForm = ({ onClose }) => {
 
     const handleMaterialCodeChange = async (val) => {
         updateFormData(setFormData, "material_code", val);
+
         const recipes = getRecipesForMaterial({
             projects,
             projectName: formData.project,
@@ -519,7 +520,6 @@ export const CreateComponentsForm = ({ onClose }) => {
             let data = null;
 
             if (isAssemblyMode) {
-                console.log("Jest true");
                 data =
                     await handleRecipeProduction({
                         accessToken,
@@ -530,7 +530,6 @@ export const CreateComponentsForm = ({ onClose }) => {
                         handleError,
                     });
             } else {
-                console.log("Jest false");
                 data =
                     await handleSimpleProduction({
                         accessToken,

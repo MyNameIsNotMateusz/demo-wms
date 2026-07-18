@@ -6,7 +6,6 @@ export const handleRemoveSelectedRows = (
   dispatch,
   handleError,
 ) => {
-  console.log(selectedRows);
   const idsToRemove = Object.keys(selectedRows);
 
   if (idsToRemove.length === 0) {

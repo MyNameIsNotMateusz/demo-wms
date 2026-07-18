@@ -38,7 +38,6 @@ export const handleRecipeProduction = async ({
     remarks: formData.remarks,
   };
 
-
   const response = await fetch(
     `${BASE_API_URL}warehouse/production/production-from-recipe/`,
     {
