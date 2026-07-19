@@ -9,7 +9,7 @@ describe("validateProductionForm", () => {
       handleError: () => {},
     });
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return false when the createdPallets array is empty.", () => {
@@ -20,7 +20,7 @@ describe("validateProductionForm", () => {
       handleError: () => {},
     });
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return false when the operator name is empty.", () => {
@@ -33,7 +33,7 @@ describe("validateProductionForm", () => {
       handleError: () => {},
     });
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return false when not all pallets have a quantity greater than 0.", () => {
@@ -53,7 +53,7 @@ describe("validateProductionForm", () => {
       handleError: () => {},
     });
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return true when the form is valid.", () => {
@@ -73,6 +73,6 @@ describe("validateProductionForm", () => {
       handleError: () => {},
     });
 
-    expect(result).toEqual(true);
+    expect(result).toBe(true);
   });
 });

@@ -1,4 +1,4 @@
-import validateEditedPallets from "./tableOperations";
+import { validateEditedPallets } from "./validateEditedPallets";
 
 describe("validateEditedPallets", () => {
   it("should return false when the quantity differs from the original quantity.", () => {
@@ -22,7 +22,7 @@ describe("validateEditedPallets", () => {
 
     const result = validateEditedPallets(selectedIds, editedPallets);
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return false when the status differs from the original status", () => {
@@ -46,7 +46,7 @@ describe("validateEditedPallets", () => {
 
     const result = validateEditedPallets(selectedIds, editedPallets);
 
-    expect(result).toEqual(false);
+    expect(result).toBe(false);
   });
 
   it("should return true when all selected pallets are unchanged.", () => {
@@ -73,6 +73,6 @@ describe("validateEditedPallets", () => {
 
     const result = validateEditedPallets(selectedIds, editedPallets);
 
-    expect(result).toEqual(true);
+    expect(result).toBe(true);
   });
 });

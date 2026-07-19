@@ -14,7 +14,8 @@ import { movePalletsToRemoved, movePalletsToEdited, moveRemovedPalletsToPallets,
 import { RemovedPalletsTable } from "./RemovedPalletsTable";
 import { EditedPalletsTable } from "./EditedPalletsTable";
 import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
-import { addPallet, handleMovePallets } from "./utils/tableOperations";
+import { handleMovePallets } from "./utils/handleMovePallets";
+import { addPallet } from "./utils/addPallet";
 import { AddedPalletsTable } from "./AddedPalletsTable";
 import { validateChanges } from "./utils/validateChanges";
 import { buildPayload } from "./utils/buildPayload";
