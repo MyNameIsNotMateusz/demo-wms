@@ -9,6 +9,7 @@ import { PalletLabelsTable } from "./PalletLabelsTable";
 import { handleError } from "../../../utils/alerts";
 import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
 import { SubmitButton } from "../../../components/ui";
+import { buildPalletLabelsData } from "./utils/buildPalletLabelsData";
 
 export const PalletLabelsForm = ({ onClose }) => {
 
@@ -28,24 +29,7 @@ export const PalletLabelsForm = ({ onClose }) => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (Object.keys(selectedPallets).length === 0 || pallets.length === 0) {
-            return;
-        }
-
-        const selectedIds = Object.keys(selectedPallets);
-
-        const filtered = pallets.filter((pallet) =>
-            selectedIds.includes(pallet.pallet_id),
-        );
-
-        const formatted = filtered.map((pallet) => ({
-            id: pallet.pallet_id ?? "",
-            material_code: pallet.material_code ?? "",
-            sequenceNumber: pallet.material_seq_number ?? "",
-            quantity: pallet.quantity ? parseFloat(pallet.quantity) : 0,
-        }));
-
-        setLabelData(formatted);
+        setLabelData(buildPalletLabelsData(selectedPallets, pallets));
     }, [selectedPallets, pallets]);
 
     const handleSubmit = (e) => {
