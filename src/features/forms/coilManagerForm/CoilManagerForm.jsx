@@ -230,7 +230,7 @@ export const CoilManagerForm = ({ onClose }) => {
         const selectedCoilId =
             Object.keys(selectedProductionCoils)[0] ||
             Object.keys(selectedConsumedCoils)[0];
-
+        
         const selectedCoil = findCoilById(
             selectedCoilId,
             productionCoils,

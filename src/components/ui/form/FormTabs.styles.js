@@ -9,6 +9,7 @@ export const FormTabsWrapper = styled.div`
   padding: 2px;
   background-color: #f2f2f2;
   border-radius: 9px;
+  width: 100%;
 `;
 
 export const NavItem = styled(NavLink)``;
