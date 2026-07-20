@@ -9,6 +9,7 @@ import { fetchPrintedCoils } from "./coilLabelsFormSlice";
 import { handleError } from "../../../utils/alerts";
 import { printCoilLabels } from "../../../utils/pdf/coilLabels/printCoilLabels";
 import { SubmitButton } from "../../../components/ui";
+import { buildCoilLabelsData } from "./utils/buildCoilLabelsData";
 
 export const CoilLabelsForm = ({ onClose }) => {
 
@@ -29,35 +30,7 @@ export const CoilLabelsForm = ({ onClose }) => {
     }, [dispatch])
 
     useEffect(() => {
-        if (Object.keys(selectedCoils).length === 0 || printedCoils.length === 0) {
-            return;
-        }
-
-        const selectedIds = Object.keys(selectedCoils);
-
-        const filtered = printedCoils.filter((coil) =>
-            selectedIds.includes(coil.coil_id)
-        );
-
-        const formatted = filtered.map((coil) => ({
-            coil_id: coil.coil_id ?? "",
-            material_code: coil.material_code ?? "",
-            metal_type: coil.metal_type ?? "",
-            batch: coil.batch ?? "",
-            width: coil.width ?? null,
-            thickness: coil.thickness ?? null,
-            weight: coil.weight
-                ? Number(coil.weight).toLocaleString("de-DE", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 1,
-                })
-                : null,
-            unit: coil.unit,
-            printed_date: null,
-        }));
-
-        setLabelsData(formatted);
-
+        setLabelsData(buildCoilLabelsData(selectedCoils, printedCoils));
     }, [selectedCoils, printedCoils]);
 
     const handleSubmit = (e) => {
