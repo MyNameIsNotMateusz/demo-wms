@@ -41,13 +41,15 @@ import {
 import { useDispatch } from "react-redux";
 import { PlannedDeliveriesTable } from "./PlannedDeliveriesTable";
 import { handleMaterialLookup, cancelPlannedDelivery, updatePlannedDelivery } from "./api/api";
-import { addDeliveryItem, addDeliveryRow } from "./utils/tableOperations";
-import { handlePastedMaterial } from "./utils/clipboard";
+import { addDeliveryRow } from "./utils/addDeliveryRow";
+import { addDeliveryItem } from "./utils/addDeliveryItem";
+import { handlePastedMaterial } from "./utils/handlePastedMaterial";
 import { addPlannedDelivery } from "./api/addPlannedDelivery";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { DeliveryDetailsTable } from "./DeliveryDetailsTable";
 import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
+import { buildDeliveryDetailsRows } from "./utils/buildDeliveryDetailsRows";
 
 export const PlannedDeliveryForm = ({ onClose }) => {
   const { accessToken } = useAuth();
@@ -138,37 +140,15 @@ export const PlannedDeliveryForm = ({ onClose }) => {
   useEffect(() => {
     setIsDetailsTableEdited(false);
     setDeletedDetailsItems([]);
-    const selectedIds = Object.keys(selectedPlannedDeliveries);
 
-    if (selectedIds.length === 0) {
-      dispatch(setDeliveryDetailsRows([]));
-      return;
-    }
-
-    const selectedId = selectedIds[0];
-
-    const selectedDelivery = displayedPlannedDeliveries.find(
-      (delivery) => delivery.id === selectedId,
+    const mappedItems = buildDeliveryDetailsRows(
+      selectedPlannedDeliveries,
+      displayedPlannedDeliveries,
     );
-
-    if (!selectedDelivery || !selectedDelivery.items) {
-      dispatch(setDeliveryDetailsRows([]));
-      return;
-    }
-
-    const mappedItems = selectedDelivery.items.map((item) => ({
-      id: item.id,
-      seq_number: item.material.seq_number,
-      material_code: item.material.material_code,
-      name: item.material.name,
-      type: item.material.type,
-      planned_quantity: Math.round(parseFloat(item.planned_quantity)),
-      unit: item.material.unit,
-    }));
 
     dispatch(setDeliveryDetailsRows(mappedItems));
   }, [selectedPlannedDeliveries, displayedPlannedDeliveries, dispatch]);
-
+  
   const handleSubmit = async () => {
     const success = await addPlannedDelivery(
       formData,
@@ -347,7 +327,8 @@ export const PlannedDeliveryForm = ({ onClose }) => {
                     selectedPlannedDeliveries,
                     handleError,
                     dispatch,
-                    addDeliveryDetailsRow
+                    addDeliveryDetailsRow,
+                    uuidv4
                   );
 
                   if (!success) return;
