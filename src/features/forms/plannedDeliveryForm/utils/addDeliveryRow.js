@@ -5,7 +5,6 @@ export const addDeliveryRow = (
   reducer,
   uuidv4,
 ) => {
-  console.log(selectedDeliveryId);
   if (!Object.keys(selectedDeliveryId)[0]) {
     handleError("Please select a delivery first.");
     return false;
