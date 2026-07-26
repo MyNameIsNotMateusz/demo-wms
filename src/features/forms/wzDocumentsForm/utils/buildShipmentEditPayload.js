@@ -31,6 +31,7 @@ export const buildShipmentEditPayload = ({
       stock_id: p.pallet,
     }));
 
+
   return {
     items_to_delete,
     items_to_update,
