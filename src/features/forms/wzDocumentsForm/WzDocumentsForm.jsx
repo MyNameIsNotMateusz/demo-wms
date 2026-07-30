@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 import { buildShipmentEditPayload } from "./utils/buildShipmentEditPayload";
 import { validateDuplicatePallets } from "./utils/validateDuplicatePallets";
 import { updateShipment } from "./api/updateShipment";
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
 
 export const WzDocumentsForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -202,56 +203,15 @@ export const WzDocumentsForm = ({ onClose }) => {
     };
 
     const handleRemoveShipmentRows = () => {
-        const idsToRemove = Object.keys(
-            selectedEditableShipments
+        handleRemoveSelectedRows(
+            selectedEditableShipments,
+            displayedEditableShipments,
+            setSelectedEditableShipments,
+            removeEditableShipmentRows,
+            dispatch,
+            handleError,
+            (row) => row.id || row.pallet
         );
-
-        if (idsToRemove.length === 0) {
-            handleError("No row selected.");
-            return;
-        }
-
-        if (idsToRemove.length === 1) {
-            const onlyId = idsToRemove[0];
-
-            const indexToRemove =
-                displayedEditableShipments.findIndex(
-                    (row) =>
-                        (row.id || row.pallet) === onlyId
-                );
-
-            const nextItem =
-                displayedEditableShipments[indexToRemove + 1] &&
-                    !idsToRemove.includes(
-                        displayedEditableShipments[indexToRemove + 1].id ||
-                        displayedEditableShipments[indexToRemove + 1].pallet
-                    )
-                    ? displayedEditableShipments[indexToRemove + 1]
-                    : displayedEditableShipments[indexToRemove - 1] &&
-                        !idsToRemove.includes(
-                            displayedEditableShipments[indexToRemove - 1].id ||
-                            displayedEditableShipments[indexToRemove - 1].pallet
-                        )
-                        ? displayedEditableShipments[indexToRemove - 1]
-                        : null;
-
-            dispatch(removeEditableShipmentRows(idsToRemove));
-
-            setSelectedEditableShipments(
-                nextItem
-                    ? {
-                        [nextItem.id || nextItem.pallet]:
-                            true,
-                    }
-                    : {}
-            );
-
-            return;
-        }
-
-        dispatch(removeEditableShipmentRows(idsToRemove));
-
-        setSelectedEditableShipments({});
     };
 
     const handleDisableEditMode = () => {

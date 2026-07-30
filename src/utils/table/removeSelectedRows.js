@@ -5,6 +5,7 @@ export const handleRemoveSelectedRows = (
   reducer,
   dispatch,
   handleError,
+  getRowId = (row) => row.id,
 ) => {
   const idsToRemove = Object.keys(selectedRows);
 
@@ -15,19 +16,22 @@ export const handleRemoveSelectedRows = (
 
   if (idsToRemove.length === 1) {
     const onlyId = idsToRemove[0];
-    const indexToRemove = data.findIndex((row) => row.id === onlyId);
+
+    const indexToRemove = data.findIndex(
+      (row) => String(getRowId(row)) === onlyId,
+    );
 
     const nextItem =
       data[indexToRemove + 1] &&
-      !idsToRemove.includes(String(data[indexToRemove + 1].id))
+      !idsToRemove.includes(String(getRowId(data[indexToRemove + 1])))
         ? data[indexToRemove + 1]
         : data[indexToRemove - 1] &&
-            !idsToRemove.includes(String(data[indexToRemove - 1].id))
+            !idsToRemove.includes(String(getRowId(data[indexToRemove - 1])))
           ? data[indexToRemove - 1]
           : null;
 
     dispatch(reducer(idsToRemove));
-    setSelectedRows(nextItem ? { [nextItem.id]: true } : {});
+    setSelectedRows(nextItem ? { [getRowId(nextItem)]: true } : {});
   } else {
     dispatch(reducer(idsToRemove));
     setSelectedRows({});

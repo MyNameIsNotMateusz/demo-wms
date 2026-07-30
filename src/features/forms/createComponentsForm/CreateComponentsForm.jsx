@@ -29,6 +29,7 @@ import { buildLabelsData } from "./utils/buildLabelsData";
 import { tableThunks } from "../../../store/thunks/tableThunks";
 import { resetCreateComponentsForm } from "./utils/resetCreateComponentsForm";
 import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
 
 export const CreateComponentsForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -366,78 +367,17 @@ export const CreateComponentsForm = ({ onClose }) => {
         );
     };
 
-    const handleRemoveCreatedPalletRows = (
-        e
-    ) => {
+    const handleRemoveCreatedPalletRows = (e) => {
         e.preventDefault();
 
-        const idsToRemove = Object.keys(
-            selectedCreatedPallets
+        handleRemoveSelectedRows(
+            selectedCreatedPallets,
+            displayedCreatedPallets,
+            setSelectedCreatedPallets,
+            removeCreatedPalletRows,
+            dispatch,
+            handleError
         );
-
-        if (idsToRemove.length === 0) {
-            handleError("No row selected.");
-
-            return;
-        }
-
-        if (idsToRemove.length === 1) {
-            const onlyId = idsToRemove[0];
-
-            const indexToRemove =
-                displayedCreatedPallets.findIndex(
-                    (row) => row.id === onlyId
-                );
-
-            const nextItem =
-                displayedCreatedPallets[
-                    indexToRemove + 1
-                ] &&
-                    !idsToRemove.includes(
-                        displayedCreatedPallets[
-                            indexToRemove + 1
-                        ].id
-                    )
-                    ? displayedCreatedPallets[
-                    indexToRemove + 1
-                    ]
-                    : displayedCreatedPallets[
-                        indexToRemove - 1
-                    ] &&
-                        !idsToRemove.includes(
-                            displayedCreatedPallets[
-                                indexToRemove - 1
-                            ].id
-                        )
-                        ? displayedCreatedPallets[
-                        indexToRemove - 1
-                        ]
-                        : null;
-
-            dispatch(
-                removeCreatedPalletRows(
-                    idsToRemove
-                )
-            );
-
-            setSelectedCreatedPallets(
-                nextItem
-                    ? {
-                        [nextItem.id]: true,
-                    }
-                    : {}
-            );
-
-            return;
-        }
-
-        dispatch(
-            removeCreatedPalletRows(
-                idsToRemove
-            )
-        );
-
-        setSelectedCreatedPallets({});
     };
 
     const handleCloseModal = () => {
