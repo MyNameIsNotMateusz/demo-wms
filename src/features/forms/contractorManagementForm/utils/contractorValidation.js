@@ -18,7 +18,7 @@ export const validateContractorForm = (
     }
   }
 
-  if (contractor_type === "COMPANY" && legal_form == undefined) {
+  if (contractor_type === "COMPANY" && !legal_form) {
     handleError(
       "For a contractor of type COMPANY, the legal form must be specified.",
     );

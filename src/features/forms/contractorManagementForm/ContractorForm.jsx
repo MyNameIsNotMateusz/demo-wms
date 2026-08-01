@@ -10,10 +10,10 @@ import { selectProjects } from "./contractorManagementSelectors";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addNewProjectRow, removeProjectRow } from "./contractorManagementFormSlice";
-import { getNextSelectedProject } from "./utils/projectsTableUtils";
 import { handleError } from "../../../utils/alerts";
 import { updateProjectRow } from "./contractorManagementFormSlice";
 import { findProjectByCode } from "./utils/projectUtils";
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
 
 export const ContractorForm = ({ title, onClose, isLoading, formData, setFormData, handleSubmit }) => {
     const { accessToken } = useAuth();
@@ -86,33 +86,15 @@ export const ContractorForm = ({ title, onClose, isLoading, formData, setFormDat
     const handleRemoveProjectRow = (e) => {
         e.preventDefault();
 
-        const selectedKeys = Object.keys(selectedProjects);
-
-        if (selectedKeys.length === 0) {
-            handleError("No project selected.");
-            return;
-        }
-
-        if (selectedKeys.length > 1) {
-            dispatch(removeProjectRow(selectedKeys));
-            setSelectedProjects({});
-            return;
-        }
-
-        const selectedKey = selectedKeys[0];
-
-        dispatch(removeProjectRow(selectedKeys));
-
-        const nextKey = getNextSelectedProject(
+        handleRemoveSelectedRows(
+            selectedProjects,
             displayedProjects,
-            selectedKey
-        );
-
-        if (nextKey) {
-            setSelectedProjects({ [nextKey]: true });
-        } else {
-            setSelectedProjects({});
-        }
+            setSelectedProjects,
+            removeProjectRow,
+            dispatch,
+            handleError,
+            (row) => row.rowId || row.project_code,
+        )
     };
 
     const handleUpdateProject = (rowId, key, value) => {
