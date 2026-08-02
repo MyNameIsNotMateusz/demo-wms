@@ -4,7 +4,7 @@ import { FormRow, Form } from "../../../components/ui/form/FormBase.styles";
 import { FormInput, SubmitButton } from "../../../components/ui";
 import { updateFormData } from "../../../utils/forms/updateFormData"
 import { useAuth } from "../../../auth/AuthProvider";
-import { validateChangePassword } from "./utils/changePasswordValidation";
+import { validateChangePassword } from "./utils/validateChangePassword";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { handleError, handleSuccess } from "../../../utils/alerts";
 
