@@ -9,12 +9,12 @@ import { MaterialsTable } from "./MaterialsTable";
 import { selectMaterials } from "./recipesManagerSelectors";
 import { handleError, handleSuccess } from "../../../utils/alerts";
 import { AlternativeGroups } from "./components/AlternativeGroups";
-import { handleRemoveMaterial } from "./utils/handleRemoveMaterial";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { useAuth } from "../../../auth/AuthProvider";
 import { dictionaryThunks } from "../../../store/thunks/dictionaryThunks";
 import { validateRecipe } from "./utils/validateRecipe";
 import { buildRecipePayload } from "./utils/buildRecipePayload";
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
 
 export const RecipesManagerForm = ({ onClose }) => {
 
@@ -293,6 +293,26 @@ export const RecipesManagerForm = ({ onClose }) => {
         setHasChanges(true);
     };
 
+    const handleRemoveMaterialRow = () => {
+        const result = handleRemoveSelectedRows(
+            selectedMaterials,
+            displayedMaterials,
+            setSelectedMaterials,
+            (ids) =>
+                removeRecipeMaterial({
+                    ids,
+                    selectedProcess: formData.process_type,
+                }),
+            dispatch,
+            () => { },
+            (row) => row.material_code,
+        );
+
+        if (result) {
+            setHasChanges(true);
+        }
+    };
+
     const handleSubmit = async () => {
         if (!hasChanges) {
             handleError("No changes have been made.");
@@ -454,14 +474,7 @@ export const RecipesManagerForm = ({ onClose }) => {
                             type="add"
                         />
                         <TableActionButton
-                            handleClick={() => handleRemoveMaterial({
-                                selectedMaterials,
-                                data: displayedMaterials,
-                                dispatch,
-                                selectedProcess: formData.process_type,
-                                setSelectedMaterials,
-                                setHasChanges
-                            })}
+                            handleClick={handleRemoveMaterialRow}
                             type="remove"
                         />
                     </FormActionsWrapper>

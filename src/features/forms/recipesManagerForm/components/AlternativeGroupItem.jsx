@@ -7,14 +7,15 @@ import {
     GroupItemRow
 } from "./AlternativeGroupItem.styles";
 import { CellInput, TableActionButton } from "../../../../components/ui";
-import { getGroupItems } from "../helpers/groupHelpers";
+import { getGroupItems } from "../helpers/getGroupItems";
 import { handleRowClick } from "../../../../utils/table/tableRowSelection";
 import { useDispatch } from "react-redux";
-import { handleRemoveMaterial } from "../utils/handleRemoveMaterial";
 import { TableSelect } from "../../../../components/ui/table/TableSelect";
-import { updateRecipeMaterial, updateRecipeQuantity } from "../recipesManagerFormSlice";
+import { updateRecipeMaterial, updateRecipeQuantity, removeRecipeMaterial } from "../recipesManagerFormSlice";
 import { useState } from "react";
 import { handleFocus, handleChange, handleBlur } from "../../../../utils/table/cellHandlers";
+import { handleRemoveSelectedRows } from "../../../../utils/table/removeSelectedRows";
+import { handleError } from "../../../../utils/alerts";
 
 export const AlternativeGroupItem = ({
     group,
@@ -40,6 +41,26 @@ export const AlternativeGroupItem = ({
 
     const [editedValues, setEditedValues] = useState({});
 
+    const handleRemoveRow = () => {
+        const result = handleRemoveSelectedRows(
+            activeAlternativeRow,
+            groupItems,
+            setActiveAlternativeRow,
+            (ids) =>
+                removeRecipeMaterial({
+                    ids,
+                    selectedProcess,
+                }),
+            dispatch,
+            handleError,
+            (row) => row.material_code,
+        );
+
+        if (result) {
+            setHasChanges(true);
+        }
+    };
+
     return (
         <GroupItemWrapper>
             <GroupItemHeader>
@@ -59,14 +80,7 @@ export const AlternativeGroupItem = ({
                         isSmall={true}
                     />
                     <TableActionButton
-                        handleClick={() => handleRemoveMaterial({
-                            selectedMaterials: activeAlternativeRow,
-                            data: groupItems,
-                            dispatch,
-                            selectedProcess,
-                            setSelectedMaterials: setActiveAlternativeRow,
-                            setHasChanges
-                        })}
+                        handleClick={handleRemoveRow}
                         type="remove"
                         isSmall={true}
                     />

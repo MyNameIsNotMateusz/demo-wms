@@ -139,7 +139,7 @@ export const ProjectManagementForm = ({ onClose }) => {
             }
 
             handleSuccess("Operation completed successfully.");
-            dispatch(fetchProjects());
+            dispatch(fetchProjects(accessToken));
 
             handleCloseForm({
                 setFormData: setProjectFormData,

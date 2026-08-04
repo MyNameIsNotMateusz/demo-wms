@@ -10,7 +10,7 @@ import { useState } from "react"
 import { updateMaterialRow, addNewMaterialRow, removeMaterialRow } from "./projectManagementFormSlice"
 import { v4 as uuidv4 } from "uuid";
 import { handleError } from "../../../utils/alerts";
-import { getNextSelectedMaterial } from "./utils/materialsTableUtils"
+import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows"
 
 export const ProjectForm = ({ title, setFormData, setIsProjectFormVisible, setMode, formData, isLoading, handleSubmit }) => {
 
@@ -64,33 +64,15 @@ export const ProjectForm = ({ title, setFormData, setIsProjectFormVisible, setMo
     const handleRemoveMaterialRow = (e) => {
         e.preventDefault();
 
-        const selectedKeys = Object.keys(selectedMaterials);
-
-        if (selectedKeys.length === 0) {
-            handleError("No material selected.");
-            return;
-        }
-
-        if (selectedKeys.length > 1) {
-            dispatch(removeMaterialRow(selectedKeys));
-            setSelectedMaterials({});
-            return;
-        }
-
-        const selectedKey = selectedKeys[0];
-
-        dispatch(removeMaterialRow(selectedKeys));
-
-        const nextKey = getNextSelectedMaterial(
+        handleRemoveSelectedRows(
+            selectedMaterials,
             displayedMaterials,
-            selectedKey
+            setSelectedMaterials,
+            removeMaterialRow,
+            dispatch,
+            handleError,
+            (row) => row.rowId || row.material_code,
         );
-
-        if (nextKey) {
-            setSelectedMaterials({ [nextKey]: true });
-        } else {
-            setSelectedMaterials({});
-        }
     };
 
     return (
