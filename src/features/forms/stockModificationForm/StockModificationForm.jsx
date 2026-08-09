@@ -21,6 +21,9 @@ import { validateChanges } from "./utils/validateChanges";
 import { buildPayload } from "./utils/buildPayload";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
 import { resetForm } from "./utils/resetForm";
+import { TablePagination } from "../../../components/ui/table/TablePagination";
+import { usePagination } from "../../../hooks/usePagination";
+import { adjustColumnWidths } from "../../../utils/table";
 
 export const StockModificationForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -35,11 +38,28 @@ export const StockModificationForm = ({ onClose }) => {
         remarks: "",
     });
 
-    const { removedPallets, addedPallets, pallets } = useSelector(
-        (state) => state.stockModificationForm,
-    );
+    const {
+        removedPallets,
+        addedPallets,
+        pallets
+    } = useSelector((state) => state.stockModificationForm);
 
     const displayedPallets = useSelector(selectPallets);
+    const {
+        currentData,
+        page,
+        pageSize,
+        setPageSize,
+        total,
+        totalPages,
+        safeStart,
+        safeEnd,
+        changePage,
+    } = usePagination(
+        displayedPallets,
+        () => adjustColumnWidths("pallets")
+    );
+
     const displayedRemovedPallets = useSelector(selectRemovedPallets);
     const displayedEditedPallets = useSelector(selectEditedPallets);
     const displayedAddedPallets = useSelector(selectAddedPallets);
@@ -273,11 +293,21 @@ export const StockModificationForm = ({ onClose }) => {
                     <>
                         <FormTableWrapper>
                             <PalletsTable
-                                data={displayedPallets}
+                                data={currentData}
                                 selectedRows={selectedPallets}
                                 setSelectedRows={setSelectedPallets}
                             />
                         </FormTableWrapper>
+                        <TablePagination
+                            changePage={changePage}
+                            safeStart={safeStart}
+                            safeEnd={safeEnd}
+                            total={total}
+                            page={page}
+                            totalPages={totalPages}
+                            pageSize={pageSize}
+                            setPageSize={setPageSize}
+                        />
                         <FormActionsWrapper>
                             <TableActionButton
                                 handleClick={(e) =>

@@ -19,6 +19,9 @@ import { validateOutboundForm } from "./utils/validateOutboundForm";
 import { buildShipmentPayload } from "./utils/buildShipmentPayload";
 import { resetOutboundForm } from "./utils/resetOutboundForm";
 import { BASE_API_URL, DEFAULT_HEADERS } from "../../../api/config";
+import { usePagination } from "../../../hooks/usePagination";
+import { adjustColumnWidths } from "../../../utils/table";
+import { TablePagination } from "../../../components/ui/table/TablePagination";
 
 export const OutboundForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -28,6 +31,20 @@ export const OutboundForm = ({ onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const displayedPallets = useSelector(selectPallets);
+    const {
+        currentData,
+        page,
+        pageSize,
+        setPageSize,
+        total,
+        totalPages,
+        safeStart,
+        safeEnd,
+        changePage,
+    } = usePagination(
+        displayedPallets,
+        () => adjustColumnWidths("availablePallets")
+    );
     const displayedSelectedPallets = useSelector(selectSelectedPallets);
     const displayedSummary = useSelector(selectSummary);
 
@@ -306,7 +323,7 @@ export const OutboundForm = ({ onClose }) => {
                 <FormTableWrapper>
                     {activeTab === 0 && (
                         <AvailablePalletsTable
-                            data={displayedPallets}
+                            data={currentData}
                             selectedRows={selectedPalletRows}
                             setSelectedRows={setSelectedPalletRows}
                         />
@@ -324,6 +341,18 @@ export const OutboundForm = ({ onClose }) => {
                         />
                     )}
                 </FormTableWrapper>
+                {activeTab === 0 && (
+                    <TablePagination
+                        changePage={changePage}
+                        safeStart={safeStart}
+                        safeEnd={safeEnd}
+                        total={total}
+                        page={page}
+                        totalPages={totalPages}
+                        pageSize={pageSize}
+                        setPageSize={setPageSize}
+                    />
+                )}
                 <FormTabs
                     tabs={tabsConfig}
                     activeTab={activeTab}

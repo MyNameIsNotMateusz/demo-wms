@@ -10,6 +10,9 @@ import { handleError } from "../../../utils/alerts";
 import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
 import { SubmitButton } from "../../../components/ui";
 import { buildPalletLabelsData } from "./utils/buildPalletLabelsData";
+import { usePagination } from "../../../hooks/usePagination";
+import { adjustColumnWidths } from "../../../utils/table";
+import { TablePagination } from "../../../components/ui/table/TablePagination";
 
 export const PalletLabelsForm = ({ onClose }) => {
 
@@ -18,8 +21,24 @@ export const PalletLabelsForm = ({ onClose }) => {
     const dispatch = useDispatch();
 
     const displayedPallets = useSelector(selectPallets);
+    const {
+        currentData,
+        page,
+        pageSize,
+        setPageSize,
+        total,
+        totalPages,
+        safeStart,
+        safeEnd,
+        changePage,
+    } = usePagination(
+        displayedPallets,
+        () => adjustColumnWidths("palletLabels")
+    );
 
-    const { pallets } = useSelector((state) => state.palletLabelsForm);
+    const { pallets } = useSelector(
+        (state) => state.palletLabelsForm
+    );
 
     const [selectedPallets, setSelectedPallets] = useState({});
     const [labelData, setLabelData] = useState([]);
@@ -51,11 +70,21 @@ export const PalletLabelsForm = ({ onClose }) => {
             <Form>
                 <FormTableWrapper>
                     <PalletLabelsTable
-                        data={displayedPallets}
+                        data={currentData}
                         selectedRows={selectedPallets}
                         setSelectedRows={setSelectedPallets}
                     />
                 </FormTableWrapper>
+                <TablePagination
+                    changePage={changePage}
+                    safeStart={safeStart}
+                    safeEnd={safeEnd}
+                    total={total}
+                    page={page}
+                    totalPages={totalPages}
+                    pageSize={pageSize}
+                    setPageSize={setPageSize}
+                />
             </Form>
             <SubmitButton
                 onClick={handleSubmit}

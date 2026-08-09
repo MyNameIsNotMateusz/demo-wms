@@ -19,7 +19,7 @@ export const TablePagination = ({
   page,
   totalPages,
   setPageSize,
-  pageSize
+  pageSize,
 }) => {
   return (
     <PaginationWrapper>
@@ -38,10 +38,11 @@ export const TablePagination = ({
           </PageSizeSelect>
         </PaginationPageSize>
         <PaginationButtons>
-          <PageButton onClick={() => changePage(-1)} $active={page !== 1}>
+          <PageButton type="button" onClick={() => changePage(-1)} $active={page !== 1}>
             <ChevronLeftIcon />
           </PageButton>
           <PageButton
+            type="button"
             onClick={() => changePage(1)}
             $active={page !== totalPages}
           >

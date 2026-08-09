@@ -1,15 +1,16 @@
 import { TableWrapper } from "./TableContainer.styles";
 import { TableComponent } from "./TableComponent";
 import { Loader } from "../../components/ui";
-import { TablePagination } from "./TablePagination";
+import { TablePagination } from "../../components/ui/table/TablePagination";
 import { Tabs } from "./Tabs";
 import { TableActions } from "./TableActions";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { adjustColumnWidths } from "../../utils/table";
 import { selectIsWarehouseDataLoaded } from "../../store/selectors/tableLoadSelectors";
 import { useSelector } from "react-redux";
 import { formRegistry } from "../../data/formsRegistry";
 import { useOutletContext } from "react-router-dom";
+import { usePagination } from "../../hooks/usePagination";
 
 export const TableContainer = ({
   tableOrigin,
@@ -25,31 +26,26 @@ export const TableContainer = ({
   const { isTableDarkened, activeForm, handleCloseForm } = useOutletContext();
   const ActiveForm = formRegistry[activeForm];
 
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const {
+    page,
+    pageSize,
+    setPageSize,
+    start,
+    currentData,
+    total,
+    totalPages,
+    safeStart,
+    safeEnd,
+    changePage,
+    setPage,
+  } = usePagination(data, () => adjustColumnWidths(tableOrigin));
 
   useEffect(() => {
     setPage(1);
-  }, [tableOrigin]);
-
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-  const total = data.length;
-  const safeStart = total === 0 ? 0 : start + 1;
-  const safeEnd = Math.min(end, total);
-  const currentData = data.slice(start, end);
-  const totalPages = Math.ceil(data.length / pageSize);
-
-  const changePage = (offset) => {
-    adjustColumnWidths(tableOrigin);
-    const newPage = page + offset;
-    const safePage = Math.max(1, Math.min(newPage, totalPages));
-    setPage(safePage);
-  };
+  }, [tableOrigin, setPage]);
 
   return (
     <TableWrapper>
-
       {isTableDarkened && ActiveForm && (
         <ActiveForm onClose={handleCloseForm} />
       )}
@@ -79,6 +75,7 @@ export const TableContainer = ({
         pageSize={pageSize}
         setPageSize={setPageSize}
       />
+
       <TableActions />
       <Tabs />
     </TableWrapper>
