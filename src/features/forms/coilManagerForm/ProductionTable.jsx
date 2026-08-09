@@ -21,7 +21,7 @@ export const ProductionTable = ({
             sortConfig={productionCoilsSortConfig}
             setSortConfig={setProductionSortConfig}
             filters={productionCoilsFilters}
-            setFilters={productionCoilsFilters}
+            setFilters={setProductionFilters}
             showSelectAll={false}
         >
             {data.map((row, index) => (

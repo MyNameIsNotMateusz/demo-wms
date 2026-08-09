@@ -190,6 +190,12 @@ export const InboundForm = ({ onClose }) => {
         fetchServicePallets();
     }, [formData.contractor_tax_id, formData.inbound_type, accessToken]);
 
+    useEffect(() => {
+        if (formData.inbound_type === "SERVICE") {
+            dispatch(clearServiceState());
+        }
+    }, [formData.contractor_tax_id, formData.inbound_type, dispatch]);
+
     const handleAddManualPallet = () => {
         const uniqueId = uuidv4();
 

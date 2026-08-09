@@ -24,6 +24,7 @@ import { prepareCoilLabelsForPrint } from "./utils/prepareCoilLabelsForPrint";
 import { printCoilLabels } from "../../../utils/pdf/coilLabels/printCoilLabels";
 import { ReturnCoilModal } from "./ReturnCoilModal";
 import { ConsumedTable } from "./ConsumedTable";
+import { fetchCoilStock } from "../../tables/coilStock/coilStockSlice";
 
 export const CoilManagerForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -154,6 +155,7 @@ export const CoilManagerForm = ({ onClose }) => {
             resetCoilManagerForm(setFormData);
 
             dispatch(fetchProductionCoils(accessToken));
+            dispatch(fetchCoilStock(accessToken));
         } catch (error) {
             console.error(error);
 
@@ -207,6 +209,7 @@ export const CoilManagerForm = ({ onClose }) => {
 
             dispatch(fetchProductionCoils(accessToken));
             dispatch(fetchConsumedCoils(accessToken));
+            dispatch(fetchCoilStock(accessToken));
         } catch (error) {
             console.error(error);
 
@@ -230,7 +233,7 @@ export const CoilManagerForm = ({ onClose }) => {
         const selectedCoilId =
             Object.keys(selectedProductionCoils)[0] ||
             Object.keys(selectedConsumedCoils)[0];
-        
+
         const selectedCoil = findCoilById(
             selectedCoilId,
             productionCoils,
@@ -310,6 +313,7 @@ export const CoilManagerForm = ({ onClose }) => {
 
             dispatch(fetchProductionCoils(accessToken));
             dispatch(fetchConsumedCoils(accessToken));
+            dispatch(fetchCoilStock(accessToken));
 
             const labelsToPrint = prepareCoilLabelsForPrint(
                 selectedCoil,

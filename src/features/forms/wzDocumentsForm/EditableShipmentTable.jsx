@@ -64,7 +64,7 @@ export const EditableShipmentTable = ({
                             style={{ cursor: "pointer" }}
                             checked={selectedRows.hasOwnProperty(getRowId(row))}
                             onChange={() => {
-                                handleRowClick(row.id, setSelectedRows);
+                                handleRowClick(getRowId(row), setSelectedRows);
                             }}
                         />
                     </TableBodyCell>
