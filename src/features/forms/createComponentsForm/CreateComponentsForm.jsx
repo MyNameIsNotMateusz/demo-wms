@@ -44,6 +44,7 @@ export const CreateComponentsForm = ({ onClose }) => {
         seqNumber: "",
         project: "",
         material_code: "",
+        type: "",
         operator_name: "",
         production_order_number: "",
         remarks: "",
@@ -265,14 +266,19 @@ export const CreateComponentsForm = ({ onClose }) => {
             data.code
         );
 
-        const recipes = getRecipesForMaterial({
+        const material = getRecipesForMaterial({
             projects,
-            projectName:
-                matchedProject.name,
+            projectName: matchedProject.name,
             materialCode: data.code,
         });
 
-        setRecipes(recipes);
+        setRecipes(material.recipes || []);
+
+        updateFormData(
+            setFormData,
+            "type",
+            material.type
+        );
 
         setMaterialExtraData({
             destination:
@@ -305,12 +311,19 @@ export const CreateComponentsForm = ({ onClose }) => {
     const handleMaterialCodeChange = async (val) => {
         updateFormData(setFormData, "material_code", val);
 
-        const recipes = getRecipesForMaterial({
+        const material = getRecipesForMaterial({
             projects,
             projectName: formData.project,
             materialCode: val
-        })
-        setRecipes(recipes);
+        });
+
+        setRecipes(material.recipes || []);
+
+        updateFormData(
+            setFormData,
+            "type",
+            material.type
+        );
 
         if (!val) {
             setMaterialExtraData({ destination: null, is_simplified: null });

@@ -14,6 +14,7 @@ export const resetCreateComponentsForm = ({
     seqNumber: "",
     project: "",
     material_code: "",
+    type: "",
     operator_name: "",
     production_order_number: "",
     remarks: "",

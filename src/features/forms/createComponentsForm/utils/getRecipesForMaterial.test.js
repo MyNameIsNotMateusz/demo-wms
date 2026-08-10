@@ -41,18 +41,22 @@ describe("getRecipesForMaterial", () => {
       materialCode,
     });
 
-    expect(result).toEqual([
-      {
-        process: "SERVICE",
-        inputs: [
-          {
-            material_code: "313BL_88334/337-HF000/CT00 AUTO",
-            type: "WIP",
-            quantity: 1,
-            alternative_group: null,
-          },
-        ],
-      },
-    ]);
+    expect(result).toEqual({
+      material_code: "317FG_88335-HF000/CTE00",
+      type: "FG",
+      recipes: [
+        {
+          process: "SERVICE",
+          inputs: [
+            {
+              material_code: "313BL_88334/337-HF000/CT00 AUTO",
+              type: "WIP",
+              quantity: 1,
+              alternative_group: null,
+            },
+          ],
+        },
+      ],
+    });
   });
 });

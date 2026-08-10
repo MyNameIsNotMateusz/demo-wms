@@ -8,6 +8,11 @@ export const validateProductionForm = ({
     return false;
   }
 
+  if (!["FG", "WIP"].includes(formData.type)) {
+    handleError("The production material must be either WIP or FG.");
+    return false;
+  }
+
   if (!createdPallets.length) {
     handleError("No pallets created.");
     return false;

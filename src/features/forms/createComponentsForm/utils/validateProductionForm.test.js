@@ -1,11 +1,36 @@
 import { validateProductionForm } from "./validateProductionForm";
 
 describe("validateProductionForm", () => {
-  it("should return false when isAssembly is null.", () => {
+  it("should return false when isAssemblyMode is null.", () => {
     const result = validateProductionForm({
       isAssemblyMode: null,
-      createdPallets: [],
-      formData: {},
+      createdPallets: [
+        {
+          quantity: 2,
+        },
+      ],
+      formData: {
+        type: "WIP",
+        operator_name: "Operator",
+      },
+      handleError: () => {},
+    });
+
+    expect(result).toBe(false);
+  });
+
+  it("should return false when the material type is neither WIP nor FG.", () => {
+    const result = validateProductionForm({
+      isAssemblyMode: true,
+      createdPallets: [
+        {
+          quantity: 2,
+        },
+      ],
+      formData: {
+        type: "COIL",
+        operator_name: "Operator",
+      },
       handleError: () => {},
     });
 
@@ -16,7 +41,10 @@ describe("validateProductionForm", () => {
     const result = validateProductionForm({
       isAssemblyMode: true,
       createdPallets: [],
-      formData: {},
+      formData: {
+        type: "WIP",
+        operator_name: "Operator",
+      },
       handleError: () => {},
     });
 
@@ -26,8 +54,13 @@ describe("validateProductionForm", () => {
   it("should return false when the operator name is empty.", () => {
     const result = validateProductionForm({
       isAssemblyMode: true,
-      createdPallets: [{}],
+      createdPallets: [
+        {
+          quantity: 2,
+        },
+      ],
       formData: {
+        type: "WIP",
         operator_name: "",
       },
       handleError: () => {},
@@ -48,7 +81,8 @@ describe("validateProductionForm", () => {
         },
       ],
       formData: {
-        operator_name: "ABC",
+        type: "WIP",
+        operator_name: "Operator",
       },
       handleError: () => {},
     });
@@ -68,6 +102,7 @@ describe("validateProductionForm", () => {
         },
       ],
       formData: {
+        type: "FG",
         operator_name: "ABC",
       },
       handleError: () => {},
