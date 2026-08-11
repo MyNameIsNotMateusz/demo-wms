@@ -30,6 +30,8 @@ import { tableThunks } from "../../../store/thunks/tableThunks";
 import { resetCreateComponentsForm } from "./utils/resetCreateComponentsForm";
 import { printPalletLabels } from "../../../utils/pdf/palletLabels/printPalletLabels";
 import { handleRemoveSelectedRows } from "../../../utils/table/removeSelectedRows";
+import { fetchProductionTransactions } from "../../tables/productionTransactions/productionTransactionsSlice";
+import { fetchProductionStock } from "../../tables/productionStock/productionStockSlice";
 
 export const CreateComponentsForm = ({ onClose }) => {
     const { accessToken } = useAuth();
@@ -529,12 +531,12 @@ export const CreateComponentsForm = ({ onClose }) => {
                 setSelectedCreatedPallets,
             });
 
-            // tutaj dispatch do production transactions
+            dispatch(fetchProductionTransactions(accessToken));
 
             if (
                 materialExtraData.is_simplified
             ) {
-                // dispatch production table
+                dispatch(fetchProductionStock(accessToken));
             } else {
                 dispatch(
                     fetchLogisticsStock(
@@ -696,20 +698,23 @@ export const CreateComponentsForm = ({ onClose }) => {
                         />
                     )}
                 </FormTableWrapper>
-                <FormActionsWrapper>
-                    <TableActionButton
-                        handleClick={handleAddCreatedPalletRow}
-                        type="add"
-                    />
-                    <TableActionButton
-                        handleClick={handleRemoveCreatedPalletRows}
-                        type="remove"
-                    />
-                    <TableActionButton
-                        handleClick={handleAddMultipleRows}
-                        type="addMultiple"
-                    />
-                </FormActionsWrapper>
+                {activeTab === 0 && (
+                    <FormActionsWrapper>
+                        <TableActionButton
+                            handleClick={handleAddCreatedPalletRow}
+                            type="add"
+                        />
+                        <TableActionButton
+                            handleClick={handleRemoveCreatedPalletRows}
+                            type="remove"
+                        />
+                        <TableActionButton
+                            handleClick={handleAddMultipleRows}
+                            type="addMultiple"
+                        />
+                    </FormActionsWrapper>
+                )}
+
                 {isAssemblyMode === true && (
                     <FormTabs
                         tabs={tabsConfig}

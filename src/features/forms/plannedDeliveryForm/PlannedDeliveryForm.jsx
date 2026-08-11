@@ -92,6 +92,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
 
   useEffect(() => {
     const handlePaste = async (e) => {
+      if (activeTab !== 0) return;
       if (isFocusedRef.current) return;
       if (!e.ctrlKey && !e.metaKey) return;
       if (e.key !== "v" && e.key !== "V") return;
@@ -135,7 +136,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
 
     window.addEventListener("keydown", handlePaste);
     return () => window.removeEventListener("keydown", handlePaste);
-  }, [formData.contractor_tax_id]);
+  }, [formData.contractor_tax_id, activeTab]);
 
   useEffect(() => {
     setIsDetailsTableEdited(false);
@@ -148,7 +149,7 @@ export const PlannedDeliveryForm = ({ onClose }) => {
 
     dispatch(setDeliveryDetailsRows(mappedItems));
   }, [selectedPlannedDeliveries, displayedPlannedDeliveries, dispatch]);
-  
+
   const handleSubmit = async () => {
     const success = await addPlannedDelivery(
       formData,

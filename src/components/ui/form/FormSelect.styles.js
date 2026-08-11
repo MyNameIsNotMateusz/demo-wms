@@ -6,6 +6,11 @@ export const SelectWrapper = styled.div`
   flex: 1;
 `;
 
+export const SelectContainer = styled.div`
+  max-width: 0;
+  min-width: 100%;
+`;
+
 export const SelectLabel = styled.label`
   position: relative;
   width: fit-content;
