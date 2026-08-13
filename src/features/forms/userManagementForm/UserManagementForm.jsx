@@ -198,7 +198,11 @@ export const UserManagementForm = ({ onClose }) => {
 
             dispatch(fetchUsers(accessToken));
             setSelectedAccesses({});
-            handleCloseForm(setUserFormData, setIsUserFormVisible, setMode);
+            handleCloseForm({
+                setFormData: setUserFormData,
+                setIsFormVisible: setIsUserFormVisible,
+                setMode,
+            });
             handleSuccess("Operation completed successfully.");
         } catch (error) {
             console.error(error);
