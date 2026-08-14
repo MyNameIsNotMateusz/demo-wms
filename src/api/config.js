@@ -1,4 +1,4 @@
-export const BASE_API_URL = "https://dscpltest.pl/api/";
+export const BASE_API_URL = process.env.REACT_APP_API_URL;
 
 export const DEFAULT_HEADERS = (token) => {
   const headers = {
